@@ -181,7 +181,7 @@
                 if (!ifStop) {
                     eventListener[newId](yy, event);
                 }
-            }
+            };
         },
         addEventListener:function (option) {
             if (option.target && option.type && option.handler) {
@@ -222,7 +222,7 @@
                 children = yy.children;
             for (var indexId in children) {
                 child = children[indexId];
-                if (indexId == id) {
+                if (indexId === id) {
                     result = child;
                     break;
                 } else {
@@ -240,7 +240,7 @@
                 children = yy.children;
             for (var indexId in children) {
                 child = children[indexId];
-                if (child.key == key) {
+                if (child.key === key) {
                     result = child;
                     break;
                 } else {
@@ -256,7 +256,7 @@
             var result;
             //查找loader
             var loader;
-            if (loaderId == this._root.id) {
+            if (loaderId === this._root.id) {
                 loader = this._root;
             } else {
                 loader = this._findChildById(this._root, loaderId);
@@ -278,7 +278,7 @@
         },
         findById:function (id) {
             var result;
-            if (this._root.id == id) {
+            if (this._root.id === id) {
                 result = this._root;
             } else {
                 result = this._findChildById(this._root, id);
@@ -576,7 +576,6 @@
     var parsers = {
         _utils:utils,
         _index:index,
-        _logger:logger,
         _typeMap:{},
         _listeners:listeners,
         _components:components,
@@ -737,7 +736,7 @@
                         var result;
                         for (var indexId in this.children) {
                             child = this.children[indexId];
-                            if (child.key == key) {
+                            if (child.key === key) {
                                 result = child;
                                 break;
                             }
@@ -873,18 +872,18 @@
                                 execute:function () {
                                     this.yy[this.action]();
                                 }
-                            }
+                            };
                             this.addTimerTask(timer);
                         }
                     };
                     yy.setContext = function (context) {
                         var module;
-                        if(this.type == 'yy_module') {
+                        if(this.type === 'yy_module') {
                             module = this;
                         } else {
                             var parent = this.parent;
                             while(parent) {
-                                if(parent.type == 'yy_module') {
+                                if(parent.type === 'yy_module') {
                                     module = parent;
                                     break;
                                 }
@@ -894,12 +893,12 @@
                     };
                     yy.getContext = function (cId) {
                         var module;
-                        if(this.type == 'yy_module') {
+                        if(this.type === 'yy_module') {
                             module = this;
                         } else {
                             var parent = this.parent;
                             while(parent) {
-                                if(parent.type == 'yy_module') {
+                                if(parent.type === 'yy_module') {
                                     module = parent;
                                     break;
                                 }
@@ -1090,7 +1089,7 @@
 //加载js
     $.yyLoadPlugin = function (plugin) {
         plugin.load(YY);
-    }
+    };
 //--------------parser--end-------------
 
 //初始化全局事件
@@ -1178,7 +1177,7 @@
     root.$this.keyup(function (event) {
         if (!event.ctrlKey) {
             var keyCode = event.keyCode;
-            if (keyCode == 13) {
+            if (keyCode === 13) {
                 var target = event.target;
                 if (target.id) {
                     while (target.id === '') {
@@ -1191,7 +1190,7 @@
                     }
                 }
             }
-            if (keyCode == 229 || (keyCode >= 65 && keyCode <= 90) || (keyCode >= 48 && keyCode <= 57) || keyCode == 8 || (keyCode >= 188 && keyCode <= 192) || (keyCode >= 219 && keyCode <= 222) || keyCode == 32 || keyCode == 46) {
+            if (keyCode === 229 || (keyCode >= 65 && keyCode <= 90) || (keyCode >= 48 && keyCode <= 57) || keyCode === 8 || (keyCode >= 188 && keyCode <= 192) || (keyCode >= 219 && keyCode <= 222) || keyCode === 32 || keyCode === 46) {
                 var target = event.target;
                 if (target.id) {
                     while (target.id === '') {

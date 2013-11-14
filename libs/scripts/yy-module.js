@@ -100,7 +100,7 @@ $.yyLoadPlugin({
                     var lastData = this.extend.lastData;
                     for (var fieldName in newData) {
                         if (lastData[fieldName]) {
-                            if (lastData[fieldName] != newData[fieldName]) {
+                            if (lastData[fieldName] !== newData[fieldName]) {
                                 result = true;
                                 break;
                             }
@@ -168,7 +168,7 @@ $.yyLoadPlugin({
                         var ifStop = true;
                         //如果选中的tap没有变化，中断该控件其他click事件监听
                         var group = yy.group;
-                        if (group.extend.selectedId != yy.id) {
+                        if (group.extend.selectedId !== yy.id) {
                             yy.group.unSelectedAll();
                             yy.$this.addClass('yy_selected');
                             yy.group.extend.selectedId = yy.id;
@@ -209,7 +209,7 @@ $.yyLoadPlugin({
                     if (clientHeight < scrollHeight) {
                         this.extend.scroll = true;
                         this.extend.scrollHeight = scrollHeight;
-                        var sHeight = parseInt(clientHeight * clientHeight / scrollHeight);
+                        var sHeight = parseInt(Math.pow(clientHeight, 2) / scrollHeight);
                         this.extend.seed = (scrollHeight - clientHeight) / (scrollHeight - sHeight);
                         this.extend.sHeight = sHeight;
                             $this.css({height:sHeight});
@@ -237,7 +237,7 @@ $.yyLoadPlugin({
             childParsers:totalParser,
             _listeners:listeners,
             parse:function (yy, config) {
-                if (config.yyScroll && config.yyScroll == 'true') {
+                if (config.yyScroll && config.yyScroll === 'true') {
                     var html = '<div class="yy_scroll"></div>';
                     yy.$this.append(html);
                     yy.extend.scroll = {};
@@ -254,7 +254,7 @@ $.yyLoadPlugin({
                         target:yy,
                         type:'mousewheel',
                         handler:function (yy, event, delta, deltaX, deltaY) {
-                            if (yy.extend.hasScroll = true) {
+                            if (yy.extend.hasScroll === true) {
                                 var speed = 50;
                                 var scroll = yy.extend.scroll;
                                 var $this = yy.$this;
@@ -295,7 +295,7 @@ $.yyLoadPlugin({
                 yy.selected = function () {
                     this.parent.unSelectedAll();
                     this.$this.addClass('yy_selected');
-                }
+                };
             }
         });
         parsers.put('yy_list', {
@@ -305,7 +305,7 @@ $.yyLoadPlugin({
             _parsers:parsers,
             _listeners:listeners,
             parse:function (yy, config) {
-                if (config.yyScroll && config.yyScroll == 'true') {
+                if (config.yyScroll && config.yyScroll === 'true') {
                     var html = '<div class="yy_scroll"></div>';
                     yy.$this.append(html);
                     yy.extend.scroll = {};
@@ -326,7 +326,7 @@ $.yyLoadPlugin({
                         }
                     };
                     yy._scrollBottom = function () {
-                        if (yy.extend.hasScroll = true) {
+                        if (yy.extend.hasScroll === true) {
                             var scroll = yy.extend.scroll;
                             var $this = yy.$this;
                             var scrollHeight = $this[0].scrollHeight;
@@ -337,7 +337,7 @@ $.yyLoadPlugin({
                         }
                     };
                     yy._scrollTop = function () {
-                        if (yy.extend.hasScroll = true) {
+                        if (yy.extend.hasScroll === true) {
                             var scroll = yy.extend.scroll;
                             var $this = yy.$this;
                             scroll.scrollTop(0);
@@ -348,7 +348,7 @@ $.yyLoadPlugin({
                         target:yy,
                         type:'mousewheel',
                         handler:function (yy, event, delta, deltaX, deltaY) {
-                            if (yy.extend.hasScroll = true) {
+                            if (yy.extend.hasScroll === true) {
                                 var scroll = yy.extend.scroll;
                                 var $this = yy.$this;
                                 var scrollHeight = $this[0].scrollHeight;
@@ -425,7 +425,7 @@ $.yyLoadPlugin({
                     var child;
                     for (var id in this.children) {
                         child = this.children[id];
-                        if (child.type == 'yy_list_item') {
+                        if (child.type === 'yy_list_item') {
                             child.remove();
                         }
                     }
@@ -560,7 +560,7 @@ $.yyLoadPlugin({
                     var result;
                     for (var id in this.children) {
                         child = this.children[id];
-                        if (child.key == keyValue) {
+                        if (child.key === keyValue) {
                             result = child;
                             break;
                         }
@@ -579,7 +579,7 @@ $.yyLoadPlugin({
                     var child;
                     for (var id in this.children) {
                         child = this.children[id];
-                        if (child.key == keyValue) {
+                        if (child.key === keyValue) {
                             child.hide();
                         }
                     }
@@ -597,7 +597,7 @@ $.yyLoadPlugin({
                     var child;
                     for (var id in this.children) {
                         child = this.children[id];
-                        if (child.key == keyValue) {
+                        if (child.key === keyValue) {
                             child.show();
                         }
                     }
@@ -607,7 +607,7 @@ $.yyLoadPlugin({
                     var child;
                     for (var id in this.children) {
                         child = this.children[id];
-                        if (child.key == keyValue) {
+                        if (child.key === keyValue) {
                             child.remove();
                         }
                     }
@@ -625,7 +625,7 @@ $.yyLoadPlugin({
                     for (var id in this.children) {
                         this.children[id].$this.removeClass('yy_selected');
                     }
-                }
+                };
             }
         });
         //
@@ -747,7 +747,7 @@ $.yyLoadPlugin({
                     var ctx = this.$this[0].getContext("2d");
                     ctx.fillStyle = "rgb(200,0,0)";
                     ctx.fillRect(x, y, 1, 1);
-                }
+                };
                 yy.start = function () {
                     this._root.extend.moveCanvas = this;
                     this._listeners.addEventListener({
