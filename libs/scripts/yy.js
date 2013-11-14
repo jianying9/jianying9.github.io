@@ -4,19 +4,19 @@
 // Time: 11:25 AM
 //
 //
-(function ($) {
+(function($) {
     //--------------yy--start-------------创建框架根对象
     var YY = {
-        $:$
+        $: $
     };
     //--------------index--start-------------创建计数器对象
     var index = {
-        currentIndex:new Date().getTime(),
-        zIndex:20,
-        nextIndex:function () {
+        currentIndex: new Date().getTime(),
+        zIndex: 20,
+        nextIndex: function() {
             return this.currentIndex++;
         },
-        nextZIndex:function () {
+        nextZIndex: function() {
             return this.zIndex++;
         }
     };
@@ -26,15 +26,15 @@
     var $body = $('body');
     var rootId = index.nextIndex();
     $body.attr({
-        id:rootId,
-        onselectstart:"return false"
+        id: rootId,
+        onselectstart: "return false"
     });
     var root = {
-        type:'yy_root',
-        id:rootId,
-        $this:$body,
-        children:{},
-        extend:{}
+        type: 'yy_root',
+        id: rootId,
+        $this: $body,
+        children: {},
+        extend: {}
     };
 
     //--------------root---end--------------
@@ -42,21 +42,21 @@
     //--------------context--start-------------创建全局上下文对象
     var el = document.compatMode === "CSS1Compat" ? document.documentElement : document.body;
     var context = {
-        logLevel:4,
-        modulePath:'module',
-        bodyWidth:el.clientWidth,
-        bodyHeight:el.clientHeight,
-        version:1,
-        set:function (config) {
+        logLevel: 4,
+        modulePath: 'module',
+        bodyWidth: el.clientWidth,
+        bodyHeight: el.clientHeight,
+        version: 1,
+        set: function(config) {
             for (var name in config) {
                 this[name] = config[name];
             }
         },
-        get:function (name) {
+        get: function(name) {
             return this[name];
         }
     };
-    $body.css({height:context.bodyHeight});
+    $body.css({height: context.bodyHeight});
     YY.context = context;
     //初始化上下文对象
     //@param option={
@@ -65,7 +65,7 @@
     //    logger:'日志对象',
     //    logLevel:4,debug:4,info:3,waring:2,error:1
     //}
-    $.yyConfig = function (config) {
+    $.yyConfig = function(config) {
         context.set(config);
     };
     //--------------context--end-------------
@@ -73,24 +73,24 @@
     //--------------logger--start-------------创建日志对象
     var impl = console ? console : null;
     var logger = {
-        _context:context,
-        _impl:impl,
-        debug:function (msg) {
+        _context: context,
+        _impl: impl,
+        debug: function(msg) {
             if (this._impl && this._context.logLevel >= 4) {
                 this._impl.debug(new Date() + ':' + msg);
             }
         },
-        info:function (msg) {
+        info: function(msg) {
             if (this._impl && this._context.logLevel >= 3) {
                 this._impl.info(new Date() + ':' + msg);
             }
         },
-        warn:function (msg) {
+        warn: function(msg) {
             if (this._impl && this._context.logLevel >= 2) {
                 this._impl.warn(new Date() + ':' + msg);
             }
         },
-        error:function (msg) {
+        error: function(msg) {
             if (this._impl && this._context.logLevel >= 1) {
                 this._impl.error(new Date() + ':' + msg);
             }
@@ -98,17 +98,17 @@
     };
     //--------------logger--end-------------
     var session = {
-        _logger:logger,
-        _session:{},
-        set:function (config) {
+        _logger: logger,
+        _session: {},
+        set: function(config) {
             for (var name in config) {
                 this._session[name] = config[name];
             }
         },
-        get:function (name) {
+        get: function(name) {
             return this._session[name];
         },
-        clear:function () {
+        clear: function() {
             for (var name in this._session) {
                 delete this._session[name];
             }
@@ -117,23 +117,23 @@
     //--------------components--start-------------创建组件管理对象
 
     var listeners = {
-        _moduleListenerMap:{},
-        _index:index,
-        putListener:function (moduleId, listener) {
+        _moduleListenerMap: {},
+        _index: index,
+        putListener: function(moduleId, listener) {
             if (this._moduleListenerMap[moduleId]) {
                 throw 'Repeat load moduleId:' + moduleId + ' listener.';
             } else {
                 this._moduleListenerMap[moduleId] = listener;
             }
         },
-        _getModule:function (moduleId) {
+        _getModule: function(moduleId) {
             var module = this._moduleListenerMap[moduleId];
             if (!module) {
                 throw 'Can not find moduleId:' + moduleId + ' listener.';
             }
             return module;
         },
-        getFinishedListener:function (moduleId, listenerName) {
+        getFinishedListener: function(moduleId, listenerName) {
             var module = this._getModule(moduleId);
             if (!module.finishedListener) {
                 throw 'Can not find moduleId:' + moduleId + ' finishedListener.';
@@ -144,7 +144,7 @@
             }
             return finishedListener;
         },
-        getEventListener:function (moduleId, listenerName) {
+        getEventListener: function(moduleId, listenerName) {
             var module = this._getModule(moduleId);
             if (!module.eventListener) {
                 throw 'Can not find moduleId:' + moduleId + ' eventListener.';
@@ -156,7 +156,7 @@
             var listener = eventListener[listenerName];
             return listener;
         },
-        getMessageListener:function (moduleId, listenerName) {
+        getMessageListener: function(moduleId, listenerName) {
             var module = this._getModule(moduleId);
             if (!module.messageListener) {
                 throw 'Can not find moduleId:' + moduleId + ' messageListener.';
@@ -168,7 +168,7 @@
             var listener = messageListener[listenerName];
             return listener;
         },
-        _createNewHandler:function (yy, type, handler) {
+        _createNewHandler: function(yy, type, handler) {
             var eventListener = yy.eventListener;
             var value = this._index.nextIndex();
             var oldId = type + '_' + value;
@@ -176,14 +176,14 @@
             value = this._index.nextIndex();
             var newId = type + '_' + value;
             eventListener[newId] = handler;
-            eventListener[type] = function (yy, event) {
+            eventListener[type] = function(yy, event) {
                 var ifStop = eventListener[oldId](yy, event);
                 if (!ifStop) {
                     eventListener[newId](yy, event);
                 }
             };
         },
-        addEventListener:function (option) {
+        addEventListener: function(option) {
             if (option.target && option.type && option.handler) {
                 var yy = option.target;
                 if (!yy.eventListener) {
@@ -196,7 +196,7 @@
                 }
             }
         },
-        removeEventListener:function (option) {
+        removeEventListener: function(option) {
             if (option.target && option.type) {
                 var yy = option.target;
                 if (yy.eventListener && yy.eventListener[option.type]) {
@@ -207,19 +207,19 @@
     };
     YY.listeners = listeners;
 
-    $.yyLoadListener = function (moduleId, listener) {
+    $.yyLoadListener = function(moduleId, listener) {
         listeners.putListener(moduleId, listener);
         var scriptUrl = context.modulePath + '/' + moduleId + '/' + moduleId + '.js';
         scriptLoader.complete(scriptUrl);
     };
     var components = {
-        _logger:logger,
-        _root:root,
-        _listeners:listeners,
-        _findChildById:function (yy, id) {
+        _logger: logger,
+        _root: root,
+        _listeners: listeners,
+        _findChildById: function(yy, id) {
             var result,
-                child,
-                children = yy.children;
+                    child,
+                    children = yy.children;
             for (var indexId in children) {
                 child = children[indexId];
                 if (indexId === id) {
@@ -234,10 +234,10 @@
             }
             return result;
         },
-        _findChildByKey:function (yy, key) {
+        _findChildByKey: function(yy, key) {
             var result,
-                child,
-                children = yy.children;
+                    child,
+                    children = yy.children;
             for (var indexId in children) {
                 child = children[indexId];
                 if (child.key === key) {
@@ -252,7 +252,7 @@
             }
             return result;
         },
-        findByKey:function (loaderId, key) {
+        findByKey: function(loaderId, key) {
             var result;
             //查找loader
             var loader;
@@ -276,7 +276,7 @@
             }
             return result;
         },
-        findById:function (id) {
+        findById: function(id) {
             var result;
             if (this._root.id === id) {
                 result = this._root;
@@ -293,16 +293,16 @@
 
     //--------------taskManager---start--------
     var taskManager = {
-        _index:index,
-        _logger:logger,
-        _taskQueue:{},
-        addTask:function (task) {
+        _index: index,
+        _logger: logger,
+        _taskQueue: {},
+        addTask: function(task) {
             var id = this._index.nextIndex();
             this._taskQueue[id] = task;
         },
-        start:function () {
+        start: function() {
             var task,
-                complete;
+                    complete;
             for (var id in this._taskQueue) {
                 task = this._taskQueue[id];
                 if (task.message) {
@@ -315,7 +315,7 @@
             }
         }
     };
-    var timer = setInterval(function () {
+    var timer = setInterval(function() {
         try {
             taskManager.start();
         } catch (err) {
@@ -327,13 +327,13 @@
 
     //--------------scriptLoader--start-------------创建脚本加载控制对象
     var scriptLoader = {
-        _$head:$('head'),
-        _scriptMap:{},
-        _logger:logger,
-        _taskManager:taskManager,
-        _index:index,
-        _context:context,
-        load:function (url, callback) {
+        _$head: $('head'),
+        _scriptMap: {},
+        _logger: logger,
+        _taskManager: taskManager,
+        _index: index,
+        _context: context,
+        load: function(url, callback) {
             var that = this;
             if (that._scriptMap[url]) {
                 if (callback) {
@@ -346,9 +346,9 @@
                 this._$head[0].appendChild(script);
                 if (callback) {
                     var task = {
-                        message:'load script:' + url,
-                        _scriptMap:this._scriptMap,
-                        execute:function () {
+                        message: 'load script:' + url,
+                        _scriptMap: this._scriptMap,
+                        execute: function() {
                             var result = false;
                             if (that._scriptMap[url]) {
                                 result = true;
@@ -361,7 +361,7 @@
                 }
             }
         },
-        complete:function (url) {
+        complete: function(url) {
             this._scriptMap[url] = true;
         }
     };
@@ -370,12 +370,12 @@
     //--------------htmlLoader--start-------------创建html加载控制对象
     var htmlLoader = {
 //        _pattern:/\r?\n */g,
-        _index:index,
-        _context:context,
-        load:function (url, callback) {
+        _index: index,
+        _context: context,
+        load: function(url, callback) {
             var that = this;
             var newUrl = url + '?' + that._context.version;
-            $.get(newUrl, function (data) {
+            $.get(newUrl, function(data) {
 //                data = data.replace(that._pattern, '');
                 callback(data);
             }, 'text');
@@ -386,12 +386,12 @@
     //加载模块
     //--------------modelLoader--start-------------创建组件模型加载对象
     var modelLoader = {
-        _logger:logger,
-        _context:context,
-        _components:components,
-        _scriptLoader:scriptLoader,
-        _htmlLoader:htmlLoader,
-        load:function (loaderId, moduleId, callback) {
+        _logger: logger,
+        _context: context,
+        _components: components,
+        _scriptLoader: scriptLoader,
+        _htmlLoader: htmlLoader,
+        load: function(loaderId, moduleId, callback) {
             var that = this;
             var yy = this._components.findByKey(loaderId, moduleId);
             if (yy) {
@@ -401,8 +401,8 @@
                 var scriptUrl = path + '.js';
                 var htmlUrl = path + '.html';
                 //同步加载js,html
-                that._scriptLoader.load(scriptUrl, function () {
-                    that._htmlLoader.load(htmlUrl, function (htmlData) {
+                that._scriptLoader.load(scriptUrl, function() {
+                    that._htmlLoader.load(htmlUrl, function(htmlData) {
                         callback(htmlData);
                     });
                 });
@@ -412,15 +412,15 @@
 
     //--------------utils--start-------------创建工具类
     var utils = {
-        $:$,
-        attr:function (name, $target, defValue) {
+        $: $,
+        attr: function(name, $target, defValue) {
             var value = $target.attr(name);
             if (!value) {
                 value = defValue;
             }
             return value;
         },
-        trim:function (value) {
+        trim: function(value) {
             return this.$.trim(value);
         }
     };
@@ -428,26 +428,26 @@
     //--------------utils--end-------------
 
     var services = {
-        message:{
-            SUCCESS:'操作成功',
-            FAILURE:'操作失败',
-            UN_LOGIN:'未登录',
-            INVALID:'非法数据',
-            DENIED:'无权限',
-            UN_KNOWN:'非法链接',
-            EXCEPTION:'系统异常',
-            BUSY:'系统繁忙,请稍后再试'
+        message: {
+            SUCCESS: '操作成功',
+            FAILURE: '操作失败',
+            UN_LOGIN: '未登录',
+            INVALID: '非法数据',
+            DENIED: '无权限',
+            UN_KNOWN: '非法链接',
+            EXCEPTION: '系统异常',
+            BUSY: '系统繁忙,请稍后再试'
         },
-        serviceMap:{},
-        put:function (service) {
+        serviceMap: {},
+        put: function(service) {
             this.serviceMap[service.act] = service;
         },
-        get:function (act) {
+        get: function(act) {
             return this.serviceMap[act];
         }
     };
     //扩展服务
-    $.yyLoadService = function (option) {
+    $.yyLoadService = function(option) {
         var service;
         for (var act in option) {
             service = option[act];
@@ -457,29 +457,29 @@
     };
 
     var messageInterceptor = {};
-    $.yyAddMessageInterceptor = function (interceptor) {
+    $.yyAddMessageInterceptor = function(interceptor) {
         var id = index.nextIndex();
         messageInterceptor.id = interceptor;
     };
     YY.messageInterceptor = messageInterceptor;
 
     var response = {
-        _listeners:listeners,
-        _services:services,
-        _root:root,
-        _messageInterceptor:messageInterceptor,
-        _notify:function (yy, msg) {
+        _listeners: listeners,
+        _services: services,
+        _root: root,
+        _messageInterceptor: messageInterceptor,
+        _notify: function(yy, msg) {
             if (yy && yy.messageListener && yy.messageListener[msg.act]) {
                 yy.messageListener[msg.act](yy, msg);
             }
             var child,
-                children = yy.children;
+                    children = yy.children;
             for (var id in children) {
                 child = children[id];
                 this._notify(child, msg);
             }
         },
-        read:function (message) {
+        read: function(message) {
             var res = eval('(' + message + ')');
             for (var id in this._messageInterceptor) {
                 this._messageInterceptor[id].invoke(res);
@@ -496,7 +496,7 @@
             res.info = info;
             this._notify(this._root, res);
         },
-        readLocal:function (msg) {
+        readLocal: function(msg) {
             for (var id in this._messageInterceptor) {
                 this._messageInterceptor[id].invoke(msg);
             }
@@ -518,12 +518,12 @@
 
     //webscoket
     var webSockets = {
-        _context:context,
-        _logger:logger,
-        _webSocketMap:{},
-        _session:session,
-        _response:response,
-        send:function (serverName, message) {
+        _context: context,
+        _logger: logger,
+        _webSocketMap: {},
+        _session: session,
+        _response: response,
+        send: function(serverName, message) {
             var that = this;
             var webSocket = that._webSocketMap[serverName];
             if (webSocket && webSocket.readyState === 1) {
@@ -542,17 +542,17 @@
                 webSocket._webSocketMap = that._webSocketMap;
                 webSocket._response = that._response;
                 webSocket._session = that._session;
-                webSocket.onopen = function (event) {
+                webSocket.onopen = function(event) {
                     this._logger.debug('connect:' + server);
                     this._webSocketMap[this._serverName] = this;
                     this.send(message);
                     this._logger.debug('sendMessage:' + message);
                 };
-                webSocket.onmessage = function (event) {
+                webSocket.onmessage = function(event) {
                     this._logger.debug('onMessage:' + event.data);
                     this._response.read(event.data);
                 };
-                webSocket.onclose = function (event) {
+                webSocket.onclose = function(event) {
                     var loginUserId = this._session.get('loginUserId');
                     if (loginUserId) {
                         this.send('{"act":"LOGOUT"}');
@@ -560,7 +560,7 @@
                     delete this._webSocketMap[this._serverName];
                     this._logger.debug('close:' + server);
                 };
-                webSocket.onerror = function (event) {
+                webSocket.onerror = function(event) {
                     delete this._webSocketMap[this._serverName];
                     this._logger.debug('error:' + server);
                 };
@@ -568,30 +568,30 @@
         }
     };
 
-    $.yySendLocal = function (msg) {
+    $.yySendLocal = function(msg) {
         response.readLocal(msg);
     };
 
     //--------------parser--start-------------控件解析对象
     var parsers = {
-        _utils:utils,
-        _index:index,
-        _typeMap:{},
-        _listeners:listeners,
-        _components:components,
-        _modelLoader:modelLoader,
-        _session:session,
-        _context:context,
-        _webSockets:webSockets,
-        _taskManager:taskManager,
-        _logger:logger,
-        put:function (type, parser) {
+        _utils: utils,
+        _index: index,
+        _typeMap: {},
+        _listeners: listeners,
+        _components: components,
+        _modelLoader: modelLoader,
+        _session: session,
+        _context: context,
+        _webSockets: webSockets,
+        _taskManager: taskManager,
+        _logger: logger,
+        put: function(type, parser) {
             this._typeMap[type] = parser;
         },
-        get:function (type) {
+        get: function(type) {
             return this._typeMap[type];
         },
-        parse:function (ctx) {
+        parse: function(ctx) {
             var parsers = this;
             var parser = parsers.get(ctx.type);
             var childParsers = parser.childParsers;
@@ -599,14 +599,14 @@
                 for (var index = 0; index < childParsers.length; index++) {
                     var type = childParsers[index];
                     var $child = ctx.$this.children('.' + type);
-                    $child.each(function () {
+                    $child.each(function() {
                         parsers.parse({
-                            loaderId:ctx.loaderId,
-                            type:type,
-                            $this:$(this),
-                            parent:ctx.parent,
-                            group:ctx.group,
-                            window:ctx.window
+                            loaderId: ctx.loaderId,
+                            type: type,
+                            $this: $(this),
+                            parent: ctx.parent,
+                            group: ctx.group,
+                            window: ctx.window
                         });
                     });
                 }
@@ -617,25 +617,25 @@
                     var id = parsers._index.nextIndex();
                     var group = ctx.group;
                     var yy = {
-                        loaderId:ctx.loaderId,
-                        id:id,
-                        type:ctx.type,
-                        $this:ctx.$this,
-                        parent:ctx.parent,
-                        key:key,
-                        group:group,
-                        window:ctx.window,
-                        children:{},
-                        extend:{},
-                        _components:parsers._components,
-                        _modelLoader:modelLoader,
-                        _parsers:parsers,
-                        _session:parsers._session,
-                        _context:parsers._context,
-                        _webSockets:parsers._webSockets,
-                        _taskManager:parsers._taskManager,
-                        _index:parsers._index,
-                        _logger:logger
+                        loaderId: ctx.loaderId,
+                        id: id,
+                        type: ctx.type,
+                        $this: ctx.$this,
+                        parent: ctx.parent,
+                        key: key,
+                        group: group,
+                        window: ctx.window,
+                        children: {},
+                        extend: {},
+                        _components: parsers._components,
+                        _modelLoader: modelLoader,
+                        _parsers: parsers,
+                        _session: parsers._session,
+                        _context: parsers._context,
+                        _webSockets: parsers._webSockets,
+                        _taskManager: parsers._taskManager,
+                        _index: parsers._index,
+                        _logger: logger
                     };
                     parsers._logger.debug('start parse ' + ctx.type + ' id:' + id + '...');
                     yy.$this.attr('id', id);
@@ -643,7 +643,7 @@
                     //读取配置参数
                     var config = {};
                     var attrName,
-                        attrValue;
+                            attrValue;
                     for (var index = 0; index < parser.config.length; index++) {
                         attrName = parser.config[index];
                         attrValue = parsers._utils.attr(attrName, yy.$this);
@@ -659,10 +659,10 @@
                     }
                     //解析listener
                     var info,
-                        moduleId,
-                        listenerName,
-                        methodName,
-                        listener;
+                            moduleId,
+                            listenerName,
+                            methodName,
+                            listener;
                     var yyEventListener = parsers._utils.attr('yyEventListener', yy.$this);
                     if (yyEventListener) {
                         info = yyEventListener.split('.');
@@ -672,9 +672,9 @@
                         if (listener) {
                             for (var eventType in listener) {
                                 parsers._listeners.addEventListener({
-                                    target:yy,
-                                    type:eventType,
-                                    handler:listener[eventType]
+                                    target: yy,
+                                    type: eventType,
+                                    handler: listener[eventType]
                                 });
                             }
                         }
@@ -696,42 +696,42 @@
                     for (var index = 0; index < childParsers.length; index++) {
                         var type = childParsers[index];
                         var $child = ctx.$this.children('.' + type);
-                        $child.each(function () {
+                        $child.each(function() {
                             parsers.parse({
-                                loaderId:loaderId,
-                                type:type,
-                                $this:$(this),
-                                parent:yy,
-                                group:group,
-                                window:yy.window
+                                loaderId: loaderId,
+                                type: type,
+                                $this: $(this),
+                                parent: yy,
+                                group: group,
+                                window: yy.window
                             });
                         });
                     }
                     //
-                    yy.check = function () {
+                    yy.check = function() {
                         if (this._check) {
                             this._check();
                         }
                     };
                     //绑定方法
                     //
-                    yy.debug = function (msg) {
+                    yy.debug = function(msg) {
                         this._logger.debug(this.loaderId + ':' + msg);
                     };
-                    yy.info = function (msg) {
+                    yy.info = function(msg) {
                         this._logger.info(this.loaderId + ':' + msg);
                     };
-                    yy.warn = function (msg) {
+                    yy.warn = function(msg) {
                         this._logger.warn(this.loaderId + ':' + msg);
                     };
-                    yy.error = function (msg) {
+                    yy.error = function(msg) {
                         this._logger.error(this.loaderId + ':' + msg);
                     };
                     //
-                    yy.findInModule = function (key) {
+                    yy.findInModule = function(key) {
                         return this._components.findByKey(this.loaderId, key);
                     };
-                    yy.findInChildren = function (key) {
+                    yy.findInChildren = function(key) {
                         var child;
                         var result;
                         for (var indexId in this.children) {
@@ -744,14 +744,14 @@
                         return result;
                     };
                     //timer
-                    yy.addTimerTask = function (timer) {
+                    yy.addTimerTask = function(timer) {
                         if (!timer.times) {
                             timer.times = 2;
                         }
                         var task = {
-                            _times:timer.times,
-                            _handler:timer,
-                            execute:function () {
+                            _times: timer.times,
+                            _handler: timer,
+                            execute: function() {
                                 var result = false;
                                 if (this._times <= 0) {
                                     result = true;
@@ -765,125 +765,125 @@
                         this._taskManager.addTask(task);
                     };
                     //动画
-                    yy.flash = function () {
+                    yy.flash = function() {
                         this.show();
                         this.$this.addClass('animated flash');
                     };
-                    yy.stopFlash = function () {
+                    yy.stopFlash = function() {
                         this.$this.removeClass('animated flash');
                     };
-                    yy.bounceIn = function () {
+                    yy.bounceIn = function() {
                         this.show();
                         this.$this.addClass('animated bounceIn');
                         this.addTimerTask({
-                            yy:this,
-                            times:4,
-                            execute:function () {
+                            yy: this,
+                            times: 4,
+                            execute: function() {
                                 this.yy.$this.removeClass('animated bounceIn');
                             }
                         });
                     };
-                    yy.bounceOut = function () {
+                    yy.bounceOut = function() {
                         this.$this.addClass('animated bounceOut');
                         this.addTimerTask({
-                            yy:this,
-                            times:4,
-                            execute:function () {
+                            yy: this,
+                            times: 4,
+                            execute: function() {
                                 this.yy.$this.removeClass('animated bounceOut');
                                 this.yy.hide();
                             }
                         });
                     };
-                    yy.lightSpeedIn = function () {
+                    yy.lightSpeedIn = function() {
                         this.show();
                         this.$this.addClass('animated lightSpeedIn');
                         this.addTimerTask({
-                            yy:this,
-                            times:4,
-                            execute:function () {
+                            yy: this,
+                            times: 4,
+                            execute: function() {
                                 this.yy.$this.removeClass('animated lightSpeedIn');
                             }
                         });
                     };
-                    yy.lightSpeedOut = function () {
+                    yy.lightSpeedOut = function() {
                         this.$this.addClass('animated lightSpeedOut');
                         this.addTimerTask({
-                            yy:this,
-                            times:2,
-                            execute:function () {
+                            yy: this,
+                            times: 2,
+                            execute: function() {
                                 this.yy.$this.removeClass('animated lightSpeedOut');
                                 this.yy.hide();
                             }
                         });
                     };
-                    yy.fadeInLeft = function () {
+                    yy.fadeInLeft = function() {
                         this.show();
                         this.$this.addClass('animated fadeInLeftBig');
                         this.addTimerTask({
-                            yy:this,
-                            times:4,
-                            execute:function () {
+                            yy: this,
+                            times: 4,
+                            execute: function() {
                                 this.yy.$this.removeClass('animated fadeInLeftBig');
                             }
                         });
                     };
-                    yy.fadeOutLeft = function () {
+                    yy.fadeOutLeft = function() {
                         this.$this.addClass('animated fadeOutLeftBig');
                         this.addTimerTask({
-                            yy:this,
-                            times:4,
-                            execute:function () {
+                            yy: this,
+                            times: 4,
+                            execute: function() {
                                 this.yy.$this.removeClass('animated fadeOutLeftBig');
                                 this.yy.hide();
                             }
                         });
                     };
-                    yy.fadeInRight = function () {
+                    yy.fadeInRight = function() {
                         this.show();
                         this.$this.addClass('animated fadeInRightBig');
                         this.addTimerTask({
-                            yy:this,
-                            times:4,
-                            execute:function () {
+                            yy: this,
+                            times: 4,
+                            execute: function() {
                                 this.yy.$this.removeClass('animated fadeInRightBig');
                             }
                         });
                     };
-                    yy.fadeOutRight = function () {
+                    yy.fadeOutRight = function() {
                         this.$this.addClass('animated fadeOutRightBig');
                         this.addTimerTask({
-                            yy:this,
-                            times:4,
-                            execute:function () {
+                            yy: this,
+                            times: 4,
+                            execute: function() {
                                 this.yy.$this.removeClass('animated fadeOutRightBig');
                                 this.yy.hide();
                             }
                         });
                     };
-                    yy.submitAnimate = function (action, times) {
+                    yy.submitAnimate = function(action, times) {
                         if (this[action]) {
                             if (!times) {
                                 times = 1;
                             }
                             var timer = {
-                                times:times,
-                                yy:this,
-                                action:action,
-                                execute:function () {
+                                times: times,
+                                yy: this,
+                                action: action,
+                                execute: function() {
                                     this.yy[this.action]();
                                 }
                             };
                             this.addTimerTask(timer);
                         }
                     };
-                    yy.setContext = function (context) {
+                    yy.setContext = function(context) {
                         var module;
-                        if(this.type === 'yy_module') {
+                        if (this.type === 'yy_module') {
                             module = this;
                         } else {
                             var parent = this.parent;
-                            while(parent) {
-                                if(parent.type === 'yy_module') {
+                            while (parent) {
+                                if (parent.type === 'yy_module') {
                                     module = parent;
                                     break;
                                 }
@@ -891,14 +891,14 @@
                         }
                         module.setModuleContext(context);
                     };
-                    yy.getContext = function (cId) {
+                    yy.getContext = function(cId) {
                         var module;
-                        if(this.type === 'yy_module') {
+                        if (this.type === 'yy_module') {
                             module = this;
                         } else {
                             var parent = this.parent;
-                            while(parent) {
-                                if(parent.type === 'yy_module') {
+                            while (parent) {
+                                if (parent.type === 'yy_module') {
                                     module = parent;
                                     break;
                                 }
@@ -906,19 +906,19 @@
                         }
                         return module.getModuleContext(cId);
                     };
-                    yy.loadModule = function (moduleId, handler) {
+                    yy.loadModule = function(moduleId, handler) {
                         var that = this;
-                        that._modelLoader.load(that.id, moduleId, function (htmlData) {
+                        that._modelLoader.load(that.id, moduleId, function(htmlData) {
                             //解析模块组件
                             that.$this.append(htmlData);
                             var $this = $('#' + moduleId);
                             var module = that._parsers.parse({
-                                loaderId:that.id,
-                                type:'yy_module',
-                                $this:$this,
-                                parent:that,
-                                group:that.group,
-                                window:that.window
+                                loaderId: that.id,
+                                type: 'yy_module',
+                                $this: $this,
+                                parent: that,
+                                group: that.group,
+                                window: that.window
                             });
                             if (handler) {
                                 handler(module);
@@ -926,46 +926,46 @@
                         });
                     };
                     //isVisible
-                    yy.isVisible = function () {
+                    yy.isVisible = function() {
                         return this.$this.is(':visible');
                     };
-                    yy.show = function () {
+                    yy.show = function() {
                         this.$this.show();
                     };
-                    yy.hide = function () {
+                    yy.hide = function() {
                         this.$this.hide();
                     };
-                    yy.remove = function () {
+                    yy.remove = function() {
                         delete this.parent.children[this.id];
                         this.$this.remove();
                     };
                     yy.removeChildren = function() {
                         var child;
-                        for(var id in this.children) {
+                        for (var id in this.children) {
                             child = this.children[id];
                             child.$this.remove();
                         }
                         this.children = {};
                     };
                     //label
-                    yy.setLabel = function (label) {
+                    yy.setLabel = function(label) {
                         this.$this.text(label);
                     };
-                    yy.getLabel = function () {
+                    yy.getLabel = function() {
                         return this.$this.text();
                     };
                     //session
-                    yy.setSession = function (config) {
+                    yy.setSession = function(config) {
                         this._session.set(config);
                     };
-                    yy.getSession = function (name) {
+                    yy.getSession = function(name) {
                         return this._session.get(name);
                     };
-                    yy.clearSession = function () {
+                    yy.clearSession = function() {
                         this._session.clear();
                     };
                     //
-                    yy.sendMessage = function (message) {
+                    yy.sendMessage = function(message) {
                         var server = message.server;
                         if (server) {
                             delete message.server;
@@ -981,7 +981,7 @@
                         this._webSockets.send(server, msg);
                     };
                     //
-                    yy.openWindow = function (option) {
+                    yy.openWindow = function(option) {
                         var yyWindow;
                         if (option.key) {
                             yyWindow = this.findInModule(option.key);
@@ -1004,19 +1004,19 @@
                                 }
                                 //渲染窗口
                                 var html = '<div id="' + option.key + '" class="yy_window ';
-                                if (option.class) {
-                                    html += ' ' + option.class;
+                                if (option.clazz) {
+                                    html += ' ' + option.clazz;
                                 }
                                 html += '"></div>';
                                 this.$this.append(html);
                                 var $window = this.$this.children('#' + option.key);
                                 yyWindow = this._parsers.parse({
-                                    loaderId:this.loaderId,
-                                    type:'yy_window',
-                                    $this:$window,
-                                    parent:this,
-                                    group:this.group,
-                                    window:this.window
+                                    loaderId: this.loaderId,
+                                    type: 'yy_window',
+                                    $this: $window,
+                                    parent: this,
+                                    group: this.group,
+                                    window: this.window
                                 });
                                 //重新定位
                                 if (rx > 0 || ry > 0) {
@@ -1024,7 +1024,7 @@
                                     var left = $window.css('left');
                                     var newTop = parseInt(top) + ry;
                                     var newLeft = parseInt(left) + rx;
-                                    $window.css({top:newTop, left:newLeft});
+                                    $window.css({top: newTop, left: newLeft});
                                 }
                                 rx += 20;
                                 ry += 30;
@@ -1033,7 +1033,7 @@
                             }
                         }
                         var zIndex = this._index.nextZIndex();
-                        yyWindow.$this.css({zIndex:zIndex});
+                        yyWindow.$this.css({zIndex: zIndex});
                         return yyWindow;
                     };
                     //解析后
@@ -1062,38 +1062,38 @@
     root._modelLoader = modelLoader;
     root._parsers = parsers;
     root._listeners = listeners,
-        root.loadModule = function (moduleId, handler) {
-            var that = this;
-            that._modelLoader.load(that.id, moduleId, function (htmlData) {
-                //解析模块组件
-                that.$this.append(htmlData);
-                var $this = $('#' + moduleId);
-                var module = that._parsers.parse({
-                    loaderId:that.id,
-                    type:'yy_module',
-                    $this:$this,
-                    parent:that,
-                    group:that.group,
-                    window:that.window
-                });
-                if (handler) {
-                    handler(module);
-                }
+            root.loadModule = function(moduleId, handler) {
+        var that = this;
+        that._modelLoader.load(that.id, moduleId, function(htmlData) {
+            //解析模块组件
+            that.$this.append(htmlData);
+            var $this = $('#' + moduleId);
+            var module = that._parsers.parse({
+                loaderId: that.id,
+                type: 'yy_module',
+                $this: $this,
+                parent: that,
+                group: that.group,
+                window: that.window
             });
-        };
+            if (handler) {
+                handler(module);
+            }
+        });
+    };
     YY.root = root;
     //从根对象加载模块
-    $.yyLoadModule = function (moduleId, handler) {
+    $.yyLoadModule = function(moduleId, handler) {
         root.loadModule(moduleId, handler);
     };
 //加载js
-    $.yyLoadPlugin = function (plugin) {
+    $.yyLoadPlugin = function(plugin) {
         plugin.load(YY);
     };
 //--------------parser--end-------------
 
 //初始化全局事件
-    root.$this.click(function (event) {
+    root.$this.click(function(event) {
         var target = event.target;
         while (target.id === '') {
             target = target.parentElement;
@@ -1111,7 +1111,7 @@
             yy = yy.parent;
         }
     });
-    root.$this.dblclick(function (event) {
+    root.$this.dblclick(function(event) {
         var target = event.target;
         while (target.id === '') {
             target = target.parentElement;
@@ -1122,7 +1122,7 @@
             yy.eventListener.dbclick(yy, event);
         }
     });
-    root.$this.mousedown(function (event) {
+    root.$this.mousedown(function(event) {
         var target = event.target;
         while (target.id === '') {
             target = target.parentElement;
@@ -1133,7 +1133,7 @@
             yy.eventListener.mousedown(yy, event);
         }
     });
-    root.$this.mouseup(function (event) {
+    root.$this.mouseup(function(event) {
         var target = event.target;
         while (target.id === '') {
             target = target.parentElement;
@@ -1151,12 +1151,12 @@
             yy = yy.parent;
         }
     });
-    root.$this.mousemove(function (event) {
+    root.$this.mousemove(function(event) {
         if (root.eventListener && root.eventListener.mousemove) {
             root.eventListener.mousemove(root, event);
         }
     });
-    root.$this.mousewheel(function (event, delta, deltaX, deltaY) {
+    root.$this.mousewheel(function(event, delta, deltaX, deltaY) {
         var target = event.target;
         while (target.id === '') {
             target = target.parentElement;
@@ -1174,7 +1174,7 @@
             yy = yy.parent;
         }
     });
-    root.$this.keyup(function (event) {
+    root.$this.keyup(function(event) {
         if (!event.ctrlKey) {
             var keyCode = event.keyCode;
             if (keyCode === 13) {

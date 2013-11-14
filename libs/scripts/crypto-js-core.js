@@ -3,8 +3,8 @@
  * CryptoJS core components.
  */
 $.yyLoadPlugin({
-    load:function (YY) {
-        YY.CryptoJS = (function (Math) {
+    load: function(YY) {
+        YY.CryptoJS = (function(Math) {
             /**
              * CryptoJS namespace.
              */
@@ -18,7 +18,7 @@ $.yyLoadPlugin({
             /**
              * Base object for prototypal inheritance.
              */
-            var Base = C_lib.Base = (function () {
+            var Base = C_lib.Base = (function() {
                 function F() {
                 }
 
@@ -41,7 +41,7 @@ $.yyLoadPlugin({
                      *         }
                      *     });
                      */
-                    extend:function (overrides) {
+                    extend: function(overrides) {
                         // Spawn
                         F.prototype = this;
                         var subtype = new F();
@@ -56,7 +56,6 @@ $.yyLoadPlugin({
 
                         return subtype;
                     },
-
                     /**
                      * Extends this object and runs the init method.
                      * Arguments to create() will be passed to init().
@@ -69,13 +68,12 @@ $.yyLoadPlugin({
                      *
                      *     var instance = MyType.create();
                      */
-                    create:function () {
+                    create: function() {
                         var instance = this.extend();
                         instance.init.apply(instance, arguments);
 
                         return instance;
                     },
-
                     /**
                      * Initializes a newly created object.
                      * Override this method to add some logic when your objects are created.
@@ -88,9 +86,8 @@ $.yyLoadPlugin({
                      *         }
                      *     });
                      */
-                    init:function () {
+                    init: function() {
                     },
-
                     /**
                      * Copies properties into this object.
                      *
@@ -102,7 +99,7 @@ $.yyLoadPlugin({
                      *         field: 'value'
                      *     });
                      */
-                    mixIn:function (properties) {
+                    mixIn: function(properties) {
                         for (var propertyName in properties) {
                             if (properties.hasOwnProperty(propertyName)) {
                                 this[propertyName] = properties[propertyName];
@@ -117,7 +114,6 @@ $.yyLoadPlugin({
                             this.toString = properties.toString;
                         }
                     },
-
                     /**
                      * Creates a copy of this object.
                      *
@@ -127,7 +123,7 @@ $.yyLoadPlugin({
                      *
                      *     var clone = instance.clone();
                      */
-                    clone:function () {
+                    clone: function() {
                         return this.$super.extend(this);
                     }
                 };
@@ -152,7 +148,7 @@ $.yyLoadPlugin({
                  *     var wordArray = CryptoJS.lib.WordArray.create([0x00010203, 0x04050607]);
                  *     var wordArray = CryptoJS.lib.WordArray.create([0x00010203, 0x04050607], 6);
                  */
-                init:function (words, sigBytes) {
+                init: function(words, sigBytes) {
                     words = this.words = words || [];
 
                     if (sigBytes != undefined) {
@@ -161,7 +157,6 @@ $.yyLoadPlugin({
                         this.sigBytes = words.length * 4;
                     }
                 },
-
                 /**
                  * Converts this word array to a string.
                  *
@@ -175,10 +170,9 @@ $.yyLoadPlugin({
                  *     var string = wordArray.toString();
                  *     var string = wordArray.toString(CryptoJS.enc.Utf8);
                  */
-                toString:function (encoder) {
+                toString: function(encoder) {
                     return (encoder || Hex).stringify(this);
                 },
-
                 /**
                  * Concatenates a word array to this word array.
                  *
@@ -190,7 +184,7 @@ $.yyLoadPlugin({
                  *
                  *     wordArray1.concat(wordArray2);
                  */
-                concat:function (wordArray) {
+                concat: function(wordArray) {
                     // Shortcuts
                     var thisWords = this.words;
                     var thatWords = wordArray.words;
@@ -221,7 +215,6 @@ $.yyLoadPlugin({
                     // Chainable
                     return this;
                 },
-
                 /**
                  * Removes insignificant bits.
                  *
@@ -229,7 +222,7 @@ $.yyLoadPlugin({
                  *
                  *     wordArray.clamp();
                  */
-                clamp:function () {
+                clamp: function() {
                     // Shortcuts
                     var words = this.words;
                     var sigBytes = this.sigBytes;
@@ -238,7 +231,6 @@ $.yyLoadPlugin({
                     words[sigBytes >>> 2] &= 0xffffffff << (32 - (sigBytes % 4) * 8);
                     words.length = Math.ceil(sigBytes / 4);
                 },
-
                 /**
                  * Creates a copy of this word array.
                  *
@@ -248,13 +240,12 @@ $.yyLoadPlugin({
                  *
                  *     var clone = wordArray.clone();
                  */
-                clone:function () {
+                clone: function() {
                     var clone = Base.clone.call(this);
                     clone.words = this.words.slice(0);
 
                     return clone;
                 },
-
                 /**
                  * Creates a word array filled with random bytes.
                  *
@@ -268,7 +259,7 @@ $.yyLoadPlugin({
                  *
                  *     var wordArray = CryptoJS.lib.WordArray.random(16);
                  */
-                random:function (nBytes) {
+                random: function(nBytes) {
                     var words = [];
                     for (var i = 0; i < nBytes; i += 4) {
                         words.push((Math.random() * 0x100000000) | 0);
@@ -300,7 +291,7 @@ $.yyLoadPlugin({
                  *
                  *     var hexString = CryptoJS.enc.Hex.stringify(wordArray);
                  */
-                stringify:function (wordArray) {
+                stringify: function(wordArray) {
                     // Shortcuts
                     var words = wordArray.words;
                     var sigBytes = wordArray.sigBytes;
@@ -315,7 +306,6 @@ $.yyLoadPlugin({
 
                     return hexChars.join('');
                 },
-
                 /**
                  * Converts a hex string to a word array.
                  *
@@ -329,7 +319,7 @@ $.yyLoadPlugin({
                  *
                  *     var wordArray = CryptoJS.enc.Hex.parse(hexString);
                  */
-                parse:function (hexStr) {
+                parse: function(hexStr) {
                     // Shortcut
                     var hexStrLength = hexStr.length;
 
@@ -360,7 +350,7 @@ $.yyLoadPlugin({
                  *
                  *     var latin1String = CryptoJS.enc.Latin1.stringify(wordArray);
                  */
-                stringify:function (wordArray) {
+                stringify: function(wordArray) {
                     // Shortcuts
                     var words = wordArray.words;
                     var sigBytes = wordArray.sigBytes;
@@ -374,7 +364,6 @@ $.yyLoadPlugin({
 
                     return latin1Chars.join('');
                 },
-
                 /**
                  * Converts a Latin1 string to a word array.
                  *
@@ -388,7 +377,7 @@ $.yyLoadPlugin({
                  *
                  *     var wordArray = CryptoJS.enc.Latin1.parse(latin1String);
                  */
-                parse:function (latin1Str) {
+                parse: function(latin1Str) {
                     // Shortcut
                     var latin1StrLength = latin1Str.length;
 
@@ -419,14 +408,13 @@ $.yyLoadPlugin({
                  *
                  *     var utf8String = CryptoJS.enc.Utf8.stringify(wordArray);
                  */
-                stringify:function (wordArray) {
+                stringify: function(wordArray) {
                     try {
                         return decodeURIComponent(escape(Latin1.stringify(wordArray)));
                     } catch (e) {
                         throw new Error('Malformed UTF-8 data');
                     }
                 },
-
                 /**
                  * Converts a UTF-8 string to a word array.
                  *
@@ -440,7 +428,7 @@ $.yyLoadPlugin({
                  *
                  *     var wordArray = CryptoJS.enc.Utf8.parse(utf8String);
                  */
-                parse:function (utf8Str) {
+                parse: function(utf8Str) {
                     return Latin1.parse(unescape(encodeURIComponent(utf8Str)));
                 }
             };
@@ -459,12 +447,11 @@ $.yyLoadPlugin({
                  *
                  *     bufferedBlockAlgorithm.reset();
                  */
-                reset:function () {
+                reset: function() {
                     // Initial values
                     this._data = WordArray.create();
                     this._nDataBytes = 0;
                 },
-
                 /**
                  * Adds new data to this block algorithm's buffer.
                  *
@@ -475,7 +462,7 @@ $.yyLoadPlugin({
                  *     bufferedBlockAlgorithm._append('data');
                  *     bufferedBlockAlgorithm._append(wordArray);
                  */
-                _append:function (data) {
+                _append: function(data) {
                     // Convert string to WordArray, else assume WordArray already
                     if (typeof data == 'string') {
                         data = Utf8.parse(data);
@@ -485,7 +472,6 @@ $.yyLoadPlugin({
                     this._data.concat(data);
                     this._nDataBytes += data.sigBytes;
                 },
-
                 /**
                  * Processes available data blocks.
                  * This method invokes _doProcessBlock(dataWords, offset), which must be implemented by a concrete subtype.
@@ -499,7 +485,7 @@ $.yyLoadPlugin({
                  *     var processedData = bufferedBlockAlgorithm._process();
                  *     var processedData = bufferedBlockAlgorithm._process(!!'flush');
                  */
-                _process:function (flush) {
+                _process: function(flush) {
                     // Shortcuts
                     var data = this._data;
                     var dataWords = data.words;
@@ -539,7 +525,6 @@ $.yyLoadPlugin({
                     // Return processed words
                     return WordArray.create(processedWords, nBytesReady);
                 },
-
                 /**
                  * Creates a copy of this object.
                  *
@@ -549,14 +534,13 @@ $.yyLoadPlugin({
                  *
                  *     var clone = bufferedBlockAlgorithm.clone();
                  */
-                clone:function () {
+                clone: function() {
                     var clone = Base.clone.call(this);
                     clone._data = this._data.clone();
 
                     return clone;
                 },
-
-                _minBufferSize:0
+                _minBufferSize: 0
             });
 
             /**
@@ -579,14 +563,13 @@ $.yyLoadPlugin({
                  *
                  *     var hasher = CryptoJS.algo.SHA256.create();
                  */
-                init:function (cfg) {
+                init: function(cfg) {
                     // Apply config defaults
                     // this.cfg = this.cfg.extend(cfg);
 
                     // Set initial values
                     this.reset();
                 },
-
                 /**
                  * Resets this hasher to its initial state.
                  *
@@ -594,14 +577,13 @@ $.yyLoadPlugin({
                  *
                  *     hasher.reset();
                  */
-                reset:function () {
+                reset: function() {
                     // Reset data buffer
                     BufferedBlockAlgorithm.reset.call(this);
 
                     // Perform concrete-hasher logic
                     this._doReset();
                 },
-
                 /**
                  * Updates this hasher with a message.
                  *
@@ -614,7 +596,7 @@ $.yyLoadPlugin({
                  *     hasher.update('message');
                  *     hasher.update(wordArray);
                  */
-                update:function (messageUpdate) {
+                update: function(messageUpdate) {
                     // Append
                     this._append(messageUpdate);
 
@@ -624,7 +606,6 @@ $.yyLoadPlugin({
                     // Chainable
                     return this;
                 },
-
                 /**
                  * Finalizes the hash computation.
                  * Note that the finalize operation is effectively a destructive, read-once operation.
@@ -639,7 +620,7 @@ $.yyLoadPlugin({
                  *     var hash = hasher.finalize('message');
                  *     var hash = hasher.finalize(wordArray);
                  */
-                finalize:function (messageUpdate) {
+                finalize: function(messageUpdate) {
                     // Final message update
                     if (messageUpdate) {
                         this._append(messageUpdate);
@@ -650,7 +631,6 @@ $.yyLoadPlugin({
 
                     return this._hash;
                 },
-
                 /**
                  * Creates a copy of this object.
                  *
@@ -660,15 +640,13 @@ $.yyLoadPlugin({
                  *
                  *     var clone = hasher.clone();
                  */
-                clone:function () {
+                clone: function() {
                     var clone = BufferedBlockAlgorithm.clone.call(this);
                     clone._hash = this._hash.clone();
 
                     return clone;
                 },
-
-                blockSize:512 / 32,
-
+                blockSize: 512 / 32,
                 /**
                  * Creates a shortcut function to a hasher's object interface.
                  *
@@ -682,12 +660,11 @@ $.yyLoadPlugin({
                  *
                  *     var SHA256 = CryptoJS.lib.Hasher._createHelper(CryptoJS.algo.SHA256);
                  */
-                _createHelper:function (hasher) {
-                    return function (message, cfg) {
+                _createHelper: function(hasher) {
+                    return function(message, cfg) {
                         return hasher.create(cfg).finalize(message);
                     };
                 },
-
                 /**
                  * Creates a shortcut function to the HMAC's object interface.
                  *
@@ -701,8 +678,8 @@ $.yyLoadPlugin({
                  *
                  *     var HmacSHA256 = CryptoJS.lib.Hasher._createHmacHelper(CryptoJS.algo.SHA256);
                  */
-                _createHmacHelper:function (hasher) {
-                    return function (message, key) {
+                _createHmacHelper: function(hasher) {
+                    return function(message, key) {
                         return C_algo.HMAC.create(hasher, key).finalize(message);
                     };
                 }
