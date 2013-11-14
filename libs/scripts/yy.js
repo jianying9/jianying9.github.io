@@ -222,7 +222,7 @@
                     children = yy.children;
             for (var indexId in children) {
                 child = children[indexId];
-                if (indexId === id) {
+                if (indexId == id) {
                     result = child;
                     break;
                 } else {
