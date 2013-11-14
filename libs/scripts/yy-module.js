@@ -17,7 +17,18 @@ $.yyLoadPlugin({
         parsers.put('yy_module', {
             group:true,
             config:[],
-            childParsers:totalParser
+            childParsers:totalParser,
+            parse:function(yy, config) {
+                yy._moduleContext = {};
+                yy.setModuleContext = function (context) {
+                    for (var cId in context) {
+                        this._moduleContext[cId] = context[cId];
+                    }
+                };
+                yy.getModuleContext = function (cId) {
+                    return this._moduleContext[cId];
+                };
+            }
         });
         //
         parsers.put('yy_ignore', {
@@ -667,14 +678,6 @@ $.yyLoadPlugin({
                 yy.$this.append(this._html);
                 yy.setHeaderLabel = function (label) {
                     this.extend.header.setLabel(label);
-                };
-                yy.setContext = function (context) {
-                    for (var cId in context) {
-                        this.extend.context[cId] = context[cId];
-                    }
-                };
-                yy.getContext = function (cId) {
-                    return this.extend.context[cId];
                 };
                 yy.move = function (event) {
                     var top = this.$this.css('top');

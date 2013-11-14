@@ -877,6 +877,36 @@
                             this.addTimerTask(timer);
                         }
                     };
+                    yy.setContext = function (context) {
+                        var module;
+                        if(this.type == 'yy_module') {
+                            module = this;
+                        } else {
+                            var parent = this.parent;
+                            while(parent) {
+                                if(parent.type == 'yy_module') {
+                                    module = parent;
+                                    break;
+                                }
+                            }
+                        }
+                        module.setModuleContext(context);
+                    };
+                    yy.getContext = function (cId) {
+                        var module;
+                        if(this.type == 'yy_module') {
+                            module = this;
+                        } else {
+                            var parent = this.parent;
+                            while(parent) {
+                                if(parent.type == 'yy_module') {
+                                    module = parent;
+                                    break;
+                                }
+                            }
+                        }
+                        return module.getModuleContext(cId);
+                    };
                     yy.loadModule = function (moduleId, handler) {
                         var that = this;
                         that._modelLoader.load(that.id, moduleId, function (htmlData) {
