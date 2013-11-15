@@ -637,6 +637,9 @@
                         _index: parsers._index,
                         _logger: logger
                     };
+                    if(yy.type === 'yy_module') {
+                        yy._moduleContext = ctx.moduleContext;
+                    }
                     parsers._logger.debug('start parse ' + ctx.type + ' id:' + id + '...');
                     yy.$this.attr('id', id);
                     yy.parent.children[id] = yy;
@@ -906,7 +909,7 @@
                         }
                         return module.getModuleContext(cId);
                     };
-                    yy.loadModule = function(moduleId, handler) {
+                    yy.loadModule = function(moduleId, moduleContext, callback) {
                         var that = this;
                         that._modelLoader.load(that.id, moduleId, function(htmlData) {
                             //解析模块组件
@@ -918,10 +921,11 @@
                                 $this: $this,
                                 parent: that,
                                 group: that.group,
-                                window: that.window
+                                window: that.window,
+                                moduleContext: moduleContext
                             });
-                            if (handler) {
-                                handler(module);
+                            if (callback) {
+                                callback(module);
                             }
                         });
                     };
@@ -1062,7 +1066,7 @@
     root._modelLoader = modelLoader;
     root._parsers = parsers;
     root._listeners = listeners,
-            root.loadModule = function(moduleId, handler) {
+            root.loadModule = function(moduleId, moduleContext, callback) {
         var that = this;
         that._modelLoader.load(that.id, moduleId, function(htmlData) {
             //解析模块组件
@@ -1074,17 +1078,18 @@
                 $this: $this,
                 parent: that,
                 group: that.group,
-                window: that.window
+                window: that.window,
+                moduleContext: moduleContext
             });
-            if (handler) {
-                handler(module);
+            if (callback) {
+                callback(module);
             }
         });
     };
     YY.root = root;
     //从根对象加载模块
-    $.yyLoadModule = function(moduleId, handler) {
-        root.loadModule(moduleId, handler);
+    $.yyLoadModule = function(moduleId, moduleContext, callback) {
+        root.loadModule(moduleId, moduleContext, callback);
     };
 //加载js
     $.yyLoadPlugin = function(plugin) {

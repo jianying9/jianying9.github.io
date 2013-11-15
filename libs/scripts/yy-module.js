@@ -19,7 +19,9 @@ $.yyLoadPlugin({
             config: [],
             childParsers: totalParser,
             parse: function(yy, config) {
-                yy._moduleContext = {};
+                if(!yy._moduleContext) {
+                    yy._moduleContext = {};
+                }
                 yy.setModuleContext = function(context) {
                     for (var cId in context) {
                         this._moduleContext[cId] = context[cId];
