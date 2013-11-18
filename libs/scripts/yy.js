@@ -256,7 +256,7 @@
             var result;
             //查找loader
             var loader;
-            if (loaderId === this._root.id) {
+            if (loaderId == this._root.id) {
                 loader = this._root;
             } else {
                 loader = this._findChildById(this._root, loaderId);
@@ -278,7 +278,7 @@
         },
         findById: function(id) {
             var result;
-            if (this._root.id === id) {
+            if (this._root.id == id) {
                 result = this._root;
             } else {
                 result = this._findChildById(this._root, id);
