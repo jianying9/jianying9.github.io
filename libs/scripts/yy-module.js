@@ -12,7 +12,7 @@ $.yyLoadPlugin({
                 listeners = YY.listeners,
                 index = YY.index,
                 root = YY.root;
-        var totalParser = ['yy_ignore', 'yy_panel', 'yy_button', 'yy_form', 'yy_window', 'yy_tab', 'yy_list', 'yy_canvas', 'yy_scroll'];
+        var totalParser = ['yy_ignore', 'yy_panel', 'yy_button', 'yy_form', 'yy_window', 'yy_list', 'yy_canvas', 'yy_scroll', 'yy_image'];
         //
         parsers.put('yy_module', {
             group: true,
@@ -152,50 +152,6 @@ $.yyLoadPlugin({
             childParsers: [],
             parse: function(yy, config) {
                 yy.$this.datepicker();
-            }
-        });
-        //
-        parsers.put('yy_tab_item', {
-            _listeners: listeners,
-            group: false,
-            config: [],
-            childParsers: totalParser,
-            parse: function(yy, config) {
-                var tab = yy.group;
-                tab.extend.tabItems[yy.id] = yy;
-                this._listeners.addEventListener({
-                    target: yy,
-                    type: 'click',
-                    handler: function(yy, event) {
-                        var ifStop = true;
-                        //如果选中的tap没有变化，中断该控件其他click事件监听
-                        var group = yy.group;
-                        if (group.extend.selectedId !== yy.id) {
-                            yy.group.unSelectedAll();
-                            yy.$this.addClass('yy_selected');
-                            yy.group.extend.selectedId = yy.id;
-                            ifStop = false;
-                        }
-                        return ifStop;
-                    }
-                });
-            }
-        });
-        parsers.put('yy_tab', {
-            group: true,
-            config: [],
-            childParsers: ['yy_tab_item'],
-            parse: function(yy, config) {
-                yy.extend.tabItems = {};
-                yy.extend.selectedId = -1;
-                yy.unSelectedAll = function() {
-                    var tabItems = this.extend.tabItems;
-                    var tabItem;
-                    for (var tabIndex in tabItems) {
-                        tabItem = tabItems[tabIndex];
-                        tabItem.$this.removeClass('yy_selected');
-                    }
-                };
             }
         });
         //
