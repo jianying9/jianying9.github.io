@@ -637,7 +637,7 @@
                         _index: parsers._index,
                         _logger: logger
                     };
-                    if(yy.type === 'yy_module') {
+                    if (yy.type === 'yy_module') {
                         yy._moduleContext = ctx.moduleContext;
                     }
                     parsers._logger.debug('start parse ' + ctx.type + ' id:' + id + '...');
@@ -664,7 +664,6 @@
                     var info,
                             moduleId,
                             listenerName,
-                            methodName,
                             listener;
                     var yyEventListener = parsers._utils.attr('yyEventListener', yy.$this);
                     if (yyEventListener) {

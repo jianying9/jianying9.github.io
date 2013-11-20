@@ -19,7 +19,7 @@ $.yyLoadPlugin({
             config: [],
             childParsers: totalParser,
             parse: function(yy, config) {
-                if(!yy._moduleContext) {
+                if (!yy._moduleContext) {
                     yy._moduleContext = {};
                 }
                 yy.setModuleContext = function(context) {
@@ -39,13 +39,28 @@ $.yyLoadPlugin({
             childParsers: totalParser
         });
         //
+        parsers.put('yy_image', {
+            group: false,
+            config: ['yyWidth', 'yyHeight'],
+            childParsers: [],
+            parse: function(yy, config) {
+                yy.$this.attr('width', config.yyWidth);
+                yy.$this.attr('heigth', config.yyHeight);
+                yy.drawImage = function(image, x, y, width, height) {
+                    var ctx = this.$this[0].getContext('2d');
+                    ctx.drawImage(image, x, y, width, height);
+                };
+            }
+        });
+        //
         parsers.put('yy_form', {
             group: true,
             config: [],
             childParsers: ['yy_button', 'yy_datepicker', 'yy_datetimepicker'],
             _utils: utils,
             parse: function(yy, config) {
-                yy.extend.field = {};
+                yy.extend.$fields = {};
+                yy.extend.$files = {};
                 yy.extend.lastData = {};
                 yy._utils = this._utils;
                 yy._cryptoJS = cryptoJS;
@@ -56,24 +71,40 @@ $.yyLoadPlugin({
                         var $this = $(this);
                         var name = $this.attr('name');
                         if (name) {
-                            that.extend.field[name] = $this;
+                            var type = $this.attr('type');
+                            if (type === 'file') {
+                                that.extend.$files[name] = $this;
+                            } else {
+                                that.extend.$fields[name] = $this;
+                            }
                         }
                     });
                 };
                 yy._parse();
+                yy.getFile = function(name) {
+                    var file;
+                    var $file = this.extend.$files[name];
+                    if($file) {
+                        var value = $file.val();
+                        if(value) {
+                            file = $file[0].files[0];
+                        }
+                    }
+                    return file;
+                };
                 yy.getData = function() {
-                    var field = this.extend.field,
-                            data = {};
+                    var $fields = this.extend.$fields;
+                    var data = {};
                     var yyInputHandler;
                     var $field;
                     var value;
-                    for (var name in field) {
-                        $field = field[name];
-                        value = $field.attr('value');
+                    for (var name in $fields) {
+                        $field = $fields[name];
+                        value = $field.val();
                         yyInputHandler = $field.attr('yyInputHandler');
                         if (yyInputHandler && yyInputHandler === 'MD5') {
                             value = this._cryptoJS.MD5(value);
-                            $field.attr('value', '');
+                            $field.val('');
                         }
                         value = this._utils.trim(value);
                         data[name] = value;
@@ -81,19 +112,19 @@ $.yyLoadPlugin({
                     return data;
                 };
                 yy.loadData = function(data) {
-                    var field = this.extend.field;
+                    var $fields = this.extend.$fields;
                     var value;
-                    for (var name in field) {
+                    for (var name in $fields) {
                         value = data[name];
                         if (value || value === '') {
-                            field[name].attr('value', value);
+                            $fields[name].val(value);
                         }
                     }
                 };
                 yy.clear = function() {
-                    var field = this.extend.field;
-                    for (var name in field) {
-                        field[name].attr('value', '');
+                    var $fields = this.extend.$fields;
+                    for (var name in $fields) {
+                        $fields[name].val('');
                     }
                 };
                 yy.isChange = function() {
