@@ -116,7 +116,7 @@ $.yyLoadPlugin({
                     var value;
                     for (var name in $fields) {
                         value = data[name];
-                        if (value || value === '') {
+                        if (value || value === '' || value === 0) {
                             $fields[name].val(value);
                         }
                     }
