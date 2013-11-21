@@ -368,6 +368,8 @@ $.yyLoadPlugin({
                 } else {
                     yy._initScroll = function() {
                     };
+                    yy._scrollTop = function() {
+                    };
                     yy._scrollBottom = function() {
                     };
                 }
@@ -491,7 +493,12 @@ $.yyLoadPlugin({
                         html += that._dataToHtml(itemData);
                         html += '</div>';
 
-                        that.$this.children(':first-child').before(html);
+                        var $firstChild = that.$this.children(':first-child');
+                        if($firstChild.length > 0) {
+                            $firstChild.before(html);
+                        } else {
+                            that.$this.append(html);
+                        }
                         //
                         item = that._parsers.parse({
                             loaderId: that.loaderId,
