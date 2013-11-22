@@ -883,8 +883,9 @@
                         if (this.type === 'yy_module') {
                             module = this;
                         } else {
-                            var parent = this.parent;
+                            var parent = this;
                             while (parent) {
+                                parent = parent.parent;
                                 if (parent.type === 'yy_module') {
                                     module = parent;
                                     break;
@@ -898,8 +899,9 @@
                         if (this.type === 'yy_module') {
                             module = this;
                         } else {
-                            var parent = this.parent;
+                            var parent = this;
                             while (parent) {
+                                parent = parent.parent;
                                 if (parent.type === 'yy_module') {
                                     module = parent;
                                     break;

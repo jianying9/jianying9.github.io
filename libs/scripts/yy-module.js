@@ -45,7 +45,7 @@ $.yyLoadPlugin({
             childParsers: [],
             parse: function(yy, config) {
                 yy.$this.attr('width', config.yyWidth);
-                yy.$this.attr('heigth', config.yyHeight);
+                yy.$this.attr('height', config.yyHeight);
                 yy.drawImage = function(image, x, y, width, height) {
                     var ctx = this.$this[0].getContext('2d');
                     ctx.drawImage(image, x, y, width, height);
