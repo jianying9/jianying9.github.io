@@ -71,9 +71,3 @@
 .yy_list > .yy_list_item{
     position: relative;
 }
-
-.yy_list > .yy_list_item:hover{
-    background: #dedddd;
-}
-
-
