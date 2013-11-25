@@ -448,7 +448,7 @@ $.yyLoadPlugin({
                     for (var dataIndex = 0; dataIndex < data.length; dataIndex++) {
                         itemData = data[dataIndex];
                         id = itemData[key];
-                        if (!id) {
+                        if (!id && id !== 0) {
                             throw 'list loadData error! can not find value by key:' + key;
                         }
                         localData[id] = itemData;
@@ -488,7 +488,7 @@ $.yyLoadPlugin({
                     var html = '';
                     var localData = that.extend.data;
                     var id = itemData[key];
-                    if (!id) {
+                    if (!id && id !== 0) {
                         throw 'list addItemDataToTop error! can not find value by key:' + key;
                     }
                     if (localData[id]) {
@@ -532,7 +532,7 @@ $.yyLoadPlugin({
                     var html = '';
                     var localData = that.extend.data;
                     var id = itemData[key];
-                    if (!id) {
+                    if (!id && id !== 0) {
                         throw 'list addItemData error! can not find value by key:' + key;
                     }
                     if (localData[id]) {
