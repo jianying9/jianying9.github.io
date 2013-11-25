@@ -12,7 +12,7 @@ $.yyLoadPlugin({
                 listeners = YY.listeners,
                 index = YY.index,
                 root = YY.root;
-        var totalParser = ['yy_ignore', 'yy_panel', 'yy_button', 'yy_form', 'yy_window', 'yy_list', 'yy_canvas', 'yy_scroll', 'yy_image'];
+        var totalParser = ['yy_ignore', 'yy_panel', 'yy_button', 'yy_form', 'yy_window', 'yy_list', 'yy_canvas', 'yy_scroll', 'yy_image', 'yy_label'];
         //
         parsers.put('yy_module', {
             group: true,
@@ -37,6 +37,17 @@ $.yyLoadPlugin({
             group: false,
             config: [],
             childParsers: totalParser
+        });
+        //
+        parsers.put('yy_label', {
+            group: false,
+            config: [],
+            childParsers: [],
+            parse: function(yy, config) {
+                yy.setLabel = function(label) {
+                    this.$this.html(label);
+                };
+            }
         });
         //
         parsers.put('yy_image', {
@@ -84,9 +95,9 @@ $.yyLoadPlugin({
                 yy.getFile = function(name) {
                     var file;
                     var $file = this.extend.$files[name];
-                    if($file) {
+                    if ($file) {
                         var value = $file.val();
-                        if(value) {
+                        if (value) {
                             file = $file[0].files[0];
                         }
                     }
@@ -494,7 +505,7 @@ $.yyLoadPlugin({
                         html += '</div>';
 
                         var $firstChild = that.$this.children(':first-child');
-                        if($firstChild.length > 0) {
+                        if ($firstChild.length > 0) {
                             $firstChild.before(html);
                         } else {
                             that.$this.append(html);
