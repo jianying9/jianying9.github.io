@@ -137,6 +137,10 @@ $.yyLoadPlugin({
                     for (var name in $fields) {
                         $fields[name].val('');
                     }
+                    var $files = this.extend.$files;
+                    for (var name in $files) {
+                        $files[name].val('');
+                    }
                 };
                 yy.isChange = function() {
                     var result = false;
