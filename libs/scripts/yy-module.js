@@ -426,6 +426,7 @@ $.yyLoadPlugin({
                     this._dataToHtml = config.dataToHtml;
                     this.extend.key = config.key;
                     this.extend.itemEventListener = config.itemEventListener;
+                    this.extend.itemMessageListener = config.itemMessageListener;
                 };
                 yy.clear = function() {
                     var child;
@@ -445,6 +446,7 @@ $.yyLoadPlugin({
                     var that = this;
                     var key = that.extend.key;
                     var itemEventListener = that.extend.itemEventListener;
+                    var itemMessageListener = that.extend.itemMessageListener;
                     var html = '';
                     var itemData;
                     var id;
@@ -459,6 +461,9 @@ $.yyLoadPlugin({
                         html += '<div id="' + id + '" class="yy_list_item"';
                         if (itemEventListener) {
                             html += ' yyEventListener="' + itemEventListener + '"';
+                        }
+                        if (itemMessageListener) {
+                            html += ' yyMessageListener="' + itemMessageListener + '"';
                         }
                         html += '>';
                         html += that._dataToHtml(itemData);
@@ -499,10 +504,14 @@ $.yyLoadPlugin({
                         item = this.findInChildren(id);
                     } else {
                         var itemEventListener = that.extend.itemEventListener;
+                        var itemMessageListener = that.extend.itemMessageListener;
                         localData[id] = itemData;
                         html += '<div id="' + id + '" class="yy_list_item"';
                         if (itemEventListener) {
                             html += ' yyEventListener="' + itemEventListener + '"';
+                        }
+                        if (itemMessageListener) {
+                            html += ' yyMessageListener="' + itemMessageListener + '"';
                         }
                         html += '>';
                         html += that._dataToHtml(itemData);
@@ -543,10 +552,14 @@ $.yyLoadPlugin({
                         item = this.findInChildren(id);
                     } else {
                         var itemEventListener = that.extend.itemEventListener;
+                        var itemMessageListener = that.extend.itemMessageListener;
                         localData[id] = itemData;
                         html += '<div id="' + id + '" class="yy_list_item"';
                         if (itemEventListener) {
                             html += ' yyEventListener="' + itemEventListener + '"';
+                        }
+                        if (itemMessageListener) {
+                            html += ' yyMessageListener="' + itemMessageListener + '"';
                         }
                         html += '>';
                         html += that._dataToHtml(itemData);
