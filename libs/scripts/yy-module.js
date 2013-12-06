@@ -427,6 +427,7 @@ $.yyLoadPlugin({
                     this.extend.key = config.key;
                     this.extend.itemEventListener = config.itemEventListener;
                     this.extend.itemMessageListener = config.itemMessageListener;
+                    this.extend.itemClazz = config.itemClazz;
                 };
                 yy.clear = function() {
                     var child;
@@ -447,6 +448,7 @@ $.yyLoadPlugin({
                     var key = that.extend.key;
                     var itemEventListener = that.extend.itemEventListener;
                     var itemMessageListener = that.extend.itemMessageListener;
+                    var itemClazz = that.extend.itemClazz;
                     var html = '';
                     var itemData;
                     var id;
@@ -458,7 +460,11 @@ $.yyLoadPlugin({
                             throw 'list loadData error! can not find value by key:' + key;
                         }
                         localData[id] = itemData;
-                        html += '<div id="' + id + '" class="yy_list_item"';
+                        html += '<div id="' + id + '" class="yy_list_item';
+                        if (itemClazz) {
+                            html += ' ' + itemClazz;
+                        }
+                        html += '"';
                         if (itemEventListener) {
                             html += ' yyEventListener="' + itemEventListener + '"';
                         }
