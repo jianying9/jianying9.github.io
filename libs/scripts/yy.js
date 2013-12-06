@@ -422,9 +422,34 @@
         },
         trim: function(value) {
             return this.$.trim(value);
+        },
+        shortDate: function(thisDateStr, nowDate) {
+            var result;
+            thisDateStr = thisDateStr.replace(/-/g, '/');
+            var thisDate = new Date(Date.parse(thisDateStr));
+            var dYear = nowDate.getFullYear() - thisDate.getFullYear();
+            if (dYear > 0) {
+                result = dYear + '年前';
+            } else {
+                var dMonth = nowDate.getMonth() - thisDate.getMonth();
+                if (dMonth > 0) {
+                    result = dMonth + '月前';
+                } else {
+                    var dDay = nowDate.getDate() - thisDate.getDate();
+                    if (dDay > 0) {
+                        result = dDay + '天前';
+                    } else {
+                        result = thisDateStr.split(' ')[1];
+                    }
+                }
+            }
+            return result;
         }
     };
     YY.utils = utils;
+    $.yyShortDate = function(thisDateStr, nowDate) {
+        return utils.shortDate(thisDateStr, nowDate);
+    };
     //--------------utils--end-------------
 
     var services = {
