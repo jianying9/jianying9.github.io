@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="demo">
+    </head>
+    <body>
+        <script type="text/javascript">
+            var obj = {
+                currentIndex: 0,
+                nextIndex: function() {
+                    return this.currentIndex++;
+                }
+            };
+            var index = obj.nextIndex();
+            //
+            var func = obj.nextIndex;
+            var index2 = func();
+        </script>
+    </body>
+</html>
