@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="demo">
+    </head>
+    <body>
+        <script type="text/javascript">
+            var person = {};
+            person.name = 'aladdin';
+            person['getName'] = function() {
+                return this.name;
+            };
+            var attrName = 'company';
+            person[attrName] = {
+                name: 'ND',
+                address: '851'
+            };
+            var name = person.getName();
+            name = person['getName']();
+            var company = person[attrName];
+        </script>
+    </body>
+</html>
