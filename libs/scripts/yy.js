@@ -1091,8 +1091,8 @@
 //给根节点绑定加载模块的方法
     root._modelLoader = modelLoader;
     root._parsers = parsers;
-    root._listeners = listeners,
-            root.loadModule = function(moduleId, moduleContext, callback) {
+    root._listeners = listeners;
+    root.loadModule = function(moduleId, moduleContext, callback) {
         var that = this;
         that._modelLoader.load(that.id, moduleId, function(htmlData) {
             //解析模块组件

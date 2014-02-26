@@ -9,6 +9,16 @@ require.config({
             name: 'text',
             location: '../../libs/require',
             main: 'text'
+        },
+        {
+            name: 'temp',
+            location: 'module/temp',
+            main: 'temp'
+        },
+        {
+            name: 'yy',
+            location: '../../libs/yy',
+            main: 'yy'
         }
     ],
     paths: {
@@ -46,7 +56,7 @@ require.config({
 //require(['jquery'], function(jquery) {
 //    alert(jquery);
 //});
-//require(['text!temp.html'], function(temp) {
+//require(['text!temp/temp.html'], function(temp) {
 //    alert(temp);
 //});
 //require(['crypto.md5'], function() {
@@ -59,6 +69,18 @@ require.config({
 //    });
 //});
 
-require(['jquery.datepicker'], function() {
-    $('#testInput').datepicker();
+//require(['jquery.datepicker'], function() {
+//    $('#testInput').datepicker();
+//});
+//require(['yy'], function(yy) {
+//    alert(yy);
+//});
+
+//require(['temp'], function(temp) {
+//    alert(temp.getName());
+//});
+require(['yy'], function(yy) {
+    yy.loadModule('', 'temp', function(temp){
+        alert(temp.getName());
+    });
 });
