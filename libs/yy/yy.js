@@ -7,6 +7,7 @@ define(function(require) {
     //localRequire用于动态加载
     var $ = require('jquery');
     require('jquery.mousewheel');
+    require('./module');
     var self = {};
     //计数器
     var _index = {
@@ -277,7 +278,7 @@ define(function(require) {
                         });
                     });
                 }
-                _components._logger.debug('create component finished.' + ctx.type + ' key:' + key + ' id:' + id);
+                _components._logger.debug('create component finished.type:' + ctx.type + ' key:' + key + ' id:' + id);
                 return component;
             }
         }
@@ -293,14 +294,13 @@ define(function(require) {
                 callback(module);
             }
         } else {
-            var path = _context.modulePath + '/' + moduleId + '/' + moduleId;
-            var htmlUrl = 'text!' + path + '.html';
-            window.require([htmlUrl], function(html) {
-                //加载html片段
-                var loader = _components.findById(loaderId);
-                loader.$this.append(html);
-                //加载模块
-                window.require([path], function(module) {
+//            var path = _context.modulePath + '/' + moduleId + '/' + moduleId;
+//            var htmlUrl = 'text!' + path + '.html';
+            require([moduleId], function() {
+                var htmlUrl = 'text!' + moduleId + '.html';
+                require([htmlUrl], function(html) {
+                    var loader = _components.findById(loaderId);
+                    loader.$this.append(html);
                     var $this = $('#' + moduleId);
                     var newModule = _components.create({
                         loaderId: loader.id,
@@ -315,6 +315,8 @@ define(function(require) {
             });
         }
     };
+    //
+    
     //返回
     return self;
 });

@@ -1,12 +1,12 @@
-.yy_button {
+.button {
     cursor: pointer;
 }
 
-.yy_hide {
+.hide {
     display: none;
 }
 
-.yy_window {
+.window {
     background: #FAFAFA;
     border: 1px solid #B9B9B9;
     border-radius: 3px;
@@ -15,7 +15,7 @@
     position: absolute;
 }
 
-.yy_window > .yy_window_header {
+.window > .window_header {
     height: 16px;
     border-bottom: 1px solid gainsboro;
     text-align: left;
@@ -23,37 +23,37 @@
     padding: 5px 0;
 }
 
-.yy_window.yy_notify > .yy_window_header {
+.window.notify > .window_header {
     background: #2B7CAB;
 }
 
-.yy_window.yy_move > .yy_window_header {
+.window.move > .window_header {
     cursor: move;
 }
 
-.yy_window_close {
+.window_close {
     height: 18px;
     width: 18px;
     background: url(images/icon.png) no-repeat -414px -108px;
     cursor: pointer;
 }
 
-.yy_window_close:hover {
+.window_close:hover {
     background-position: -414px -90px;
 }
 
-.yy_window > .yy_window_close {
+.window > .window_close {
     position: absolute;
     right: 10px;
     top: 4px;
 }
 
-.yy_list {
+.list {
     position: relative;
     overflow: hidden;
 }
 
-.yy_panel > .yy_scroll, .yy_list > .yy_scroll {
+.panel > .scroll, .list > .scroll {
     position: absolute;
     width: 10px;
     top: 0;
@@ -64,10 +64,10 @@
     z-index: 1000;
 }
 
-.yy_panel:hover > .yy_scroll, .yy_list:hover > .yy_scroll {
+.panel:hover > .scroll, .list:hover > .scroll {
     display: block;
 }
 
-.yy_list > .yy_list_item{
+.list > .list_item{
     position: relative;
 }

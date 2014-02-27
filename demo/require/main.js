@@ -11,14 +11,14 @@ require.config({
             main: 'text'
         },
         {
-            name: 'temp',
-            location: 'module/temp',
-            main: 'temp'
-        },
-        {
             name: 'yy',
             location: '../../libs/yy',
             main: 'yy'
+        },
+        {
+            name: 'login',
+            location: './module/login',
+            main: 'login'
         }
     ],
     paths: {
@@ -53,34 +53,14 @@ require.config({
         }
     }
 });
-//require(['jquery'], function(jquery) {
-//    alert(jquery);
-//});
-//require(['text!temp/temp.html'], function(temp) {
-//    alert(temp);
-//});
-//require(['crypto.md5'], function() {
-//    var hash = CryptoJS.MD5("Message");
-//    alert(hash);
-//});
-//require(['jquery.mousewheel'], function() {
-//    $('body').mousewheel(function(event, delta, deltaX, deltaY) {
-//        console.log('当前坐标x:' + deltaX + ',y:' + deltaY);
-//    });
-//});
-
-//require(['jquery.datepicker'], function() {
-//    $('#testInput').datepicker();
-//});
-//require(['yy'], function(yy) {
-//    alert(yy);
-//});
-
-//require(['temp'], function(temp) {
-//    alert(temp.getName());
-//});
 require(['yy'], function(yy) {
-    yy.loadModule('', 'temp', function(temp){
-        alert(temp.getName());
+    //加载css
+    var link = document.createElement("link");
+    link.type = "text/css";
+    link.rel = "stylesheet";
+    link.href = '../../libs/yy//stylesheets/yy.css';
+    document.getElementsByTagName("head")[0].appendChild(link);
+    //加载模块
+    yy.loadModule('', 'login', function() {
     });
 });
