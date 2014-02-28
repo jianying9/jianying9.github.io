@@ -7,7 +7,6 @@ define(function(require) {
     //localRequire用于动态加载
     var $ = require('jquery');
     require('jquery.mousewheel');
-    require('./module');
     var self = {};
     //计数器
     var _index = {
@@ -131,6 +130,9 @@ define(function(require) {
             return result;
         }
     };
+    self.getUtils = function() {
+        return _utils;
+    };
     //components组建对象管理
     var _components = {
         _root: _root,
@@ -248,8 +250,7 @@ define(function(require) {
                     $this: ctx.$this,
                     parent: parent,
                     key: key,
-                    children: {},
-                    extend: {}
+                    children: {}
                 };
                 component.$this.attr('id', id);
                 component.parent.children[id] = component;
@@ -264,6 +265,25 @@ define(function(require) {
                 }
                 //创建组件
                 model.create(component, parameters);
+                //组件固有方法
+                component.show = function() {
+                    this.$this.show();
+                };
+                component.hide = function() {
+                    this.$this.hide();
+                };
+                component.remove = function() {
+                    delete this.parent.children[this.id];
+                    this.$this.remove();
+                };
+                component.removeChildren = function() {
+                    var child;
+                    for (var id in this.children) {
+                        child = this.children[id];
+                        child.$this.remove();
+                    }
+                    this.children = {};
+                };
                 //创建内部组件
                 var innerModels = config.model[ctx.type];
                 for (var index = 0; index < innerModels.length; index++) {
@@ -283,40 +303,9 @@ define(function(require) {
             }
         }
     };
-    //模块加载moduleLoader
-    self.loadModule = function(loaderId, moduleId, callback) {
-        if (!loaderId) {
-            loaderId = _components.getRoot().id;
-        }
-        var module = _components.findByKey(loaderId, moduleId);
-        if (module) {
-            if (callback) {
-                callback(module);
-            }
-        } else {
-//            var path = _context.modulePath + '/' + moduleId + '/' + moduleId;
-//            var htmlUrl = 'text!' + path + '.html';
-            require([moduleId], function() {
-                var htmlUrl = 'text!' + moduleId + '.html';
-                require([htmlUrl], function(html) {
-                    var loader = _components.findById(loaderId);
-                    loader.$this.append(html);
-                    var $this = $('#' + moduleId);
-                    var newModule = _components.create({
-                        loaderId: loader.id,
-                        type: 'module',
-                        $this: $this,
-                        parent: loader
-                    });
-                    if (callback) {
-                        callback(newModule);
-                    }
-                });
-            });
-        }
+    self.getComponents = function() {
+        return _components;
     };
-    //
-    
     //返回
     return self;
 });
