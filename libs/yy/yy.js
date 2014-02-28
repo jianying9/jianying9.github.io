@@ -3,8 +3,8 @@
  */
 
 define(function(require) {
-    //require用于依赖加载
-    //localRequire用于动态加载
+//require用于依赖加载
+//localRequire用于动态加载
     var $ = require('jquery');
     require('jquery.mousewheel');
     var self = {};
@@ -133,12 +133,53 @@ define(function(require) {
     self.getUtils = function() {
         return _utils;
     };
+    //创建事件管理对象
+    var _event = {
+        click: {},
+        dbclick: {},
+        mousedown: {},
+        mouseup: {},
+        mousemove: {},
+        mousewheel: {},
+        enter: {},
+        bind: function(component, type, func) {
+            if (this[type]) {
+                this[type][component.id] = func;
+            }
+        },
+        unbind: function(component, type) {
+            var id = component.id;
+            if (type) {
+                var eventType = this[type];
+                if (eventType) {
+                    delete eventType[id];
+                }
+            } else {
+                delete this.click[id];
+                delete this.dbclick[id];
+                delete this.mousedown[id];
+                delete this.mouseup[id];
+                delete this.mousemove[id];
+                delete this.mousewheel[id];
+                delete this.enter[id];
+            }
+        },
+        getFunc: function(component, type) {
+            var func;
+            var id = component.id;
+            if (this[type]) {
+                func = this[type][id];
+            }
+            return func;
+        }
+    };
     //components组建对象管理
     var _components = {
         _root: _root,
         _logger: _logger,
         _index: _index,
         _utils: _utils,
+        _event: _event,
         getRoot: function() {
             return this._root;
         },
@@ -193,7 +234,7 @@ define(function(require) {
             } else {
                 loader = this.findChildById(loaderId, _root);
             }
-            //查找目标
+//查找目标
             if (loader) {
                 if (loader.key === key) {
                     result = loader;
@@ -226,7 +267,7 @@ define(function(require) {
             var loaderId = ctx.loaderId;
             var parent = ctx.parent;
             if (ctx.type === 'skip') {
-                //遍历所有子控件
+//遍历所有子控件
                 var innerModels = config.model.skip;
                 for (var index = 0; index < innerModels.length; index++) {
                     var type = innerModels[index];
@@ -263,7 +304,7 @@ define(function(require) {
                     attrValue = _components._utils.attr(attrName, component.$this);
                     config[attrName] = attrValue;
                 }
-                //创建组件
+//创建组件
                 model.create(component, parameters);
                 //组件固有方法
                 component.show = function() {
@@ -273,6 +314,7 @@ define(function(require) {
                     this.$this.hide();
                 };
                 component.remove = function() {
+                    _components._event.unbind(this);
                     delete this.parent.children[this.id];
                     this.$this.remove();
                 };
@@ -306,6 +348,98 @@ define(function(require) {
     self.getComponents = function() {
         return _components;
     };
+    //初始化事件响应
+    _root.$this.click(function(event) {
+        var target = event.target;
+        while (target.id === '') {
+            target = target.parentElement;
+        }
+        var targetId = target.id;
+        var component = _components.findById(targetId);
+        if (component) {
+            var func = _event.click[component.id];
+            if (func) {
+                func(component, event);
+            }
+        }
+    });
+    _root.$this.dblclick(function(event) {
+        var target = event.target;
+        while (target.id === '') {
+            target = target.parentElement;
+        }
+        var targetId = target.id;
+        var component = _components.findById(targetId);
+        if (component) {
+            var func = _event.dbclick[component.id];
+            if (func) {
+                func(component, event);
+            }
+        }
+    });
+    _root.$this.mousedown(function(event) {
+        var target = event.target;
+        while (target.id === '') {
+            target = target.parentElement;
+        }
+        var targetId = target.id;
+        var component = _components.findById(targetId);
+        if (component) {
+            var func = _event.mousedown[component.id];
+            if (func) {
+                func(component, event);
+            }
+        }
+    });
+    _root.$this.mouseup(function(event) {
+        var target = event.target;
+        while (target.id === '') {
+            target = target.parentElement;
+        }
+        var targetId = target.id;
+        var component = _components.findById(targetId);
+        if (component) {
+            var func = _event.mouseup[component.id];
+            if (func) {
+                func(component, event);
+            }
+        }
+    });
+    _root.$this.mousewheel(function(event, delta, deltaX, deltaY) {
+        var target = event.target;
+        while (target.id === '') {
+            target = target.parentElement;
+        }
+        var targetId = target.id;
+        var component = _components.findById(targetId);
+        if (component) {
+            var func = _event.mousewheel[component.id];
+            if (func) {
+                func(component, event, delta, deltaX, deltaY);
+            }
+        }
+    });
+    _root.$this.keyup(function(event) {
+        if (!event.ctrlKey) {
+            var keyCode = event.keyCode;
+            if (keyCode === 13) {
+                var target = event.target;
+                if (target.id) {
+                    while (target.id === '') {
+                        target = target.parentElement;
+                    }
+                    var targetId = target.id;
+                    var component = _components.findById(targetId);
+                    if (component) {
+                        var func = _event.enter[component.id];
+                        if (func) {
+                            func(component, event);
+                        }
+                    }
+                }
+            }
+        }
+    });
     //返回
     return self;
 });

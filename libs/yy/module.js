@@ -11,26 +11,29 @@ define(function(require) {
         if (!loaderId) {
             loaderId = _components.getRoot().id;
         }
-        var module = _components.findByKey(loaderId, moduleId);
-        if (module) {
+        var component = _components.findByKey(loaderId, moduleId);
+        if (component) {
             if (callback) {
-                callback(module);
+                callback(component);
             }
         } else {
-            require([moduleId], function() {
+            require([moduleId], function(module) {
                 var htmlUrl = 'text!' + moduleId + '.html';
                 require([htmlUrl], function(html) {
                     var loader = _components.findById(loaderId);
                     loader.$this.append(html);
                     var $this = $('#' + moduleId);
-                    var newModule = _components.create({
+                    var component = _components.create({
                         loaderId: loader.id,
                         type: 'module',
                         $this: $this,
                         parent: loader
                     });
+                    if (module.init) {
+                        module.init(component);
+                    }
                     if (callback) {
-                        callback(newModule);
+                        callback(component);
                     }
                 });
             });
