@@ -24,6 +24,7 @@ define(function(require) {
     //context上下文对象
     var el = document.compatMode === "CSS1Compat" ? document.documentElement : document.body;
     var _context = {
+        server: 'http://127.0.0.1',
         logLevel: 4,
         modulePath: 'module',
         bodyWidth: el.clientWidth,
@@ -176,6 +177,95 @@ define(function(require) {
     self.getEvent = function() {
         return _event;
     };
+    //message消息管理对象
+    var _message = {
+        actions: {},
+        _logger: _logger,
+        listen: function(component, actionName, func) {
+            var action = this.actions[actionName];
+            if (!action) {
+                action = {};
+                this.actions[actionName] = action;
+            }
+            action[component.id] = {
+                target: component,
+                func: func
+            };
+        },
+        remove: function(component) {
+            var id = component.id;
+            var action;
+            for (var actionName in this.actions) {
+                action = this.actions[actionName];
+                delete action[id];
+            }
+        },
+        notify: function(msg) {
+            var res = eval('(' + msg + ')');
+            if (res.act) {
+                var action = this.actions[res.act];
+                if (action) {
+                    var listener;
+                    for (var id in action) {
+                        listener = action[id];
+                        listener.func(listener.target, res);
+                    }
+                }
+            } else {
+                this._logger.error('error message:' + msg);
+            }
+        }
+    };
+    var Socket = "MozWebSocket" in window ? MozWebSocket : WebSocket;
+    if (Socket) {
+//初始化websocket
+        _message.send = function(msg) {
+            var that = this;
+            if (that.webSocket && that.webSocket.readyState === 1) {
+                that.webSocket.send(msg);
+                that.webSocket._logger.debug('sendMessage:' + msg);
+            } else {
+                if (that.webSocket && that.webSocket.readyState !== 1) {
+                    that.webSocket.close();
+                    delete that.webSocket;
+                }
+                that.webSocket = new Socket(_context.server);
+                that.webSocket._server = _context.server;
+                that.webSocket._logger = _logger;
+                that.webSocket._event = _event;
+                that.webSocket.onopen = function(event) {
+                    this._logger.debug('connect:' + this._server);
+                    this.send(msg);
+                    this._logger.debug('sendMessage:' + msg);
+                };
+                that.webSocket.onmessage = function(event) {
+                    this._logger.debug('onMessage:' + event.data);
+                    that.notify(event.data);
+                };
+                that.webSocket.onclose = function(event) {
+                    delete that.webSocket;
+                    this._logger.debug('close:' + this._server);
+                };
+                that.webSocket.onerror = function(event) {
+                    delete that.webSocket;
+                    this._logger.debug('error:' + this._server);
+                };
+            }
+        };
+    } else {
+//初始化jsonp
+        _message.$ = $;
+        _message._server = _context.server;
+        _message.send = function(msg) {
+            var that = this;
+            that.$.getJSON(that._server + '?callback=?', msg, function(data) {
+                that.notify(data);
+            });
+        };
+    }
+    self.getMessage = function() {
+        return _message;
+    };
     //components组建对象管理
     var _components = {
         _root: _root,
@@ -183,6 +273,7 @@ define(function(require) {
         _index: _index,
         _utils: _utils,
         _event: _event,
+        _message: _message,
         getRoot: function() {
             return this._root;
         },
@@ -318,6 +409,7 @@ define(function(require) {
                 };
                 component.remove = function() {
                     _components._event.unbind(this);
+                    _components._message.remove(this);
                     delete this.parent.children[this.id];
                     this.$this.remove();
                 };
@@ -443,6 +535,6 @@ define(function(require) {
             }
         }
     });
-    //返回
+//返回
     return self;
 });
