@@ -173,6 +173,9 @@ define(function(require) {
             return func;
         }
     };
+    self.getEvent = function() {
+        return _event;
+    };
     //components组建对象管理
     var _components = {
         _root: _root,
@@ -239,7 +242,7 @@ define(function(require) {
                 if (loader.key === key) {
                     result = loader;
                 } else {
-                    result = this.findChildByKey(loader, key);
+                    result = this.findChildByKey(key, loader);
                 }
                 if (!result) {
                     this._logger.warn('can not find component by key:' + key + ' in loaderId:' + loaderId);
