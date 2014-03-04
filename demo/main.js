@@ -53,7 +53,7 @@ require.config({
         }
     }
 });
-require(['yy/module'], function(module) {
+require(['yy', 'yy/module'], function(yy, module) {
     //加载css
     var link = document.createElement("link");
     link.type = "text/css";
@@ -62,5 +62,9 @@ require(['yy/module'], function(module) {
     document.getElementsByTagName("head")[0].appendChild(link);
     //加载模块
     module.loadModule('', 'login', function() {
+    });
+    yy.setConfig({
+        httpServer: 'http://192.168.59.48:8080/explore-server/service.io',
+        webSocketServer: 'ws://192.168.59.48:8080/explore-server/service.io'
     });
 });
