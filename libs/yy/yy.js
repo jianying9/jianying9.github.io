@@ -8,6 +8,12 @@ define(function(require) {
     require('jquery');
     require('jquery.mousewheel');
     var self = {};
+    //浏览器信息
+    var _browser = {};
+    _browser.mozilla = /firefox/.test(navigator.userAgent.toLowerCase());
+    _browser.webkit = /webkit/.test(navigator.userAgent.toLowerCase());
+    _browser.opera = /opera/.test(navigator.userAgent.toLowerCase());
+    _browser.msie = /msie/.test(navigator.userAgent.toLowerCase());
     //计数器
     var _index = {
         currentIndex: new Date().getTime(),
@@ -46,31 +52,40 @@ define(function(require) {
         return _context[name];
     };
     //logger日志对象
-    var _loggerImpl = console ? console : null;
-    var _logger = {
-        _loggerImpl: _loggerImpl,
-        _context: _context,
-        debug: function(msg) {
+    var _logger = {};
+    if (_browser.mozilla || _browser.webkit) {
+        _logger._loggerImpl = console;
+        _logger._context = _context;
+        _logger.debug = function(msg) {
             if (this._loggerImpl && this._context.logLevel >= 4) {
                 this._loggerImpl.debug('DEBUG:' + msg);
             }
-        },
-        info: function(msg) {
+        };
+        _logger.info = function(msg) {
             if (this._loggerImpl && this._context.logLevel >= 3) {
-                this._loggerImpl.info(' INFO:' + msg);
+                this._loggerImpl.debug('INFO:' + msg);
             }
-        },
-        warn: function(msg) {
+        };
+        _logger.warn = function(msg) {
             if (this._loggerImpl && this._context.logLevel >= 2) {
-                this._loggerImpl.warn(' WARN:' + msg);
+                this._loggerImpl.debug('WARN:' + msg);
             }
-        },
-        error: function(msg) {
-            if (this._loggerImpl && this._context.logLevel >= 1) {
-                this._loggerImpl.error('ERROR:' + msg);
+        };
+        _logger.error = function(msg) {
+            if (this._loggerImpl && this._context.logLevel >= 2) {
+                this._loggerImpl.debug('ERROR:' + msg);
             }
-        }
-    };
+        };
+    } else {
+        _logger.debug = function(msg) {
+        };
+        _logger.info = function(msg) {
+        };
+        _logger.warn = function(msg) {
+        };
+        _logger.error = function(msg) {
+        };
+    }
     //session对象
     var _session = {};
     self.setSession = function(config) {
@@ -238,8 +253,10 @@ define(function(require) {
             }
         }
     };
-    var Socket = "MozWebSocket" in window ? MozWebSocket : WebSocket;
-    if (Socket) {
+
+
+    if (window.MozWebSocket || window.WebSocket) {
+        var Socket = "MozWebSocket" in window ? MozWebSocket : WebSocket;
 //初始化websocket
         _message.send = function(msg) {
             var that = this;
