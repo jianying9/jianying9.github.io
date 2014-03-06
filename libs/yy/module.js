@@ -29,6 +29,10 @@ define(function(require) {
                         $this: $this,
                         parent: loader
                     });
+                    component._components = _components;
+                    component.findByKey = function(key) {
+                        return this._components.findChildByKey(key, this);
+                    };
                     if (module.init) {
                         module.init(component);
                     }

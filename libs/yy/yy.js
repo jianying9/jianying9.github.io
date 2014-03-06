@@ -5,7 +5,7 @@
 define(function(require) {
 //require用于依赖加载
 //localRequire用于动态加载
-    var $ = require('jquery');
+    require('jquery');
     require('jquery.mousewheel');
     var self = {};
     //计数器
@@ -20,6 +20,9 @@ define(function(require) {
             this.zIndex++;
             return this.zIndex.toString();
         }
+    };
+    self.getIndex = function() {
+        return _index;
     };
     //context上下文对象
     var el = document.compatMode === "CSS1Compat" ? document.documentElement : document.body;
@@ -98,7 +101,6 @@ define(function(require) {
     };
     //utils创建工具对象
     var _utils = {
-        $: $,
         attr: function(name, $target, defValue) {
             var value = $target.attr(name);
             if (!value) {
@@ -107,7 +109,7 @@ define(function(require) {
             return value;
         },
         trim: function(value) {
-            return this.$.trim(value);
+            return $.trim(value);
         },
         shortDate: function(thisDateStr, nowDate) {
             var result;
@@ -130,6 +132,25 @@ define(function(require) {
                 }
             }
             return result;
+        },
+        initScroll: function(clientHeight, scrollHeight, component) {
+            var _extend = component._extend;
+            _extend.scrollHeight = scrollHeight;
+            var sHeight = parseInt(Math.pow(clientHeight, 2) / scrollHeight);
+            _extend.seed = (scrollHeight - clientHeight) / (scrollHeight - sHeight);
+            _extend.sHeight = sHeight;
+            _extend.$scroll.css({height: sHeight});
+        },
+        scrollTop: function(top, component) {
+            var _extend = component._extend;
+            var seed = _extend.seed;
+            var scrollHeight = _extend.scrollHeight;
+            var sHeight = _extend.sHeight;
+            var newTop = parseInt(top / seed);
+            if (newTop + sHeight > scrollHeight) {
+                newTop = scrollHeight - sHeight;
+            }
+            _extend.$scroll.css({top: newTop});
         }
     };
     self.getUtils = function() {
@@ -261,11 +282,10 @@ define(function(require) {
         };
     } else {
 //初始化jsonp
-        _message.$ = $;
         _message._server = _context.httpServer;
         _message.send = function(msg) {
             var that = this;
-            that.$.getJSON(that._server + '?callback=?', msg, function(data) {
+            $.getJSON(that._server + '?callback=?', msg, function(data) {
                 that.notify(data);
             });
         };
@@ -414,19 +434,24 @@ define(function(require) {
                 component.hide = function() {
                     this.$this.hide();
                 };
-                component.remove = function() {
-                    _components._event.unbind(this);
-                    _components._message.remove(this);
-                    delete this.parent.children[this.id];
-                    this.$this.remove();
+                component.isVisible = function() {
+                    return this.$this.is(':visible');
                 };
                 component.removeChildren = function() {
                     var child;
                     for (var id in this.children) {
                         child = this.children[id];
-                        child.$this.remove();
+                        child.remove();
                     }
                     this.children = {};
+                };
+                component.remove = function() {
+                    //清除所有子节点
+                    this.removeChildren();
+                    _components._event.unbind(this);
+                    _components._message.remove(this);
+                    delete this.parent.children[this.id];
+                    this.$this.remove();
                 };
                 //创建内部组件
                 var innerModels = config.model[ctx.type];

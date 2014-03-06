@@ -4,12 +4,12 @@ define(function(require) {
     var self = {};
     self.parameters = [];
     self.create = function(component, parameters) {
-        var extend = {};
-        component._extend = extend;
+        var _extend = {};
+        component._extend = _extend;
         component._utils = utils;
-        extend.$fields = {};
-        extend.$files = {};
-        extend.lastData = {};
+        _extend.$fields = {};
+        _extend.$files = {};
+        _extend.lastData = {};
         //查找输入项
         var $fields = component.$this.children('input,textarea');
         $fields.each(function() {
@@ -18,9 +18,9 @@ define(function(require) {
             if (name) {
                 var type = $this.attr('type');
                 if (type === 'file') {
-                    extend.$files[name] = $this;
+                    _extend.$files[name] = $this;
                 } else {
-                    extend.$fields[name] = $this;
+                    _extend.$fields[name] = $this;
                 }
             }
         });
@@ -61,7 +61,7 @@ define(function(require) {
             }
         };
         //
-        yy.clear = function() {
+        component.clear = function() {
             var $fields = this._extend.$fields;
             for (var name in $fields) {
                 $fields[name].val('');
