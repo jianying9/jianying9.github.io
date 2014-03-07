@@ -17,15 +17,15 @@
                 <div class="box_header">demo&nbsp;›&nbsp;登入</div>
                 <div class="h10"></div>
                 <div id="login-form" class="form">
-                    <div class="input_label">邮箱</div>
+                    <div class="input_label w150">邮箱</div>
                     <input type="text" name="userEmail" value=""/>
 
                     <div class="h10"></div>
-                    <div class="input_label">密码</div>
+                    <div class="input_label w150">密码</div>
                     <input type="password" name="password" value=""/>
 
                     <div class="h10"></div>
-                    <div class="input_label"></div>
+                    <div class="input_label w150"></div>
                     <div id="login-button" class="button">登入</div>
                     <div class="h10"></div>
                 </div>
@@ -44,24 +44,34 @@
             </div>
             <div class="skip box login_main_panel">
                 <div class="box_header">demo&nbsp;›&nbsp;注册</div>
-                <div class="h10"></div>
-                <div id="login-form" class="form">
-                    <div class="input_label">昵称</div>
-                    <input type="text" name="nickName" value=""/>
-                    <div class="h10"></div>
-                    <div class="input_label">邮箱</div>
-                    <input type="text" name="userEmail" value=""/>
-                    <div class="h10"></div>
-                    <div class="input_label">密码</div>
-                    <input type="password" name="password" value=""/>
+                <div id="register-form" class="form">
 
-                    <div class="h10"></div>
-                    <div class="input_label">确认密码</div>
-                    <input type="password" name="check" value=""/>
+                    <div class="h20"></div>
+                    <div class="input_label w150">昵称</div>
+                    <input class="must" type="text" name="nickName" value=""/>
+                    <div id="info-nick-name" class="label w150 msg_error"></div>
+
+                    <div class="h20"></div>
+                    <div class="input_label w150">邮箱</div>
+                    <input class="must" type="text" name="userEmail" value=""/>
+                    <div id="info-user-email" class="label w150 msg_error"></div>
+
+                    <div class="h20"></div>
+                    <div class="input_label w150">密码</div>
+                    <input class="must" type="password" name="password" value=""/>
+                    <div id="info-password" class="label w150 msg_error"></div>
+
+                    <div class="h20"></div>
+                    <div class="input_label w150">确认密码</div>
+                    <input class="must" type="password" name="check" value=""/>
+                    <div id="info-check" class="label w150 msg_error"></div>
+
                     <input type="hidden" name="promoter" value=""/>
-                    <div class="h10"></div>
-                    <div class="input_label"></div>
+
+                    <div class="h20"></div>
+                    <div class="input_label w150"></div>
                     <div id="register-button" class="button">注册</div>
+                    <div id="info-register" class="label w150 msg_info"></div>
                     <div class="h10"></div>
                 </div>
             </div>

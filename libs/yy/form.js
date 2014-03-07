@@ -49,6 +49,13 @@ define(function(require) {
             }
             return data;
         };
+        component.setData = function(name, value) {
+            var $fields = this._extend.$fields;
+            var $field = $fields[name];
+            if ($field) {
+                $field.val(value);
+            }
+        };
         //
         component.loadData = function(data) {
             var $fields = this._extend.$fields;

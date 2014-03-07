@@ -31,13 +31,29 @@ input {
     width: 310px;
 }
 
+input.must {
+    border-right-color: red;
+    border-right-width: 3px;
+}
+
 .input_label {
-    display: inline-block;
-    width: 120px;
     text-align: right;
-    font-size: 12px;
+    font-size: 13px;
     padding: 5px;
-    position: relative;
+}
+
+.msg_info {
+    text-align: left;
+    font-size: 12px;
+    padding: 2px;
+    color: green;
+}
+
+.msg_error {
+    text-align: left;
+    font-size: 12px;
+    padding: 2px;
+    color: red;
 }
 
 textarea {
