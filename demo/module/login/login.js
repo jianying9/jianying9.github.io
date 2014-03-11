@@ -7,7 +7,14 @@ define(function(require) {
     var self = {};
     var event = yy.getEvent();
     var message = yy.getMessage();
+    var cookie = yy.getCookie();
     self.init = function(thisModule) {
+        //获取cookie
+        var lastLoginName = cookie.getCookie('lastLoginName');
+        if (lastLoginName) {
+            var loginForm = thisModule.findByKey('login-form');
+            loginForm.setData('userEmail', lastLoginName);
+        }
         //登录按钮事件处理
         var loginButton = thisModule.findByKey('login-button');
         event.bind(loginButton, 'click', function(thisCom) {
@@ -32,6 +39,9 @@ define(function(require) {
             if (validate) {
                 msg.act = 'LOGIN';
                 message.send(msg);
+                loginForm.setData('password', '');
+                //保存cookie
+                cookie.setCookie('lastLoginName', msg.userEmail, {expires: 30});
             }
         });
         //登录消息处理

@@ -36,7 +36,6 @@ define(function(require) {
         httpServer: 'http://127.0.0.1/service.io',
         webSocketServer: 'ws://127.0.0.1/service.io',
         logLevel: 4,
-        modulePath: 'module',
         bodyWidth: el.clientWidth,
         bodyHeight: el.clientHeight,
         version: 1
@@ -86,6 +85,45 @@ define(function(require) {
         _logger.error = function(msg) {
         };
     }
+    //cookie对象
+    var _cookie = {
+        setCookie: function(key, value, options) {
+            options = options || {};
+            var expires = '';
+            if (options.expires && (typeof options.expires === 'number' || options.expires.toUTCString)) {
+                var date;
+                if (typeof options.expires === 'number') {
+                    date = new Date();
+                    date.setTime(date.getTime() + (options.expires * 24 * 60 * 60 * 1000));
+                } else {
+                    date = options.expires;
+                }
+                expires = '; expires=' + date.toUTCString();
+            }
+            var path = options.path ? '; path=' + (options.path) : '';
+            var domain = options.domain ? '; domain=' + (options.domain) : '';
+            var secure = options.secure ? '; secure' : '';
+            document.cookie = [key, '=', encodeURIComponent(value), expires, path, domain, secure].join('');
+        },
+        getCookie: function(name) {
+            var cookieValue;
+            var cookies = document.cookie.split(';');
+            var cookie;
+            var cookieName;
+            for (var i = 0; i < cookies.length; i++) {
+                cookie = $.trim(cookies[i]);
+                cookieName = cookie.substring(0, name.length + 1);
+                if (cookieName === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+            return cookieValue;
+        }
+    };
+    self.getCookie = function() {
+        return _cookie;
+    };
     //session对象
     var _session = {};
     self.setSession = function(config) {
