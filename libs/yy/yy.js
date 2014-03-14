@@ -467,7 +467,8 @@ define(function(require) {
                     $this: ctx.$this,
                     parent: parent,
                     key: key,
-                    children: {}
+                    children: {},
+                    _components: _components
                 };
                 component.$this.attr('id', id);
                 component.parent.children[id] = component;
@@ -491,6 +492,9 @@ define(function(require) {
                 };
                 component.isVisible = function() {
                     return this.$this.is(':visible');
+                };
+                component.findChildByKey = function(key) {
+                    return this._components.findChildByKey(key, this);
                 };
                 component.removeChildren = function() {
                     var child;

@@ -1,24 +1,24 @@
 define(function(require) {
     var yy = require('./yy');
-    var index = yy.getIndex();
-    var utils = yy.getUtils();
-    var event = yy.getEvent();
+    var _index = yy.getIndex();
+    var _utils = yy.getUtils();
+    var _event = yy.getEvent();
     var self = {};
     self.parameters = ['scroll'];
     self.create = function(component, parameters) {
         var _extend = {};
         component._extend = _extend;
-        component._utils = utils;
+        component._utils = _utils;
         if (parameters.scroll === 'true') {
             //可以拥有滚动条
             _extend.scroll = 'true';
-            var id = index.nextIndex();
+            var id = _index.nextIndex();
             var scrollHtml = '<div id="' + id + '" class="scroll"></div>';
             component.$this.append(scrollHtml);
             var $scroll = $('#' + id);
             _extend.$scroll = $scroll;
             //绑定滚动事件
-            event.bind(component, 'mousewheel', function(com, event, delta, deltaX, deltaY) {
+            _event.bind(component, 'mousewheel', function(com, event, delta, deltaX, deltaY) {
                 if (com._extend.scroll === 'true') {
                     var scrollHeight = com.$this[0].scrollHeight;
                     var clientHeight = com.$this[0].clientHeight;
@@ -51,6 +51,23 @@ define(function(require) {
                 if (clientHeight < scrollHeight) {
                     this._utils.initScroll(clientHeight, scrollHeight, this);
                 }
+            }
+        };
+        component.scrollBottom = function() {
+            if (this._extend.scroll === 'true') {
+                var $this = this.$this;
+                var scrollHeight = $this[0].scrollHeight;
+                var clientHeight = $this[0].clientHeight;
+                var newTop = scrollHeight - clientHeight;
+                this._utils.scrollTop(newTop, this);
+                $this.scrollTop(newTop);
+            }
+        };
+        component.scrollTop = function() {
+            if (this._extend.scroll === 'true') {
+                var $this = this.$this;
+                this._utils.scrollTop(0, this);
+                $this.scrollTop(0);
             }
         };
         return component;

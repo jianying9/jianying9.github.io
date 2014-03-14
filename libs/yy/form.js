@@ -1,12 +1,12 @@
 define(function(require) {
     var yy = require('./yy');
-    var utils = yy.getUtils();
+    var _utils = yy.getUtils();
     var self = {};
     self.parameters = [];
     self.create = function(component, parameters) {
         var _extend = {};
         component._extend = _extend;
-        component._utils = utils;
+        component._utils = _utils;
         _extend.$fields = {};
         _extend.$files = {};
         _extend.lastData = {};
