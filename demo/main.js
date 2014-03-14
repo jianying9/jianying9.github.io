@@ -19,11 +19,6 @@ require.config({
             name: 'login',
             location: './module/login',
             main: 'login'
-        },
-        {
-            name: 'first',
-            location: './module/first',
-            main: 'first'
         }
     ],
     paths: {

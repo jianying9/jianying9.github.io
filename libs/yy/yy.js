@@ -85,6 +85,20 @@ define(function(require) {
         _logger.error = function(msg) {
         };
     }
+    //获取url参数
+    self.getUrlPara = function() {
+        var result = {};
+        var text = window.location.search;
+        var num = text.indexOf('?');
+        text = text.substr(num + 1);
+        var paraArr = text.split('&');
+        var para;
+        for (var index = 0; index < paraArr.length; index++) {
+            para = paraArr[index].split('=');
+            result[para[0]] = para[1];
+        }
+        return result;
+    };
     //cookie对象
     var _cookie = {
         setCookie: function(key, value, options) {

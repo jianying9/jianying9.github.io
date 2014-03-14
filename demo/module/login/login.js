@@ -9,6 +9,15 @@ define(function(require) {
     var _message = yy.getMessage();
     var _cookie = yy.getCookie();
     self.init = function(thisModule) {
+        //获取url参数
+        var urlPara = yy.getUrlPara();
+        var panel = urlPara.panel;
+        var promoter = urlPara.promoter;
+        if(panel && panel === 'register') {
+            //注册
+        } else {
+            //登录
+        }
         //获取cookie
         var lastLoginName = _cookie.getCookie('lastLoginName');
         if (lastLoginName) {
