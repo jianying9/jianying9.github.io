@@ -1,9 +1,7 @@
 define(function(require) {
     var yy = require('yy');
     require('yy/panel');
-    require('yy/form');
     require('yy/button');
-    require('yy/label');
     var module = require('yy/module');
     var self = {};
     var _event = yy.getEvent();

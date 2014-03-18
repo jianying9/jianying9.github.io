@@ -1,9 +1,38 @@
 <div id="item-manage" class="module box">
     <div class="skip box_header">
-        <div id="to-insert-item-form" class="button link float_right">增加物品</div>
+        <div id="to-item-form-button" class="button link float_right">增加物品</div>
         <div>物品管理</div>
         <div class="h10"></div>
     </div>
+    <!--新增物品表单-->
+    <div class="h10"></div>
+    <div id="item-form" class="form hide">
+        <div class="input_label w150">名称</div>
+        <input class="must" type="text" name="itemName" value=""/>
+        <div id="info-item-name" class="label w150 msg_error"></div>
+
+        <div class="h10"></div>
+        <div class="input_label w150">兑换积分</div>
+        <input class="must" type="text" name="point" value=""/>
+        <div id="info-point" class="label w150 msg_error"></div>
+        
+        <div class="h10"></div>
+        <div class="input_label w150">描述</div>
+        <input class="must" type="text" name="desc" value=""/>
+        <div id="info-desc" class="label w150 msg_error"></div>
+        
+        <div class="h10"></div>
+        <div class="input_label w150">图片(200*200)</div>
+        <input class="must" type="file" name="imagePath" accept="image/gif, image/jpeg, image/png"/>
+        <input type="hidden" name="dataUrl" value=""/>
+        <div id="info-desc" class="label w150 msg_error"></div>
+
+        <div class="h10"></div>
+        <div class="input_label w150"></div>
+        <div id="insert-item-button" class="button common_button">新增</div>
+        <div id="info-insert-item" class="label w150 msg_info"></div>
+        <div class="h10"></div>
+    </div>
     <div id="item-list"></div>
-    <div id="more-button" class="button align_center">--更多--</div>
+    <div id="more-button" class="button align_center hide">--更多--</div>
 </div>
