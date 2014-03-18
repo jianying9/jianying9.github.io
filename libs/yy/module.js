@@ -3,6 +3,16 @@ define(function(require) {
     var self = {};
     self.parameters = [];
     self.create = function(component, parameters) {
+        component._extend = {};
+        component.getContext = function(key) {
+            return this._extend[key];
+        };
+        
+        component.setContext = function(obj) {
+            for (var name in obj) {
+                this._extend[name] = obj[name];
+            }
+        };
         return component;
     };
     var _components = yy.getComponents();
@@ -41,5 +51,3 @@ define(function(require) {
     };
     return self;
 });
-
-

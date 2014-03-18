@@ -19,6 +19,26 @@ require.config({
             name: 'login',
             location: './module/login',
             main: 'login'
+        },
+        {
+            name: 'home',
+            location: './module/home',
+            main: 'home'
+        },
+        {
+            name: 'point',
+            location: './module/point',
+            main: 'point'
+        },
+        {
+            name: 'item',
+            location: './module/item',
+            main: 'item'
+        },
+        {
+            name: 'item-manage',
+            location: './module/item-manage',
+            main: 'item-manage'
         }
     ],
     paths: {
@@ -61,7 +81,7 @@ require(['yy', 'yy/module'], function(yy, module) {
     link.href = '../libs/yy//stylesheets/yy.css';
     document.getElementsByTagName("head")[0].appendChild(link);
     //加载模块
-    module.loadModule('', 'login', function() {
+    module.loadModule('', 'home', function() {
     });
     yy.setConfig({
         httpServer: 'http://192.168.59.48:9090/explore-server/service.io',

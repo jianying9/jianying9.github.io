@@ -13,10 +13,17 @@ define(function(require) {
         var urlPara = yy.getUrlPara();
         var panel = urlPara.panel;
         var promoter = urlPara.promoter;
-        if(panel && panel === 'register') {
+        if (panel && panel === 'register') {
             //注册
-        } else {
-            //登录
+            var loginPanel = thisModule.findChildByKey('login-panel');
+            if (loginPanel.isVisible()) {
+                var registerPanel = thisModule.findChildByKey('register-panel');
+                loginPanel.hide();
+                registerPanel.show();
+            }
+            //赋值
+            var registerForm = thisModule.findChildByKey('register-form');
+            registerForm.setData('promoter', promoter);
         }
         //获取cookie
         var lastLoginName = _cookie.getCookie('lastLoginName');
