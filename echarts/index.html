@@ -8,18 +8,18 @@
     </head>
     <body>
         <div id="main" style="height: 500px; border: 1px solid rgb(204, 204, 204); padding: 10px; cursor: default;"></div>
-        <script src="../../libs/require/require.js"></script>
+        <script src="../libs/require/require.js"></script>
         <script type="text/javascript">
             require.config({
                 packages: [
                     {
                         name: 'echarts',
-                        location: '../../libs/echarts/src',
+                        location: '../libs/echarts/src',
                         main: 'echarts'
                     },
                     {
                         name: 'zrender',
-                        location: '../../libs/zrender/src', // zrender与echarts在同一级目录
+                        location: '../libs/zrender/src', // zrender与echarts在同一级目录
                         main: 'zrender'
                     }
                 ]
