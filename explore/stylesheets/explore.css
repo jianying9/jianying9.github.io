@@ -239,10 +239,6 @@ body {
     display: inline-block;
 }
 
-.title {
-    font-size: 16px;
-}
-
 .small_text {
     font-size: 11px;
 }
@@ -250,8 +246,9 @@ body {
 .link {
     margin: 3px 5px;
     cursor: pointer;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: bold;
+    color: #24A828;
 }
 
 .link:hover {
@@ -331,5 +328,41 @@ body {
 }
 
 .insert-item-form {
-    width: 500px;
+    border-bottom: 1px solid #e2e2e2;
+    padding: 10px;
+}
+
+.item_list {
+    max-height: 600px;
+    overflow: hidden;
+}
+
+.item_list_item {
+    padding: 3px 5px 3px 5px;
+    margin-right: 10px;
+    border-bottom: 1px solid #e2e2e2;
+}
+
+.item_info {
+   padding: 5px 1px 1px 10px;
+   min-width: 600px;
+}
+
+.item_info_title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.item_info_point {
+    font-size: 20px;
+    font-weight: bold;
+    color: red;
+}
+
+.item_info_desc {
+    font-size: 12px;
+}
+
+.item_operate {
+   padding: 5px 1px 1px 5px;
 }

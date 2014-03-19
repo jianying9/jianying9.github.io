@@ -41,6 +41,8 @@ define(function(require) {
                         }
                         com._utils.scrollTop(newTop, com);
                         com.$this.scrollTop(newTop);
+                    } else {
+                        com._extend.$scroll.css({height: 0});
                     }
                 }
             });
@@ -104,6 +106,7 @@ define(function(require) {
             this._extend.itemDataToHtml = config.itemDataToHtml;
             this._extend.key = config.key;
             this._extend.itemClazz = config.itemClazz;
+            this._extend.itemCompleted = config.itemCompleted;
         };
         component.check = function() {
             if (!this._extend.key) {
@@ -126,25 +129,44 @@ define(function(require) {
         component.getItemData = function(keyValue) {
             return this._extend.data[keyValue];
         };
+        component.getItemByKey = function(keyValue) {
+            var result;
+            var child;
+            for (var id in this.children) {
+                child = this.children[id];
+                if (child.key == keyValue) {
+                    result = child;
+                    break;
+                }
+            }
+            return result;
+        };
         component.loadData = function(data) {
             var that = this;
             that.check();
             var key = that._extend.key;
+            var keyValue;
             var itemClazz = that._extend.itemClazz;
             var html = '';
             var itemData;
-            var key;
+            var item;
+            var itemCompleted = that._extend.itemCompleted;
             var localData = that._extend.data;
             for (var dataIndex = 0; dataIndex < data.length; dataIndex++) {
                 itemData = data[dataIndex];
-                key = itemData[key];
-                if (!key && key !== 0) {
+                keyValue = itemData[key];
+                if (!keyValue && keyValue !== 0) {
                     throw 'list loadData error! can not find value by key:' + key;
                 }
+                //如果key已经存在，则删除旧数据
+                item = that.getItemByKey(keyValue);
+                if (item) {
+                    item.remove();
+                }
                 localData[key] = itemData;
-                html += '<div id="' + key + '" class="list_item';
+                html += '<div id="' + keyValue + '" class="list_item ';
                 if (itemClazz) {
-                    html += ' ' + itemClazz;
+                    html += itemClazz;
                 }
                 html += '">';
                 html += that._extend.itemDataToHtml(itemData);
@@ -158,12 +180,16 @@ define(function(require) {
                 var $this = $(this);
                 var id = $this.attr('id');
                 if (!that.children[id]) {
-                    that._components.create({
+                    item = that._components.create({
                         loaderId: that.loaderId,
                         type: 'list_item',
                         $this: $this,
                         parent: that
                     });
+                    //调用item加载完成后执行方法
+                    if (itemCompleted) {
+                        itemCompleted(item);
+                    }
                 }
             });
             that.initScroll();
@@ -176,62 +202,57 @@ define(function(require) {
             var itemClazz = that._extend.itemClazz;
             var html = '';
             var localData = that._extend.data;
-            var key = itemData[key];
-            if (!key && key !== 0) {
+            var itemCompleted = that._extend.itemCompleted;
+            var keyValue = itemData[key];
+            if (!keyValue && keyValue !== 0) {
                 throw 'list addItemDataFirst error! can not find value by key:' + key;
             }
-            if (localData[key]) {
-                item = this.findChildByKey(key);
-            } else {
-                localData[key] = itemData;
-                html += '<div id="' + key + '" class="list_item';
-                if (itemClazz) {
-                    html += ' ' + itemClazz;
-                }
-                html += '">';
-                html += that._extend.itemDataToHtml(itemData);
-                html += '</div>';
+            //如果key已经存在，则删除旧数据
+            item = that.getItemByKey(keyValue);
+            if (item) {
+                item.remove();
+            }
+            localData[key] = itemData;
+            html += '<div id="' + keyValue + '" class="list_item ';
+            if (itemClazz) {
+                html += itemClazz;
+            }
+            html += '">';
+            html += that._extend.itemDataToHtml(itemData);
+            html += '</div>';
 
-                var $firstChild = that.$this.children(':first-child');
-                if ($firstChild.length > 0) {
-                    $firstChild.before(html);
-                } else {
-                    that.$this.append(html);
-                }
-                //
-                item = that._components.create({
-                    loaderId: that.loaderId,
-                    type: 'list_item',
-                    $this: $('#' + key),
-                    parent: that
-                });
+            var $firstChild = that.$this.children(':first-child');
+            if ($firstChild.length > 0) {
+                $firstChild.before(html);
+            } else {
+                that.$this.append(html);
+            }
+            //
+            item = that._components.create({
+                loaderId: that.loaderId,
+                type: 'list_item',
+                $this: $('#' + keyValue),
+                parent: that
+            });
+            //调用item加载完成后执行方法
+            if (itemCompleted) {
+                itemCompleted(item);
             }
             that.initScroll();
             that.scrollTop();
             return item;
         };
-        component.getItem = function(keyValue) {
-            var child;
-            var result;
-            for (var id in this.children) {
-                child = this.children[id];
-                if (child.key === keyValue) {
-                    result = child;
-                    break;
-                }
-            }
-            return result;
-        };
         component.removeItem = function(keyValue) {
             var child;
             for (var id in this.children) {
                 child = this.children[id];
-                if (child.key === keyValue) {
+                if (child.key == keyValue) {
                     child.remove();
+                    break;
                 }
             }
-            delete this.extend.data[keyValue];
-            this._initScroll();
+            delete this._extend.data[keyValue];
+            this.initScroll();
         };
         component.size = function() {
             var num = 0;

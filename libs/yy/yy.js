@@ -403,7 +403,7 @@ define(function(require) {
             }
             for (var indexId in children) {
                 child = children[indexId];
-                if (child.key === key) {
+                if (child.key == key) {
                     result = child;
                     break;
                 } else {
@@ -426,7 +426,7 @@ define(function(require) {
             }
 //查找目标
             if (loader) {
-                if (loader.key === key) {
+                if (loader.key == key) {
                     result = loader;
                 } else {
                     result = this.findChildByKey(key, loader);
@@ -493,7 +493,7 @@ define(function(require) {
                 for (var index = 0; index < model.parameters.length; index++) {
                     attrName = model.parameters[index];
                     attrValue = _components._utils.attr(attrName, component.$this);
-                    config[attrName] = attrValue;
+                    parameters[attrName] = attrValue;
                 }
 //创建组件
                 model.create(component, parameters);
@@ -612,10 +612,13 @@ define(function(require) {
         }
         var targetId = target.id;
         var component = _components.findById(targetId);
-        if (component) {
+        while (component) {
             var func = _event.mousewheel[component.id];
             if (func) {
                 func(component, event, delta, deltaX, deltaY);
+                break;
+            } else {
+                component = component.parent;
             }
         }
     });

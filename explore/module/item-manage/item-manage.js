@@ -12,14 +12,30 @@ define(function(require) {
         var itemList = thisModule.findChildByKey('item-list');
         itemList.init({
             key: 'itemId',
+            itemClazz: 'close_float item_list_item',
             itemDataToHtml: function(itemData) {
-                var result = '<image src="' + itemData.dataUrl + '" class="flaot_left" width="200" height="200" />'
-                        + '<div class="title">' + itemData.itemName + '</div>'
-                        + '<div class="h10"></div>'
-                        + '<div class=" small">兑换积分:' + itemData.point + '点</div>'
-                        + '<div class="h10"></div>'
-                        + '<div class=" small">' + itemData.desc + '</div>';
+                var result = '<image src="' + itemData.dataUrl + '" class="float_left" width="100" height="100" />'
+                        + '<div class="item_info float_left">'
+                        + '<div class="item_info_point float_right">' + itemData.point + '点</div>'
+                        + '<div class="item_info_title">' + itemData.itemName + '</div>'
+                        + '<div class="h10 clear_float"></div>'
+                        + '<div class=" item_info_desc">描述：' + itemData.desc + '</div>'
+                        + '</div>'
+                        + '<div class="float_right skip item_operate">'
+                        + '<div id="' + itemData.itemId + '-delete-button" class="button link">删除</div>'
+                        + '</div>';
                 return result;
+            },
+            itemCompleted: function(itemCom) {
+                var deleteButtonId = itemCom.key + '-delete-button';
+                var deleteButton = itemCom.findChildByKey(deleteButtonId);
+                _event.bind(deleteButton, 'click', function(thisCom) {
+                    var msg = {
+                        act: 'DELETE_ITEM',
+                        itemId: itemCom.key
+                    };
+                    _message.send(msg);
+                });
             }
         });
         //物品列表消息事件
@@ -27,6 +43,13 @@ define(function(require) {
             if (msg.flag === 'SUCCESS') {
                 var data = msg.data;
                 thisCom.addItemDataFirst(data);
+            }
+        });
+        _message.listen(itemList, 'DELETE_ITEM', function(thisCom, msg) {
+            if (msg.flag === 'SUCCESS') {
+                var itemId = msg.data.itemId;
+                var itemList = thisModule.findChildByKey('item-list');
+                itemList.removeItem(itemId);
             }
         });
         _message.listen(itemList, 'INQUIRE_ITEM', function(thisCom, msg) {
@@ -88,29 +111,28 @@ define(function(require) {
             } else {
                 infoDesc.setLabel('');
             }
-            if (validate) {
-                //判断是否要加载图片
-                var file = itemForm.getFile('imagePath');
-                if (file) {
-                    var infoImagePath = thisModule.findChildByKey('info-image-path');
-                    if (file.size < 20480) {
-                        infoImagePath.setLabel('');
-                        var fileReader = new FileReader();
-                        fileReader.onload = function loaded(evt) {
-                            var dataUrl = evt.target.result;
-                            msg.act = 'INSERT_ITEM';
-                            msg.dataUrl = dataUrl;
-                            _message.send(msg);
-                        };
-                        fileReader.readAsDataURL(file);
-                    } else {
-                        infoImagePath.setLabel('要小于30k');
-                    }
+            var infoImagePath = thisModule.findChildByKey('info-image-path');
+            var file = itemForm.getFile('imagePath');
+            if (file) {
+                if (file.size < 10240) {
+                    infoImagePath.setLabel('');
                 } else {
-                    msg.act = 'INSERT_ITEM';
-                    msg.dataUrl = '';
-                    _message.send(msg);
+                    validate = false;
+                    infoImagePath.setLabel('图排大小不能超过10k');
                 }
+            } else {
+                validate = false;
+                infoImagePath.setLabel('请选择图片');
+            }
+            if (validate) {
+                var fileReader = new FileReader();
+                fileReader.onload = function loaded(evt) {
+                    var dataUrl = evt.target.result;
+                    msg.act = 'INSERT_ITEM';
+                    msg.dataUrl = dataUrl;
+                    _message.send(msg);
+                };
+                fileReader.readAsDataURL(file);
             }
         });
         //新增物品消息处理
