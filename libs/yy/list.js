@@ -1,5 +1,6 @@
 define(function(require) {
     var yy = require('./yy');
+    require('./list_item');
     var _index = yy.getIndex();
     var _utils = yy.getUtils();
     var _event = yy.getEvent();
@@ -8,6 +9,7 @@ define(function(require) {
     self.parameters = ['scroll'];
     self.create = function(component, parameters) {
         var _extend = {};
+        _extend.data = {};
         component._extend = _extend;
         component._utils = _utils;
         component._components = _components;
@@ -99,7 +101,7 @@ define(function(require) {
         };
         //
         component.init = function(config) {
-            this._extend.dataToHtml = config.dataToHtml;
+            this._extend.itemDataToHtml = config.itemDataToHtml;
             this._extend.key = config.key;
             this._extend.itemClazz = config.itemClazz;
         };
@@ -107,8 +109,8 @@ define(function(require) {
             if (!this._extend.key) {
                 throw 'Un init list data key!id:' + this.id;
             }
-            if (!this._extend.dataToHtml) {
-                throw 'Un init list method dataToHtml!id:' + this.id;
+            if (!this._extend.itemDataToHtml) {
+                throw 'Un init list method itemDataToHtml!id:' + this.id;
             }
         };
         component.clear = function() {
@@ -145,7 +147,7 @@ define(function(require) {
                     html += ' ' + itemClazz;
                 }
                 html += '">';
-                html += that._extend.dataToHtml(itemData);
+                html += that._extend.itemDataToHtml(itemData);
                 html += '</div>';
             }
             that.$this.append(html);
@@ -187,7 +189,7 @@ define(function(require) {
                     html += ' ' + itemClazz;
                 }
                 html += '">';
-                html += that._extend.dataToHtml(itemData);
+                html += that._extend.itemDataToHtml(itemData);
                 html += '</div>';
 
                 var $firstChild = that.$this.children(':first-child');

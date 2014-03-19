@@ -81,7 +81,7 @@ require(['yy', 'yy/module'], function(yy, module) {
     link.href = '../libs/yy//stylesheets/yy.css';
     document.getElementsByTagName("head")[0].appendChild(link);
     //加载模块
-    module.loadModule('', 'home', function() {
+    module.loadModule('', 'login', function() {
     });
     yy.setConfig({
         httpServer: 'http://192.168.59.48:9090/explore-server/service.io',

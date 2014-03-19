@@ -4,6 +4,7 @@ define(function(require) {
     require('yy/form');
     require('yy/button');
     require('yy/label');
+    var _module = require('yy/module');
     var self = {};
     var _event = yy.getEvent();
     var _message = yy.getMessage();
@@ -65,7 +66,11 @@ define(function(require) {
             var info = thisModule.findChildByKey('login-info');
             if (msg.flag === 'SUCCESS') {
                 //登录成功，跳转
-                info.setLabel('登录成功，自动跳转。。。');
+                info.setLabel('');
+                thisModule.hide();
+                thisModule.remove();
+                _module.loadModule('', 'home', function() {
+                });
             } else {
                 //登录失败
                 switch (msg.flag) {
