@@ -1,3 +1,4 @@
+var v = (new Date()).getTime();
 require.config({
     packages: [
         {
@@ -71,20 +72,27 @@ require.config({
                 document.getElementsByTagName("head")[0].appendChild(link);
             }
         }
-    }
+    },
+    urlArgs: 'v=' + v
 });
 require(['yy', 'yy/module'], function(yy, module) {
     //加载css
-    var link = document.createElement("link");
-    link.type = "text/css";
-    link.rel = "stylesheet";
-    link.href = '../libs/yy//stylesheets/yy.css';
-    document.getElementsByTagName("head")[0].appendChild(link);
+    var exploreLink = document.createElement("link");
+    exploreLink.type = "text/css";
+    exploreLink.rel = "stylesheet";
+    exploreLink.href = 'stylesheets/explore.css' + '?v=' + v;
+    document.getElementsByTagName("head")[0].appendChild(exploreLink);
+    
+    var yyLink = document.createElement("link");
+    yyLink.type = "text/css";
+    yyLink.rel = "stylesheet";
+    yyLink.href = '../libs/yy/stylesheets/yy.css' + '?v=' + v;
+    document.getElementsByTagName("head")[0].appendChild(yyLink);
     //加载模块
     module.loadModule('', 'login', function() {
     });
     yy.setConfig({
-        httpServer: 'http://192.168.59.48:9090/explore-server/service.io',
-        webSocketServer: 'ws://192.168.59.48:9090/explore-server/service.io'
+        httpServer: 'http://192.168.59.99:9090/explore-server/service.io',
+        webSocketServer: 'ws://192.168.99.48:9090/explore-server/service.io'
     });
 });

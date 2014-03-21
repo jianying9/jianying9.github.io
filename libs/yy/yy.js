@@ -16,7 +16,7 @@ define(function(require) {
     _browser.msie = /msie/.test(navigator.userAgent.toLowerCase());
     //计数器
     var _index = {
-        currentIndex: new Date().getTime(),
+        currentIndex: (new Date()).getTime(),
         zIndex: 20,
         nextIndex: function() {
             this.currentIndex++;
