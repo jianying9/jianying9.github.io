@@ -57,16 +57,17 @@ define(function(require) {
                 msg.act = 'LOGIN';
                 _message.send(msg);
                 loginForm.setData('password', '');
-                //保存cookie
-                _cookie.setCookie('lastLoginName', msg.userEmail, {expires: 30});
             }
         });
         //登录消息处理
         _message.listen(loginButton, 'LOGIN', function(thisCom, msg) {
-            var info = thisModule.findChildByKey('login-info');
             if (msg.flag === 'SUCCESS') {
+                //
+                var loginForm = thisModule.findChildByKey('login-form');
+                var msg = loginForm.getData();
+                //保存cookie
+                _cookie.setCookie('lastLoginName', msg.userEmail, {expires: 7});
                 //登录成功，跳转
-                info.setLabel('');
                 thisModule.hide();
                 thisModule.remove();
                 _module.loadModule('', 'home', function() {
@@ -75,10 +76,12 @@ define(function(require) {
                 //登录失败
                 switch (msg.flag) {
                     case 'FAILURE_LOGIN_NOT_EXIST':
-                        info.setLabel('昵称或邮箱表存在');
+                        var infoUserEmail = thisModule.findChildByKey('login-info-user-email');
+                        infoUserEmail.setLabel('昵称或邮箱不存在');
                         break;
                     case 'FAILURE_PASSWORD_ERROR':
-                        info.setLabel('密码错误');
+                        var infoPassword = thisModule.findChildByKey('login-info-password');
+                        infoPassword.setLabel('密码错误');
                         break;
                 }
             }
@@ -148,7 +151,6 @@ define(function(require) {
         });
         //注册消息处理
         _message.listen(loginButton, 'REGISTER', function(thisCom, msg) {
-            var info = thisModule.findChildByKey('register-info');
             if (msg.flag === 'SUCCESS') {
                 //注册成功，跳转到登录页面
                 var registerPanel = thisModule.findChildByKey('register-panel');
@@ -163,10 +165,12 @@ define(function(require) {
                 //登录失败
                 switch (msg.flag) {
                     case 'FAILURE_USER_EMAIL_USED':
-                        info.setLabel('邮箱已经被使用');
+                        var infoUserEmail = thisModule.findChildByKey('register-info-user-email');
+                        infoUserEmail.setLabel('邮箱已经被使用');
                         break;
                     case 'FAILURE_USER_NICK_NAME_USED':
-                        info.setLabel('昵称已经被使用');
+                        var infoNickName = thisModule.findChildByKey('register-info-nick-name');
+                        infoNickName.setLabel('昵称已经被使用');
                         break;
                 }
             }

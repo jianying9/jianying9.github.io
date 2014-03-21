@@ -92,7 +92,7 @@ require(['yy', 'yy/module'], function(yy, module) {
     module.loadModule('', 'login', function() {
     });
     yy.setConfig({
-        httpServer: 'http://192.168.59.99:9090/explore-server/service.io',
-        webSocketServer: 'ws://192.168.99.48:9090/explore-server/service.io'
+        httpServer: 'http://192.168.59.99:8090/explore-server/service.io',
+        webSocketServer: 'ws://192.168.59.99:8090/explore-server/service.io'
     });
 });
