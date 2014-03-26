@@ -5,37 +5,37 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="explore mobile">
-        <link rel="stylesheet" href="../libs/jquery/mobile/stylesheets/jquery.mobile-1.4.2.css" />
+        <link rel="stylesheet" href="../libs/jquery/mobile-1.3.2/stylesheets/jquery.mobile-1.3.2.css" />
         <script src="../libs/require/require.js"></script>
     </head>
     <body>
         <!-- login page -->
-        <div data-role="page" id="login-page" class="ui-page">
+        <div data-role="page" data-theme="b" id="login-page" class="ui-page">
             <div data-role="header">
                 <h1>用户登录</h1>
             </div>
-            <div role="main" class="ui-content">
+            <div data-role="content">
                 <input id="login-user-email" type="text" name="userEmail" placeholder="帐号(昵称/邮箱)" value="">
                 <input id="login-password" type="password" name="password" placeholder="密码" value="">
-                <a id="login-button" href="#" class="ui-btn ui-btn-b">登录</a>
-                <a href="#register-page" class="ui-btn ui-btn-b">新用户注册</a>
+                <a id="login-button" href="#" data-role="button">登录</a>
+                <a href="#register-page" data-role="button">新用户注册</a>
             </div>
         </div>
         <!-- register page -->
-        <div data-role="page" id="register-page" class="ui-page">
+        <div data-role="page" data-theme="b" id="register-page" class="ui-page">
             <div data-role="header">
                 <h1>新用户注册</h1>
             </div>
-            <div role="main" class="ui-content">
+            <div data-role="content">
                 <input id="register-nick-name" type="text" name="nickName" placeholder="昵称" value="">
                 <input id="register-user-email" type="text" name="userEmail" placeholder="邮箱" value="">
                 <input id="register-password" type="password" name="password" placeholder="密码" value="">
                 <input id="register-check" type="password" name="check" placeholder="重复密码" value="">
-                <a id="register-button" href="#" class="ui-btn ui-btn-b">注册</a>
-                <a href="#login-page" class="ui-btn ui-btn-b">返回登录</a>
+                <a id="register-button" href="#" data-role="button">注册</a>
+                <a href="#login-page" data-role="button">返回登录</a>
             </div>
         </div>
-        <script type="text/javascript">
+        <script>
             require.config({
                 packages: [
                     {
@@ -52,7 +52,7 @@
                 paths: {
                     'crypto.core': '../libs/crypto/components/core',
                     'crypto.md5': '../libs/crypto/components/md5',
-                    'jquery.mobile': '../libs/jquery/mobile/jquery.mobile-1.4.2'
+                    'jquery.mobile': '../libs/jquery/mobile-1.3.2/jquery.mobile-1.3.2'
                 },
                 shim: {
                     'crypto.core': {
