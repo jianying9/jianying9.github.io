@@ -55,13 +55,10 @@ define(function(require) {
         _message.listen(itemList, 'INQUIRE_ITEM', function(thisCom, msg) {
             if (msg.flag === 'SUCCESS') {
                 var data = msg.data;
-                if (data.length < 1) {
+                if (msg.pageTotal == 0) {
                     //没有记录
-                    if (msg.pageIndex === 1) {
-                        //张开新增物品表单
-                        var itemForm = thisModule.findChildByKey('item-form');
-                        itemForm.show();
-                    }
+                    var itemForm = thisModule.findChildByKey('item-form');
+                    itemForm.show();
                 } else {
                     //有记录
                     thisCom.setPageIndex(msg.pageIndex);
@@ -69,10 +66,29 @@ define(function(require) {
                     thisCom.setPageSize(msg.pageSize);
                     thisCom.setPageTotal(msg.pageTotal);
                     thisCom.loadData(data);
+                    //
+                    var moreButton = thisModule.findChildByKey('more-button');
+                    if (msg.pageNum > msg.pageIndex) {
+                        moreButton.show();
+                    } else {
+                        moreButton.hide();
+                    }
                 }
             }
         });
-        //
+        //查询更多按钮
+        var moreButton = thisModule.findChildByKey('more-button');
+        _event.bind(moreButton, 'click', function(thisCom) {
+            var itemList = thisModule.findChildByKey('item-list');
+            var pageIndex = itemList.getPageIndex();
+            var pageSize = itemList.getPageSize();
+            _message.send({
+                act: 'INQUIRE_ITEM',
+                pageIndex: pageIndex + 1,
+                pageSize: pageSize
+            });
+            itemList.scrollBottom();
+        });
         //物品表单按钮
         var toItemFormButton = thisModule.findChildByKey('to-item-form-button');
         _event.bind(toItemFormButton, 'click', function(thisCom) {

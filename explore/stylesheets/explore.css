@@ -344,8 +344,8 @@ body {
 }
 
 .item_info {
-   padding: 5px 1px 1px 10px;
-   min-width: 600px;
+    padding: 5px 1px 1px 10px;
+    min-width: 600px;
 }
 
 .item_info_title {
@@ -364,5 +364,5 @@ body {
 }
 
 .item_operate {
-   padding: 5px 1px 1px 5px;
+    padding: 5px 1px 1px 5px;
 }
