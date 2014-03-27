@@ -1,5 +1,5 @@
 define(function(require) {
-    var yy = require('yy');
+    var _yy = require('yy');
     require('yy/panel');
     require('yy/form');
     require('yy/button');
@@ -7,13 +7,13 @@ define(function(require) {
     require('crypto.md5');
     var _module = require('yy/module');
     var self = {};
-    var _event = yy.getEvent();
-    var _message = yy.getMessage();
-    var _cookie = yy.getCookie();
-    var _utils = yy.getUtils();
+    var _event = _yy.getEvent();
+    var _message = _yy.getMessage();
+    var _cookie = _yy.getCookie();
+    var _utils = _yy.getUtils();
     self.init = function(thisModule) {
         //获取url参数
-        var urlPara = yy.getUrlPara();
+        var urlPara = _yy.getUrlPara();
         var panel = urlPara.panel;
         var promoter = urlPara.promoter;
         if (panel && panel === 'register') {
@@ -79,11 +79,16 @@ define(function(require) {
                 var data = loginForm.getData();
                 //保存cookie
                 _cookie.setCookie('lastLoginName', data.userEmail, {expires: 7});
+                //保存session
+                data = msg.data;
+                _yy.setSession({
+                    nickName: data.nickName,
+                    userEmail: data.userEmail
+                });
                 //登录成功，跳转
                 thisModule.hide();
                 thisModule.remove();
-                _module.loadModule('', 'home', function() {
-                });
+                _module.loadModule('', 'home');
             } else {
                 //登录失败
                 switch (msg.flag) {
