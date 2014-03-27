@@ -1,0 +1,14 @@
+/* 
+    Document   : mobile
+    Created on : Mar 27, 2014, 9:49:36 AM
+    Author     : aladdin
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+.error {
+    color: red;
+    height: 20px;
+    text-align: center;
+}
+

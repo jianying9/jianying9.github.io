@@ -112,6 +112,19 @@ define(function(require) {
                 }
             }
             return result;
+        },
+        validate: function(configs) {
+            var config;
+            var value;
+            var error = '';
+            for(var index = 0; index < configs.length; index++) {
+                config = configs[index];
+                if(config.$field.val() === '') {
+                    error = config.error;
+                    break;
+                }
+            }
+            return error;
         }
     };
     self.getUtils = function() {

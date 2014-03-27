@@ -64,9 +64,9 @@ define(function(require) {
             if (msg.flag === 'SUCCESS') {
                 //
                 var loginForm = thisModule.findChildByKey('login-form');
-                var msg = loginForm.getData();
+                var data = loginForm.getData();
                 //保存cookie
-                _cookie.setCookie('lastLoginName', msg.userEmail, {expires: 7});
+                _cookie.setCookie('lastLoginName', data.userEmail, {expires: 7});
                 //登录成功，跳转
                 thisModule.hide();
                 thisModule.remove();
