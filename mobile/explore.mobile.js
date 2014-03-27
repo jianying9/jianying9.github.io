@@ -33,6 +33,8 @@ define(function(require) {
             if (error === '') {
                 var userEmail = $loginUserEmail.val();
                 var password = $loginPassword.val();
+                password = CryptoJS.MD5(password).toString();
+                $loginPassword.val('');
                 var message = {
                     userEmail: userEmail,
                     password: password,
@@ -91,6 +93,7 @@ define(function(require) {
                 if (password === check) {
                     var nickName = $registerNickName.val();
                     var userEmail = $registerUserEmail.val();
+                    password = CryptoJS.MD5(password).toString();
                     var message = {
                         nickName: nickName,
                         userEmail: userEmail,
@@ -102,6 +105,8 @@ define(function(require) {
                             //保存cookie
                             _cookie.setCookie('lastLoginName', nickName, {expires: 7});
                             $loginUserEmail.val(nickName);
+                            $registerPassword.val('');
+                            $registerCheck.val('');
                             //跳转
                             $.mobile.changePage('#login-page', {changeHash: false});
                         } else {
