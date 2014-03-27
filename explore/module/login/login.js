@@ -4,11 +4,13 @@ define(function(require) {
     require('yy/form');
     require('yy/button');
     require('yy/label');
+    require('crypto.md5');
     var _module = require('yy/module');
     var self = {};
     var _event = yy.getEvent();
     var _message = yy.getMessage();
     var _cookie = yy.getCookie();
+    var _utils = yy.getUtils();
     self.init = function(thisModule) {
         //获取url参数
         var urlPara = yy.getUrlPara();
@@ -32,29 +34,39 @@ define(function(require) {
             var loginForm = thisModule.findChildByKey('login-form');
             loginForm.setData('userEmail', lastLoginName);
         }
+        //login
+        var loginValidate = {
+            userEmail: {
+                success: function() {
+                    var infoUserEmail = thisModule.findChildByKey('login-info-user-email');
+                    infoUserEmail.setLabel('');
+                },
+                faliure: function() {
+                    var infoUserEmail = thisModule.findChildByKey('login-info-user-email');
+                    infoUserEmail.setLabel('邮箱不能为空');
+                }
+            },
+            password: {
+                success: function() {
+                    var infoPassword = thisModule.findChildByKey('login-info-password');
+                    infoPassword.setLabel('');
+                },
+                faliure: function() {
+                    var infoPassword = thisModule.findChildByKey('login-info-password');
+                    infoPassword.setLabel('密码不能为空');
+                }
+            }
+        };
         //登录按钮事件处理
         var loginButton = thisModule.findChildByKey('login-button');
         _event.bind(loginButton, 'click', function(thisCom) {
             var loginForm = thisModule.findChildByKey('login-form');
             var msg = loginForm.getData();
-            var validate = true;
             //必填检测
-            var infoUserEmail = thisModule.findChildByKey('login-info-user-email');
-            if (msg.userEmail === '') {
-                validate = false;
-                infoUserEmail.setLabel('邮箱不能为空');
-            } else {
-                infoUserEmail.setLabel('');
-            }
-            var infoPassword = thisModule.findChildByKey('login-info-password');
-            if (msg.password === '') {
-                validate = false;
-                infoPassword.setLabel('密码不能为空');
-            } else {
-                infoPassword.setLabel('');
-            }
+            var validate = _utils.validate(msg,  loginValidate);
             if (validate) {
                 msg.act = 'LOGIN';
+                msg.password = CryptoJS.MD5(msg.password).toString();
                 _message.send(msg);
                 loginForm.setData('password', '');
             }
@@ -86,16 +98,6 @@ define(function(require) {
                 }
             }
         });
-        //切换到登录页面按钮事件处理
-        var toLoginButton = thisModule.findChildByKey('to-login-button');
-        _event.bind(toLoginButton, 'click', function(thisCom) {
-            var registerPanel = thisModule.findChildByKey('register-panel');
-            if (registerPanel.isVisible()) {
-                var loginPanel = thisModule.findChildByKey('login-panel');
-                registerPanel.hide();
-                loginPanel.show();
-            }
-        });
         //切换到注册页面按钮事件处理
         var toRegisterButton = thisModule.findChildByKey('to-register-button');
         _event.bind(toRegisterButton, 'click', function(thisCom) {
@@ -106,34 +108,46 @@ define(function(require) {
                 registerPanel.show();
             }
         });
+        //register
+        var registerValidate = {
+            nickName: {
+                success: function() {
+                    var infoNickName = thisModule.findChildByKey('register-info-nick-name');
+                    infoNickName.setLabel('');
+                },
+                faliure: function() {
+                    var infoNickName = thisModule.findChildByKey('register-info-nick-name');
+                    infoNickName.setLabel('昵称不能为空');
+                }
+            },
+            userEmail: {
+                success: function() {
+                    var infoUserEmail = thisModule.findChildByKey('register-info-user-email');
+                    infoUserEmail.setLabel('');
+                },
+                faliure: function() {
+                    var infoUserEmail = thisModule.findChildByKey('register-info-user-email');
+                    infoUserEmail.setLabel('邮箱不能为空');
+                }
+            },
+            password: {
+                success: function() {
+                    var infoPassword = thisModule.findChildByKey('register-info-password');
+                    infoPassword.setLabel('');
+                },
+                faliure: function() {
+                    var infoPassword = thisModule.findChildByKey('register-info-password');
+                    infoPassword.setLabel('密码不能为空');
+                }
+            }
+        };
         //注册按钮事件处理
         var registerButton = thisModule.findChildByKey('register-button');
         _event.bind(registerButton, 'click', function(thisCom) {
             var registerForm = thisModule.findChildByKey('register-form');
             var msg = registerForm.getData();
-            var validate = true;
+            var validate = _utils.validate(msg,  registerValidate);
             //必填检测
-            var infoNickName = thisModule.findChildByKey('register-info-nick-name');
-            if (msg.nickName === '') {
-                validate = false;
-                infoNickName.setLabel('昵称不能为空');
-            } else {
-                infoNickName.setLabel('');
-            }
-            var infoUserEmail = thisModule.findChildByKey('register-info-user-email');
-            if (msg.userEmail === '') {
-                validate = false;
-                infoUserEmail.setLabel('邮箱不能为空');
-            } else {
-                infoUserEmail.setLabel('');
-            }
-            var infoPassword = thisModule.findChildByKey('register-info-password');
-            if (msg.password === '') {
-                validate = false;
-                infoPassword.setLabel('密码不能为空');
-            } else {
-                infoPassword.setLabel('');
-            }
             if (validate) {
                 //判断密码和密码确认是否一致
                 var infoCheck = thisModule.findChildByKey('register-info-check');
@@ -141,12 +155,23 @@ define(function(require) {
                     infoCheck.setLabel('');
                     //一致
                     msg.act = 'REGISTER';
+                    msg.password = CryptoJS.MD5(msg.password).toString();
                     _message.send(msg);
                 } else {
                     //不一致
                     registerForm.setData('check', '');
                     infoCheck.setLabel('密码不一致');
                 }
+            }
+        });
+        //切换到登录页面按钮事件处理
+        var toLoginButton = thisModule.findChildByKey('to-login-button');
+        _event.bind(toLoginButton, 'click', function(thisCom) {
+            var registerPanel = thisModule.findChildByKey('register-panel');
+            if (registerPanel.isVisible()) {
+                var loginPanel = thisModule.findChildByKey('login-panel');
+                registerPanel.hide();
+                loginPanel.show();
             }
         });
         //注册消息处理

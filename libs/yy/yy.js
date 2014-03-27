@@ -218,6 +218,21 @@ define(function(require) {
                 newTop = scrollHeight - sHeight;
             }
             _extend.$scroll.css({top: newTop});
+        },
+        validate: function(data, config) {
+            var result = true;
+            var value;
+            for (var name in config) {
+                value = data[name];
+                if (value === '') {
+                    result = false;
+                    config[name].faliure();
+                    break;
+                } else {
+                    config[name].success();
+                }
+            }
+            return result;
         }
     };
     self.getUtils = function() {
