@@ -38,6 +38,21 @@
                 <input id="to-login-button" type="button" value="返回登录" />
             </div>
         </div>
+        <!-- point page -->
+        <div data-role="page" data-theme="b" id="point-page" class="ui-page">
+            <div data-role="header">
+                <h1 id="point-nick-name"></h1>
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#" class="ui-btn-active ui-state-persist">One</a></li>
+                        <li><a href="#">Two</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div data-role="content">
+
+            </div>
+        </div>
         <script>
             require.config({
                 packages: [
@@ -70,7 +85,7 @@
                         exports: 'jQuery.mobile'
                     }
                 },
-                urlArgs: 'v=10007'
+                urlArgs: 'v=10009'
             });
             require(['yy', 'explore.mobile'], function(yy, explore) {
                 yy.setConfig({

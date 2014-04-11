@@ -1,14 +1,14 @@
 define(function(require) {
-    var yy = require('yy');
-    var _utils = yy.getUtils();
-    var _cookie = yy.getCookie();
+    var _yy = require('yy');
+    var _utils = _yy.getUtils();
+    var _cookie = _yy.getCookie();
     require('jquery.mobile');
     //
     $.mobile.defaultPageTransition = 'none';
     require('crypto.md5');
     var self = {};
     self.init = function() {
-        var _httpServer = yy.getConfig('httpServer');
+        var _httpServer = _yy.getConfig('httpServer');
         //login-page
         var $loginUserEmail = $('#login-user-email');
         var $loginPassword = $('#login-password');
@@ -44,7 +44,13 @@ define(function(require) {
                     if (msg.flag === 'SUCCESS') {
                         //保存cookie
                         _cookie.setCookie('lastLoginName', userEmail, {expires: 7});
-                        $loginInfo.text('登录成功');
+                        var data = msg.data;
+                        _yy.setSession({
+                            nickName: data.nickName,
+                            userEmail: data.userEmail
+                        });
+                        $('#point-nick-name').text(data.nickName);
+                        $.mobile.changePage('#point-page', {changeHash: false});
                     } else {
                         //登录失败
                         switch (msg.flag) {
@@ -130,6 +136,8 @@ define(function(require) {
         $('#to-login-button').on('tap', function() {
             $.mobile.changePage('#login-page', {changeHash: false});
         });
+        //point-page
+        
     };
     return self;
 });

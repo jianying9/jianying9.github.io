@@ -224,6 +224,16 @@ body {
     display: inline-block;
 }
 
+.w200 {
+    width: 200px;
+    display: inline-block;
+}
+
+.w600 {
+    width: 600px;
+    display: inline-block;
+}
+
 .w75 {
     width: 75px;
     display: inline-block;
@@ -243,10 +253,12 @@ body {
     font-size: 11px;
 }
 
+.middle_text {
+    font-size: 13px;
+}
+
 .link {
-    margin: 3px 5px;
     cursor: pointer;
-    font-size: 14px;
     font-weight: bold;
     color: #24A828;
 }
@@ -306,62 +318,27 @@ body {
     overflow: hidden;
 }
 
-.login_background {
-    background-color: #d0d0d0;
-    background-image: url("images/bg_grid.png");
-    background-repeat: repeat;
-}
-
-.login_content_panel {
-    height: 500px;
-}
-
-.login_right_panel {
-    width: 270px;
-    float: right;
-}
-
-.login_main_panel {
-    width: auto;
-    margin: 0px 290px 0px 0px;
-}
-
-.insert-item-form {
+.insert-spider-form {
     border-bottom: 1px solid #e2e2e2;
     padding: 10px;
 }
 
-.item_list {
-    max-height: 600px;
+.spider_list {
+    max-height: 800px;
     overflow: hidden;
 }
 
-.item_list_item {
+.spider_list_header {
+    padding: 3px 5px 0px 5px;
+    margin-right: 10px;
+    border-bottom: 1px solid #e2e2e2;
+    color: #000000;
+    font-weight: bold;
+    background: #f8f8f9 url(images/column_hdr_gradient.gif) repeat;
+}
+
+.spider_list_item {
     padding: 3px 5px 3px 5px;
     margin-right: 10px;
     border-bottom: 1px solid #e2e2e2;
-}
-
-.item_info {
-    padding: 5px 1px 1px 10px;
-    min-width: 600px;
-}
-
-.item_info_title {
-    font-size: 20px;
-    font-weight: bold;
-}
-
-.item_info_point {
-    font-size: 20px;
-    font-weight: bold;
-    color: red;
-}
-
-.item_info_desc {
-    font-size: 12px;
-}
-
-.item_operate {
-    padding: 5px 1px 1px 5px;
 }

@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="sina用户分析">
+        <script src="../libs/require/require.js"></script>
+    </head>
+    <body class="global_background close_float">
+        <script>
+            var v = 6;
+            require.config({
+                packages: [
+                    {
+                        name: 'jquery',
+                        location: '../libs/jquery',
+                        main: 'jquery-1.9.1'
+                    },
+                    {
+                        name: 'text',
+                        location: '../libs/require',
+                        main: 'text'
+                    },
+                    {
+                        name: 'yy',
+                        location: '../libs/yy',
+                        main: 'yy'
+                    },
+                    {
+                        name: 'home',
+                        location: './module/home',
+                        main: 'home'
+                    },
+                    {
+                        name: 'sina-user',
+                        location: './module/sina-user',
+                        main: 'sina-user'
+                    },
+                    {
+                        name: 'spider-user',
+                        location: './module/spider-user',
+                        main: 'spider-user'
+                    }
+                ],
+                paths: {
+                    'jquery.mousewheel': '../libs/jquery/mousewheel/jquery.mousewheel-3.0.6',
+                    'jquery.datepicker': '../libs/jquery/datepicker/jquery-ui-1.10.3.datepicker'
+                },
+                shim: {
+                    'jquery.mousewheel': {
+                        deps: ['jquery'],
+                        exports: 'jQuery.fn.mousewheel'
+                    },
+                    'jquery.datepicker': {
+                        deps: ['jquery'],
+                        exports: 'jQuery.fn.datepicker',
+                        init: function() {
+                            //加载css
+                            var link = document.createElement("link");
+                            link.type = "text/css";
+                            link.rel = "stylesheet";
+                            link.href = '../libs/jquery/datepicker/stylesheets/jquery-ui-1.10.3.datepicker.css';
+                            document.getElementsByTagName("head")[0].appendChild(link);
+                        }
+                    }
+                },
+                urlArgs: 'v=' + v
+            });
+            require(['yy', 'yy/module'], function(yy, module) {
+                //加载css
+                var sinaLink = document.createElement("link");
+                sinaLink.type = "text/css";
+                sinaLink.rel = "stylesheet";
+                sinaLink.href = 'stylesheets/sina.css' + '?v=' + v;
+                document.getElementsByTagName("head")[0].appendChild(sinaLink);
+
+                var yyLink = document.createElement("link");
+                yyLink.type = "text/css";
+                yyLink.rel = "stylesheet";
+                yyLink.href = '../libs/yy/stylesheets/yy.css' + '?v=' + v;
+                document.getElementsByTagName("head")[0].appendChild(yyLink);
+                //加载模块
+                module.loadModule('', 'home', function() {
+                });
+                yy.setConfig({
+                    httpServer: 'http://192.168.235.234:8080/sina-analyze/service.io',
+                    webSocketServer: 'ws://192.168.235.234:8080/sina-analyze/service.io'
+                });
+            });
+        </script>
+    </body>
+</html>

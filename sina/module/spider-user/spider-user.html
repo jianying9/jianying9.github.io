@@ -1,0 +1,30 @@
+<div id="spider-user" class="module box">
+    <div class="skip box_header">
+        <div id="to-spider-form-button" class="button link float_right">增加帐号</div>
+        <div>爬虫帐号管理</div>
+        <div class="h10"></div>
+    </div>
+    <!--新增爬虫帐号-->
+    <div id="spider-form" class="form hide insert-spider-form">
+        <div class="input_label w150">帐号</div>
+        <input class="must" type="text" name="userName" value=""/>
+        <div id="info-user-name" class="label w150 msg_error"></div>
+
+        <div class="h10"></div>
+        <div class="input_label w150">密码</div>
+        <input class="must" type="text" name="password" value=""/>
+        <div id="info-password" class="label w150 msg_error"></div>
+
+        <div class="h10"></div>
+        <div class="input_label w150"></div>
+        <div id="insert-spider-button" class="button common_button">新增</div>
+        <div id="info-insert-spider" class="label w150 msg_info"></div>
+        <div class="h10"></div>
+    </div>
+    <!--爬虫帐号列表-->
+    <div id="spider-list" class="list spider_list middle_text" scroll="true">
+        <div class="spider_list_header">
+            <div class="w200">帐号</div><div class="w200">密码</div><div class="w200">状态</div><div class="w200">最后更新时间</div>
+        </div>
+    </div>
+</div>
