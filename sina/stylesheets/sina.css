@@ -74,7 +74,7 @@ html {
 body {
     padding: 0;
     margin: 0;
-    font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", STHeiti !important;
+    font: 14px/20px "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
 }
 
 .align_left {
@@ -323,12 +323,12 @@ body {
     padding: 10px;
 }
 
-.spider_list {
+.list {
     max-height: 800px;
     overflow: hidden;
 }
 
-.spider_list_header {
+.list_header {
     padding: 3px 5px 0px 5px;
     margin-right: 10px;
     border-bottom: 1px solid #e2e2e2;
@@ -337,8 +337,9 @@ body {
     background: #f8f8f9 url(images/column_hdr_gradient.gif) repeat;
 }
 
-.spider_list_item {
+.list_item {
     padding: 3px 5px 3px 5px;
     margin-right: 10px;
     border-bottom: 1px solid #e2e2e2;
 }
+

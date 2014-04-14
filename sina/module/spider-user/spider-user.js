@@ -14,7 +14,7 @@ define(function(require) {
         var spiderList = thisModule.findChildByKey('spider-list');
         spiderList.init({
             key: 'userName',
-            itemClazz: 'spider_list_item',
+            itemClazz: '',
             itemDataToHtml: function(itemData) {
                 var state = '可用';
                 if (itemData.cookie.indexOf('SUE=') === -1) {
