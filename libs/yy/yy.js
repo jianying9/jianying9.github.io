@@ -178,10 +178,11 @@ define(function(require) {
         trim: function(value) {
             return $.trim(value);
         },
-        shortDate: function(thisDateStr, nowDate) {
+        shortDate: function(thisDateStr) {
             var result;
             thisDateStr = thisDateStr.replace(/-/g, '/');
             var thisDate = new Date(Date.parse(thisDateStr));
+            var nowDate = new Date();
             var dYear = nowDate.getFullYear() - thisDate.getFullYear();
             if (dYear > 0) {
                 result = dYear + '年前';

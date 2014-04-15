@@ -3,22 +3,23 @@ define(function(require) {
     require('yy/panel');
     require('yy/list');
     require('yy/button');
-    var module = require('yy/module');
     var self = {};
     var _event = _yy.getEvent();
     var _message = _yy.getMessage();
+    var _utils = _yy.getUtils();
     self.init = function(thisModule) {
         var sinaList = thisModule.findChildByKey('sina-list');
         sinaList.init({
             key: 'userId',
             itemClazz: '',
             itemDataToHtml: function(itemData) {
+                var shortDate = _utils.shortDate(itemData.lastUpdateTime);
                 var result = '<div class="inline_block w100">' + itemData.userId + '</div>'
                         + '<div class="inline_block w100">' + itemData.location + '</div>'
                         + '<div class="inline_block w150">' + itemData.nickName + '</div>'
                         + '<div class="inline_block w50">' + itemData.gender + '</div>'
                         + '<div class="inline_block w100">' + itemData.empName + '</div>'
-                        + '<div class="inline_block w100">' + itemData.lastUpdateTime + '</div>';
+                        + '<div class="inline_block w100">' + shortDate + '</div>';
                 return result;
             }
         });
