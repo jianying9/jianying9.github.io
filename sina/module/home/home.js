@@ -19,6 +19,15 @@ define(function(require) {
         //spiderUserPanel
         var spiderUserPanel = thisModule.findChildByKey('spider-user-panel');
         var toSpiderUserButton = thisModule.findChildByKey('to-spider-user-button');
+        //genderCubePanel
+        var genderCubePanel = thisModule.findChildByKey('gender-cube-panel');
+        var toGenderCubeButton = thisModule.findChildByKey('to-gender-cube-button');
+        //locationCubePanel
+        var locationCubePanel = thisModule.findChildByKey('location-cube-panel');
+        var toLocationCubeButton = thisModule.findChildByKey('to-location-cube-button');
+        //tagCubePanel
+        var tagCubePanel = thisModule.findChildByKey('tag-cube-panel');
+        var toTagCubeButton = thisModule.findChildByKey('to-tag-cube-button');
         //导航集合
         var navs = [
             {
@@ -30,6 +39,21 @@ define(function(require) {
                 panel: spiderUserPanel,
                 btn: toSpiderUserButton,
                 module: 'spider-user'
+            },
+            {
+                panel: genderCubePanel,
+                btn: toGenderCubeButton,
+                module: 'gender-cube'
+            },
+            {
+                panel: locationCubePanel,
+                btn: toLocationCubeButton,
+                module: 'location-cube'
+            },
+            {
+                panel: tagCubePanel,
+                btn: toTagCubeButton,
+                module: 'tag-cube'
             }
         ];
         //绑定导航按钮事件

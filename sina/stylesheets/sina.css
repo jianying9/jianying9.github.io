@@ -175,7 +175,7 @@ body {
     text-shadow: 0px -1px 1px #000;
     font-size: 15px;
     padding: 10px 10px;
-    margin: 4px 0 0 20px;
+    margin: 2px 0 0 20px;
 }
 
 .top_button:hover {
@@ -334,12 +334,16 @@ body {
     border-bottom: 1px solid #e2e2e2;
     color: #000000;
     font-weight: bold;
-    background: #f8f8f9 url(images/column_hdr_gradient.gif) repeat;
+    background-color: #f8f8f9;
 }
 
 .list_item {
     padding: 3px 5px 3px 5px;
     margin-right: 10px;
     border-bottom: 1px solid #e2e2e2;
+}
+
+.big_chart {
+    height: 600px;
 }
 

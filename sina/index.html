@@ -9,7 +9,7 @@
     </head>
     <body class="global_background close_float">
         <script>
-            var v = 10;
+            var v = 18;
             require.config({
                 packages: [
                     {
@@ -28,6 +28,16 @@
                         main: 'yy'
                     },
                     {
+                        name: 'echarts',
+                        location: '../libs/echarts/src',
+                        main: 'echarts'
+                    },
+                    {
+                        name: 'zrender',
+                        location: '../libs/zrender/src', // zrender与echarts在同一级目录
+                        main: 'zrender'
+                    },
+                    {
                         name: 'home',
                         location: './module/home',
                         main: 'home'
@@ -41,6 +51,21 @@
                         name: 'spider-user',
                         location: './module/spider-user',
                         main: 'spider-user'
+                    },
+                    {
+                        name: 'gender-cube',
+                        location: './module/gender-cube',
+                        main: 'gender-cube'
+                    },
+                    {
+                        name: 'location-cube',
+                        location: './module/location-cube',
+                        main: 'location-cube'
+                    },
+                    {
+                        name: 'tag-cube',
+                        location: './module/tag-cube',
+                        main: 'tag-cube'
                     }
                 ],
                 paths: {
