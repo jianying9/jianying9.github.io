@@ -5,6 +5,13 @@ define(function(require) {
     var _echarts = require('echarts');
     require('echarts/chart/bar');
     require('echarts/chart/line');
+    require('echarts/chart/scatter');
+    require('echarts/chart/k');
+    require('echarts/chart/radar');
+    require('echarts/chart/map');
+//    require('echarts/chart/chord');
+//    require('echarts/chart/force');
+    
     var self = {};
     var _event = _yy.getEvent();
     var _message = _yy.getMessage();
@@ -29,11 +36,11 @@ define(function(require) {
                         toolbox: {
                             show: true,
                             feature: {
-                                mark: {show: true},
-                                dataView: {show: true, readOnly: false},
-                                magicType: {show: true, type: ['line', 'bar']},
-                                restore: {show: true},
-                                saveAsImage: {show: true}
+                                mark : true,
+                                dataView: {readOnly: false},
+                                magicType: ['line', 'bar'],
+                                restore: true,
+                                saveAsImage: true
                             }
                         },
                         calculable: true,
@@ -52,7 +59,7 @@ define(function(require) {
                         series: [
                             {
                                 name: '标签',
-                                type: 'bar',
+                                type: 'line',
                                 data: valueArray,
                                 itemStyle: {
                                     normal: {

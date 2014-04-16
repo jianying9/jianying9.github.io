@@ -27,10 +27,10 @@ define(function(require) {
             toolbox: {
                 show: true,
                 feature: {
-                    mark: {show: true},
-                    dataView: {show: true, readOnly: true},
-                    restore: {show: true},
-                    saveAsImage: {show: true}
+                    mark: true,
+                    dataView: {readOnly: false},
+                    restore: true,
+                    saveAsImage: true
                 }
             },
             calculable: true
