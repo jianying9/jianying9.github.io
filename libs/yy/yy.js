@@ -305,8 +305,7 @@ define(function(require) {
                 delete action[id];
             }
         },
-        notify: function(msg) {
-            var res = eval('(' + msg + ')');
+        notify: function(res) {
             if (res.act) {
                 var action = this.actions[res.act];
                 if (action) {
@@ -353,7 +352,8 @@ define(function(require) {
                 };
                 that.webSocket.onmessage = function(event) {
                     this._logger.debug('onMessage:' + event.data);
-                    that.notify(event.data);
+                    var res = eval('(' + event.data + ')');
+                    that.notify(res);
                 };
                 that.webSocket.onclose = function(event) {
                     delete that.webSocket;
@@ -367,11 +367,10 @@ define(function(require) {
         };
     } else {
 //初始化jsonp
-        _message._server = _context.httpServer;
         _message.send = function(msg) {
             var that = this;
-            $.getJSON(that._server + '?callback=?', msg, function(data) {
-                that.notify(data);
+            $.getJSON(_context.httpServer + '?callback=?', msg, function(res) {
+                that.notify(res);
             });
         };
     }
