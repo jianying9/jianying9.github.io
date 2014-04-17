@@ -343,6 +343,10 @@ body {
     border-bottom: 1px solid #e2e2e2;
 }
 
+.mid_chart {
+    height: 300px;
+}
+
 .big_chart {
     height: 600px;
 }
