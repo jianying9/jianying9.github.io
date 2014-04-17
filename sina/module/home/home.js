@@ -10,12 +10,6 @@ define(function(require) {
         //默认加载sinaUserPanel
         var sinaUserPanel = thisModule.findChildByKey('sina-user-panel');
         var toSinaUserButton = thisModule.findChildByKey('to-sina-user-button');
-        module.loadModule(sinaUserPanel.id, 'sina-user', function() {
-        });
-        thisModule.setContext({
-            visiblePanel: sinaUserPanel,
-            visibleButton: toSinaUserButton
-        });
         //spiderUserPanel
         var spiderUserPanel = thisModule.findChildByKey('spider-user-panel');
         var toSpiderUserButton = thisModule.findChildByKey('to-spider-user-button');
@@ -56,6 +50,13 @@ define(function(require) {
                 module: 'tag-cube'
             }
         ];
+        //默认页面
+        module.loadModule(locationCubePanel.id, 'location-cube', function() {
+        });
+        thisModule.setContext({
+            visiblePanel: locationCubePanel,
+            visibleButton: toLocationCubeButton
+        });
         //绑定导航按钮事件
         var panel;
         var btn;
