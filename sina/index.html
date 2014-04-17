@@ -7,9 +7,9 @@
         <meta name="description" content="sina用户分析">
         <script src="../libs/require/require.js"></script>
     </head>
-    <body class="global_background close_float">
+    <body class="global_background">
         <script>
-            var v = 23;
+            var v = 31;
             require.config({
                 packages: [
                     {
@@ -66,6 +66,11 @@
                         name: 'tag-cube',
                         location: './module/tag-cube',
                         main: 'tag-cube'
+                    },
+                    {
+                        name: 'sina-user-cube',
+                        location: './module/sina-user-cube',
+                        main: 'sina-user-cube'
                     }
                 ],
                 paths: {

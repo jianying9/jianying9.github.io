@@ -22,6 +22,9 @@ define(function(require) {
         //tagCubePanel
         var tagCubePanel = thisModule.findChildByKey('tag-cube-panel');
         var toTagCubeButton = thisModule.findChildByKey('to-tag-cube-button');
+        //sinaUserCubePanel
+        var sinaUserCubePanel = thisModule.findChildByKey('sina-user-cube-panel');
+        var toSinaUserCubeButton = thisModule.findChildByKey('to-sina-user-cube-button');
         //导航集合
         var navs = [
             {
@@ -48,6 +51,11 @@ define(function(require) {
                 panel: tagCubePanel,
                 btn: toTagCubeButton,
                 module: 'tag-cube'
+            },
+            {
+                panel: sinaUserCubePanel,
+                btn: toSinaUserCubeButton,
+                module: 'sina-user-cube'
             }
         ];
         //默认页面

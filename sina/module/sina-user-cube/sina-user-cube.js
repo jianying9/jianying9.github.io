@@ -9,24 +9,26 @@ define(function(require) {
     var _event = _yy.getEvent();
     var _message = _yy.getMessage();
     self.init = function(thisModule) {
-        var tagCubePanel = thisModule.findChildByKey('tag-cube-panel');
-        var tagChart = _echarts.init(tagCubePanel.$this[0]);
+        var sinaUserCubePanel = thisModule.findChildByKey('sina-user-cube-panel');
+        var sinaUserChart = _echarts.init(sinaUserCubePanel.$this[0]);
         //
-        _message.listen(tagCubePanel, 'INQUIRE_TAG_CUBE', function(thisCom, msg) {
+        _message.listen(sinaUserCubePanel, 'INQUIRE_SINA_USER_CUBE', function(thisCom, msg) {
             if (msg.flag === 'SUCCESS') {
                 var data = msg.data;
                 if (data.length > 0) {
                     var categoryArray = new Array(data.length);
                     var valueArray = new Array(data.length);
                     var targetIndex;
+                    var newTime;
                     for (var index = 0; index < data.length; index++) {
                         targetIndex = data.length - index - 1;
-                        categoryArray[targetIndex] = data[index].tag;
+                        newTime = data[index].time.substring(11, 13) + ':00';
+                        categoryArray[targetIndex] = newTime;
                         valueArray[targetIndex] = data[index].num;
                     }
-                    tagChart.setOption({
+                    sinaUserChart.setOption({
                         title: {
-                            text: 'sina标签top100统计'
+                            text: 'sina用户近24小时增长统计'
                         },
                         toolbox: {
                             show: true,
@@ -39,23 +41,23 @@ define(function(require) {
                             }
                         },
                         calculable: true,
-                        yAxis: [
+                        xAxis: [
                             {
                                 type: 'category',
                                 data: categoryArray
                             }
                         ],
-                        xAxis: [
+                        yAxis: [
                             {
                                 type: 'value',
                                 splitArea: {show: true},
-                                position: 'top'
+                                scale: true
                             }
                         ],
                         series: [
                             {
-                                name: '标签',
-                                type: 'bar',
+                                name: '用户数',
+                                type: 'line',
                                 data: valueArray,
                                 itemStyle: {
                                     normal: {
@@ -74,16 +76,16 @@ define(function(require) {
         var refreshButton = thisModule.findChildByKey('refresh-button');
         _event.bind(refreshButton, 'click', function(thisCom) {
             _message.send({
-                act: 'INQUIRE_TAG_CUBE',
+                act: 'INQUIRE_SINA_USER_CUBE',
                 pageIndex: 1,
-                pageSize: 100
+                pageSize: 24
             });
         });
         //页面初始化
         _message.send({
-            act: 'INQUIRE_TAG_CUBE',
+            act: 'INQUIRE_SINA_USER_CUBE',
             pageIndex: 1,
-            pageSize: 100
+            pageSize: 24
         });
     };
     return self;
