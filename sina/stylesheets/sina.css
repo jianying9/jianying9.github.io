@@ -287,6 +287,12 @@ body {
     overflow: hidden;
 }
 
+.box_header > .link {
+    min-width: 60px;
+    padding: 3px;
+    text-align: center;
+}
+
 .box_content {
     padding: 2px 2px;
     overflow: hidden;

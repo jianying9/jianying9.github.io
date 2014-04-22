@@ -43,6 +43,14 @@ define(function(require) {
                 pageSize: '25'
             });
         });
+        //停止按钮
+        var stopButton = thisModule.findChildByKey('stop-button');
+        _event.bind(stopButton, 'click', function(thisCom) {
+            _message.send({
+                act: 'UPDATE_OLDEST_SINA_USER',
+                operate: 'stop'
+            });
+        });
         //页面初始化
         _message.send({
             act: 'INQUIRE_SINA_USER',

@@ -74,6 +74,14 @@ define(function(require) {
                 spiderForm.show();
             }
         });
+        //刷新cookie按钮
+        var refreshCookieButton = thisModule.findChildByKey('refresh-cookie-button');
+        _event.bind(refreshCookieButton, 'click', function(thisCom) {
+            _message.send({
+                act: 'UPDATE_OLDEST_SINA_USER',
+                operate: 'init'
+            });
+        });
         //新增帐号按钮
         var spiderValidate = {
             userName: {

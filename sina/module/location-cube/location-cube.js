@@ -40,7 +40,7 @@ define(function(require) {
                         },
                         dataRange: {
                             min: 0,
-                            max: 4000,
+                            max: 10000,
                             text: ['高', '低'], // 文本，默认为数值文本
                             calculable: true
                         },
