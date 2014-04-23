@@ -10,7 +10,7 @@ define(function() {
     model.label = [];
     model.panel = ['skip', 'form', 'button', 'panel', 'label', 'list'];
     model.list = ['list_item'];
-    model.list_item = ['skip', 'form', 'button', 'label'];
+    model.list_item = ['skip', 'form', 'button', 'label', 'list'];
     //
     self.model = model;
     return self;

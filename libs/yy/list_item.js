@@ -8,10 +8,18 @@ define(function(require) {
             return data[this.key];
         };
         component.selected = function() {
-            for (var id in this.parent.children) {
-                this.parent.children[id].$this.removeClass('selected');
+            var $this = this.$this;
+            var $that;
+            if ($this.hasClass('selected') === false) {
+                for (var id in this.parent.children) {
+                    $that = this.parent.children[id].$this;
+                    if($that.hasClass('selected')) {
+                        $that.removeClass('selected');
+                        break;
+                    }
+                }
+                $this.addClass('selected');
             }
-            this.$this.addClass('selected');
         };
         return component;
     };
