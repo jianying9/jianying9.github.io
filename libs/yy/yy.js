@@ -541,6 +541,12 @@ define(function(require) {
                     delete this.parent.children[this.id];
                     this.$this.remove();
                 };
+                //修改parent的firstChild
+                if(!parent.firstChild) {
+                    parent.firstChild = component;
+                }
+                //修改parent的lastChild
+                parent.lastChild = component;
                 //创建内部组件
                 var innerModels = config.model[ctx.type];
                 for (var index = 0; index < innerModels.length; index++) {

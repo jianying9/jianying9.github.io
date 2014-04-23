@@ -220,10 +220,8 @@ define(function(require) {
             html += '">';
             html += that._extend.itemDataToHtml(itemData);
             html += '</div>';
-
-            var $firstChild = that.$this.children(':first-child');
-            if ($firstChild.length > 0) {
-                $firstChild.before(html);
+            if(that.firstChild) {
+                that.firstChild.$this.before(html);
             } else {
                 that.$this.append(html);
             }
