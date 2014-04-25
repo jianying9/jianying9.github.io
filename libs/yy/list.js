@@ -163,7 +163,7 @@ define(function(require) {
                 if (item) {
                     item.remove();
                 }
-                localData[key] = itemData;
+                localData[keyValue] = itemData;
                 html += '<div id="' + keyValue + '" class="list_item ';
                 if (itemClazz) {
                     html += itemClazz;
@@ -194,6 +194,48 @@ define(function(require) {
             });
             that.initScroll();
         };
+        component.addItemData = function(itemData) {
+            var item;
+            var that = this;
+            that.check();
+            var key = that._extend.key;
+            var itemClazz = that._extend.itemClazz;
+            var html = '';
+            var localData = that._extend.data;
+            var itemCompleted = that._extend.itemCompleted;
+            var keyValue = itemData[key];
+            if (!keyValue && keyValue !== 0) {
+                throw 'list addItemDataFirst error! can not find value by key:' + key;
+            }
+            //如果key已经存在，则删除旧数据
+            item = that.getItemByKey(keyValue);
+            if (item) {
+                item.remove();
+            }
+            localData[keyValue] = itemData;
+            html += '<div id="' + keyValue + '" class="list_item ';
+            if (itemClazz) {
+                html += itemClazz;
+            }
+            html += '">';
+            html += that._extend.itemDataToHtml(itemData);
+            html += '</div>';
+            that.$this.append(html);
+            //
+            item = that._components.create({
+                loaderId: that.loaderId,
+                type: 'list_item',
+                $this: $('#' + keyValue),
+                parent: that
+            });
+            //
+            //调用item加载完成后执行方法
+            if (itemCompleted) {
+                itemCompleted(item);
+            }
+            that.initScroll();
+            return item;
+        };
         component.addItemDataFirst = function(itemData) {
             var item;
             var that = this;
@@ -212,7 +254,7 @@ define(function(require) {
             if (item) {
                 item.remove();
             }
-            localData[key] = itemData;
+            localData[keyValue] = itemData;
             html += '<div id="' + keyValue + '" class="list_item ';
             if (itemClazz) {
                 html += itemClazz;
@@ -232,12 +274,13 @@ define(function(require) {
                 $this: $('#' + keyValue),
                 parent: that
             });
+            that.firstChild = item;
+            //
             //调用item加载完成后执行方法
             if (itemCompleted) {
                 itemCompleted(item);
             }
             that.initScroll();
-            that.scrollTop();
             return item;
         };
         component.removeItem = function(keyValue) {

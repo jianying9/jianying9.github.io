@@ -4,12 +4,13 @@
         <meta charset="utf-8">
         <meta name="renderer" content="webkit|ie-comp|ie-stand">
         <meta http-equiv="content-type" content="text/html;charset=utf-8">
-        <title>im</title>
+        <title>im-玩家</title>
         <script src="../libs/require/require.js"></script>
     </head>
     <body class="global_background">
         <script>
-            var v = 1;
+//            var v = new Date().getTime();
+            var v = 89;
             require.config({
                 packages: [
                     {
@@ -26,6 +27,16 @@
                         name: 'yy',
                         location: '../libs/yy',
                         main: 'yy'
+                    },
+                    {
+                        name: 'customer-login',
+                        location: './module/customer-login',
+                        main: 'customer-login'
+                    },
+                    {
+                        name: 'customer-home',
+                        location: './module/customer-home',
+                        main: 'customer-home'
                     }
                 ],
                 paths: {
@@ -66,7 +77,7 @@
                 yyLink.href = '../libs/yy/stylesheets/yy.css' + '?v=' + v;
                 document.getElementsByTagName("head")[0].appendChild(yyLink);
                 //加载模块
-                module.loadModule('', 'home', function() {
+                module.loadModule('', 'customer-login', function() {
                 });
                 yy.setConfig({
                     httpServer: 'http://192.168.59.99:8090/im-server/service.io',

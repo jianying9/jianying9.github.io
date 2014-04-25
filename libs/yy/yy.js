@@ -178,6 +178,46 @@ define(function(require) {
         trim: function(value) {
             return $.trim(value);
         },
+        getDate: function() {
+            var date = new Date();
+            var month = date.getMonth() + 1;
+            if(month < 10) {
+                month = '0' + month;
+            }
+            var day = date.getDate();
+            if(day < 10) {
+                day = '0' + day;
+            }
+            var result = date.getFullYear() + '-' + month + '-' + day;
+            return result;
+        },
+        getDateTime: function() {
+            var date = new Date();
+            var month = date.getMonth() + 1;
+            if(month < 10) {
+                month = '0' + month;
+            }
+            var day = date.getDate();
+            if(day < 10) {
+                day = '0' + day;
+            }
+            var hour = date.getHours();
+            if(hour < 10) {
+                hour = '0' + hour;
+            }
+            var minute = date.getMinutes();
+            if(minute < 10) {
+                minute = '0' + minute;
+            }
+            var second = date.getSeconds();
+            if(second < 10) {
+                second = '0' + second;
+            }
+            var result = date.getFullYear() + '-' + month + '-'
+                    + day + ' ' + hour + ':'
+                    + minute + ':' + second;
+            return result;
+        },
         shortDate: function(thisDateStr) {
             var result;
             thisDateStr = thisDateStr.replace(/-/g, '/');
@@ -514,10 +554,10 @@ define(function(require) {
                 model.create(component, parameters);
                 //组件固有方法
                 component.show = function() {
-                    this.$this.show();
+                    this.$this.removeClass('hide');
                 };
                 component.hide = function() {
-                    this.$this.hide();
+                    this.$this.addClass('hide');
                 };
                 component.isVisible = function() {
                     return this.$this.is(':visible');
@@ -542,11 +582,9 @@ define(function(require) {
                     this.$this.remove();
                 };
                 //修改parent的firstChild
-                if(!parent.firstChild) {
+                if (!parent.firstChild) {
                     parent.firstChild = component;
                 }
-                //修改parent的lastChild
-                parent.lastChild = component;
                 //创建内部组件
                 var innerModels = config.model[ctx.type];
                 for (var index = 0; index < innerModels.length; index++) {

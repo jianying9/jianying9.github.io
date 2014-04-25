@@ -77,6 +77,10 @@ body {
     font: 14px/20px "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
 }
 
+.red {
+    color: red;
+}
+
 .align_left {
     text-align: left;
 }
@@ -202,6 +206,18 @@ body {
     position: relative;
 }
 
+.middle_content {
+    width: 640px;
+    margin: 0 auto 0 auto;
+    position: relative;
+}
+
+.customer_content {
+    width: 520px;
+    margin: 0 auto 0 auto;
+    position: relative;
+}
+
 .h10 {
     height: 10px;
 }
@@ -234,11 +250,6 @@ body {
     display: inline-block;
 }
 
-.w600 {
-    width: 600px;
-    display: inline-block;
-}
-
 .w75 {
     width: 75px;
     display: inline-block;
@@ -260,6 +271,10 @@ body {
 
 .middle_text {
     font-size: 13px;
+}
+
+.big_text {
+    font-size: 18px;
 }
 
 .link {
@@ -332,7 +347,6 @@ body {
 .form {
     border-bottom: 1px solid #e2e2e2;
     padding: 10px;
-    width: 750px;
     margin: 0 auto 0 auto;
 }
 
@@ -386,7 +400,7 @@ body {
 }
 
 .customer_list {
-    width: 169px;
+    width: 120px;
     height: 440px;
     border-right: 1px solid #e2e2e2;
 }
@@ -399,8 +413,21 @@ body {
     cursor: pointer;
 }
 
+.customer_state {
+    position: absolute;
+    right: 3px;
+    top: 0;
+    margin: 7px;
+    border: 6px solid;
+    border-radius: 3px;
+}
+
+.online > .customer_state {
+    border-color: green;
+}
+
 .message_panel {
-    width: 800px;
+    width: 519px;
     float: right;
 }
 
@@ -410,6 +437,10 @@ body {
 
 .message_list > .list_item.selected {
     display: block;
+}
+
+.message_list > .list_item:hover {
+    background: transparent;
 }
 
 .chat_title {
@@ -461,7 +492,7 @@ body {
 .chat_message_me > .chat_message_time, .chat_message_friend > .chat_message_time {
     height: 12px;
     font-size: 10px;
-    padding: 2px 0;
+    padding: 0 0 5px 0;
 }
 
 .chat_message_me > .chat_message, .chat_message_friend > .chat_message {
@@ -489,14 +520,14 @@ body {
 .chat_message_friend > .chat_message_arrows {
     border-color: transparent #b4cc85 transparent transparent;
     border-style: dashed solid dashed dashed;
-    top: 20px;
+    top: 24px;
     left: -12px;
 }
 
 .chat_message_me > .chat_message_arrows {
     border-color: transparent transparent transparent #b4cc85;
     border-style: dashed dashed dashed solid;
-    top: 20px;
+    top: 24px;
     right: -11px;
 }
 
@@ -510,7 +541,7 @@ body {
     overflow: hidden;
     height: 70px;
     padding: 8px;
-    width: 765px;
+    width: 486px;
     font-size: 12px;
 }
 

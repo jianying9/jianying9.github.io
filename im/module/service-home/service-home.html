@@ -3,26 +3,29 @@
     </div>
     <div class="h20"></div>
 
-    <div class="content box">
-        客服操作
-    </div>
+    <!--    <div class="middle_content box">
+            客服操作
+        </div>-->
     <div class="h10"></div>
-    <div class="content box h480 skip">
-        <div class="box_header">
-            <div>当前分配的玩家列表</div>
-            <div class="h10"></div>
+    <div class="middle_content box h480 skip">
+        <div class="box_header skip">
+            <div id="service-info" class="label"></div>
         </div>
         <div class="skip message_panel">
             <div id="message-list" class="list middle_text message_list"></div>
             <div id="chat-form" class="form chat_message_form">
                 <textarea name="message"></textarea>
+                <input type="hidden" name="receiveId" value=""/>
                 <div class="h10"></div>
                 <div id="send-button" class="button common_button">发送</div>
+                <div id="finish-button" class="button common_button">结束</div>
+                <div id="logout-button" class="button common_button">退出</div>
+                <div id="operate-info" class="label msg_error"></div>
             </div>
         </div>
         <div id="customer-list" class="list middle_text common_list customer_list">
             <div class="list_header">
-                <div class="w150">玩家</div>
+                <div class="w100">玩家</div>
             </div>
         </div>
     </div>

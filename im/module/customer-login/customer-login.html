@@ -1,19 +1,20 @@
-<div id="service-login" class="module">
+<div id="customer-login" class="module">
     <div class="top"></div>
     <div class="h20"></div>
-    <div class="middle_content box skip">
+    <div class="box skip middle_content">
         <div class="box_header">
-            <div>service登录</div>
+            <div>玩家登录</div>
             <div class="h10"></div>
         </div>
         <!--新增爬虫帐号-->
         <div id="login-form" class="form">
-            <div class="input_label w100">帐号</div>
-            <input class="must" type="text" name="userId" value=""/>
-            <div id="info-user-id" class="label w100 msg_error"></div>
-
+            <div class="input_label w100">昵称</div>
+            <input class="must" type="text" name="nickName" value="" disabled/>
+            <input type="hidden" name="userId" value=""/>
             <div class="h10"></div>
             <div class="input_label w100"></div>
+            <div id="refresh-button" class="button common_button">随机</div>
+            <div class="input_label w20"></div>
             <div id="login-button" class="button common_button">登录</div>
             <div id="info-login" class="label w100 msg_info"></div>
             <div class="h10"></div>

@@ -18,20 +18,25 @@ define(function(require) {
             itemDataToHtml: function(itemData) {
                 var result = '<div class="inline_block w200">' + itemData.userId + '</div>'
                         + '<div class="inline_block w200">' + itemData.userName + '</div>'
-                        + '<div class="inline_block w200">' + itemData.type + '</div>'
-                        + '<div id="' + itemData.userId + '-delete-button" class="button link float_right">删除</div>';
+                        + '<div class="inline_block w200">' + itemData.type + '</div>';
+                if (itemData.type !== 'ADMIN') {
+                    result += '<div id="' + itemData.userId + '-delete-button" class="button link float_right">删除</div>';
+                }
                 return result;
             },
             itemCompleted: function(itemCom) {
-                var deleteButtonId = itemCom.key + '-delete-button';
-                var deleteButton = itemCom.findChildByKey(deleteButtonId);
-                _event.bind(deleteButton, 'click', function(thisCom) {
-                    var msg = {
-                        act: 'DELETE_SERVICE_USER',
-                        userName: itemCom.key
-                    };
-                    _message.send(msg);
-                });
+                var data = itemCom.getData();
+                if (data.type !== 'ADMIN') {
+                    var deleteButtonId = itemCom.key + '-delete-button';
+                    var deleteButton = itemCom.findChildByKey(deleteButtonId);
+                    _event.bind(deleteButton, 'click', function(thisCom) {
+                        var msg = {
+                            act: 'DELETE_SERVICE_USER',
+                            userName: itemCom.key
+                        };
+                        _message.send(msg);
+                    });
+                }
             }
         });
         //帐号列表消息事件

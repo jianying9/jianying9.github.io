@@ -2,38 +2,38 @@ define(function(require) {
     var _yy = require('yy');
     require('yy/panel');
     require('yy/list');
+    require('yy/label');
     require('yy/button');
-    var module = require('yy/module');
+    var _module = require('yy/module');
     var self = {};
     var _event = _yy.getEvent();
     var _message = _yy.getMessage();
     var _utils = _yy.getUtils();
     self.init = function(thisModule) {
         thisModule.setContext({userId: '271411'});
-        var customerData = [
-            {userId: 1, userName: 'c1'},
-            {userId: 2, userName: 'c2'},
-            {userId: 3, userName: 'c3'},
-            {userId: 4, userName: 'c4'}
-        ];
+        var userId = _yy.getSession('userId');
+        var userName = _yy.getSession('userName');
+        document.title = userName;
+        var serviceInfo = thisModule.findChildByKey('service-info');
+        serviceInfo.setLabel('工号:' + userId + ' 昵称:' + userName);
         //初始化聊天列表
         var messageList = thisModule.findChildByKey('message-list');
         messageList.init({
             key: 'userId',
-            itemClazz: '',
+            itemClazz: 'hide',
             itemDataToHtml: function(itemData) {
-                var result = '<div class="chat_title">' + itemData.userName + '</div>'
-                        + '<div id="' + itemData.userId + '-chat-list" class="list chat_message_list scroll_list" scroll="true"></div>';
+                var result = '<div class="chat_title">' + itemData.nickName + '</div>'
+                        + '<div id="' + itemData.userId + '-chat-message-list" class="list chat_message_list scroll_list" scroll="true"></div>';
                 return result;
             },
             itemCompleted: function(itemCom) {
-                var chatListId = itemCom.key + '-chat-list';
+                var chatListId = itemCom.key + '-chat-message-list';
                 var chatList = itemCom.findChildByKey(chatListId);
                 chatList.init({
                     key: 'messageId',
                     itemClazz: '',
                     itemDataToHtml: function(itemData) {
-                        var serviceId = thisModule.getContext('userId');
+                        var serviceId = _yy.getSession('userId');
                         var result;
                         if (itemData.receiveId === serviceId) {
                             result = '<div class="chat_message_friend">';
@@ -48,28 +48,17 @@ define(function(require) {
                         return result;
                     }
                 });
-                //
-                var chatData = [
-                    {messageId: 1, receiveId: itemCom.key, sendId: '271411', message: itemCom.key +'你好啊！！！！！！！！！！！！！', createTime: '2014-04-23 14:01:22'},
-                    {messageId: 1, receiveId: '271411', sendId: itemCom.key, message: '你好，什么事', createTime: '2014-04-23 14:01:30'},
-                    {messageId: 1, receiveId: itemCom.key, sendId: '271411', message: '就问好下', createTime: '2014-04-23 14:01:35'},
-                    {messageId: 1, receiveId: '271411', sendId: itemCom.key, message: '无语', createTime: '2014-04-23 14:01:42'},
-                    {messageId: 1, receiveId: itemCom.key, sendId: '271411', message: '别这样啊', createTime: '2014-04-23 14:01:44'},
-                    {messageId: 1, receiveId: '271411', sendId: itemCom.key, message: '你想怎么样？', createTime: '2014-04-23 14:01:46'}
-                ];
-                chatList.loadData(chatData);
-                chatList.scrollBottom();
-                itemCom.$this.addClass('hide');
             }
         });
-        messageList.loadData(customerData);
         //初始化玩家列表
         var customerList = thisModule.findChildByKey('customer-list');
         customerList.init({
             key: 'userId',
-            itemClazz: '',
+            itemClazz: 'online',
             itemDataToHtml: function(itemData) {
-                var result = '<div class="inline_block w150">' + itemData.userName + '</div>'
+                var result = '<div class="inline_block w100">' + itemData.nickName + '</div>'
+                        + '<div class="customer_state"></div>';
+
                 return result;
             },
             itemCompleted: function(itemCom) {
@@ -79,11 +68,194 @@ define(function(require) {
                     //切换聊天窗口
                     var messageItem = messageList.getItemByKey(userId);
                     messageItem.selected();
+                    //
+                    var chatListId = userId + '-chat-message-list';
+                    var chatList = messageItem.findChildByKey(chatListId);
+                    chatList.initScroll();
+                    //
+                    var charForm = thisModule.findChildByKey('chat-form');
+                    charForm.setData('receiveId', userId);
                 });
             }
         });
-        customerList.loadData(customerData);
-        customerList.firstChild.$this.click();
+        //
+        _message.listen(customerList, 'CONNECT_SERVICE', function(thisCom, msg) {
+            if (msg.flag === 'SUCCESS') {
+                var data = msg.data;
+                thisCom.addItemData(data);
+                messageList.addItemData(data);
+                var message = {
+                    messageId: 1,
+                    message: '工号:' + data.serviceId + ' ' + data.serviceName + '为您服务！有什么可以帮助您?',
+                    sendId: data.serviceId,
+                    receiveId: data.userId,
+                    createTime: _utils.getDateTime()
+                };
+                var messageItem = messageList.getItemByKey(data.userId);
+                if (messageItem) {
+                    var chatListId = data.userId + '-chat-message-list';
+                    var chatList = messageItem.findChildByKey(chatListId);
+                    if (chatList) {
+                        chatList.addItemData(message);
+                        chatList.scrollBottom();
+                    }
+                }
+                if (thisCom.size() === 1) {
+                    thisCom.firstChild.$this.click();
+                }
+            }
+        });
+        _message.listen(customerList, 'CUSTOMER_LOGOUT', function(thisCom, msg) {
+            if (msg.flag === 'SUCCESS') {
+                var data = msg.data;
+                var customerItem = thisCom.getItemByKey(data.userId);
+                customerItem.$this.removeClass('online');
+                var message = {
+                    messageId: 0,
+                    message: '玩家已离开',
+                    sendId: data.userId,
+                    receiveId: data.serviceId,
+                    createTime: _utils.getDateTime()
+                };
+                var messageItem = messageList.getItemByKey(data.userId);
+                if (messageItem) {
+                    var chatListId = data.userId + '-chat-message-list';
+                    var chatList = messageItem.findChildByKey(chatListId);
+                    if (chatList) {
+                        chatList.addItemData(message);
+                        chatList.scrollBottom();
+                    }
+                }
+            }
+        });
+        _message.listen(messageList, 'SEND_MESSAGE', function(thisCom, msg) {
+            if (msg.flag === 'SUCCESS') {
+                var data = msg.data;
+                var customerId;
+                var serviceId = _yy.getSession('userId');
+                if (data.sendId === serviceId) {
+                    customerId = data.receiveId;
+                } else {
+                    customerId = data.sendId;
+                }
+                var messageItem = thisCom.getItemByKey(customerId);
+                if (messageItem) {
+                    var chatListId = customerId + '-chat-message-list';
+                    var chatList = messageItem.findChildByKey(chatListId);
+                    if (chatList) {
+                        chatList.addItemData(data);
+                        chatList.scrollBottom();
+                    }
+                }
+            }
+        });
+        //
+        var sendButton = thisModule.findChildByKey('send-button');
+        _event.bind(sendButton, 'click', function(thisCom) {
+            var chatForm = thisModule.findChildByKey('chat-form');
+            var msg = chatForm.getData();
+            msg.act = 'SEND_MESSAGE';
+            _message.send(msg);
+            chatForm.setData('message', '');
+        });
+        //
+        var finishButton = thisModule.findChildByKey('finish-button');
+        _event.bind(finishButton, 'click', function(thisCom) {
+            var chatForm = thisModule.findChildByKey('chat-form');
+            var data = chatForm.getData();
+            var customerItem = customerList.getItemByKey(data.receiveId);
+            if (customerItem.$this.hasClass('online')) {
+                var operateInfo = thisModule.findChildByKey('operate-info');
+                operateInfo.setLabel('正在与该玩家通话中,不能关闭聊天窗口.');
+            } else {
+                customerItem.remove();
+                var messageItem = messageList.getItemByKey(data.receiveId);
+                messageItem.remove();
+            }
+        });
+        //
+        var logoutButton = thisModule.findChildByKey('logout-button');
+        _event.bind(logoutButton, 'click', function(thisCom) {
+            var isOnline = false;
+            for (var id in customerList.children) {
+                if (customerList.children[id].$this.hasClass('online')) {
+                    isOnline = true;
+                    break;
+                }
+            }
+            if (isOnline) {
+                var operateInfo = thisModule.findChildByKey('operate-info');
+                operateInfo.setLabel('正在与玩家通话中,不能退出.');
+            } else {
+                var msg = {
+                    act: 'SERVICE_LOGOUT'
+                };
+                _message.send(msg);
+                //
+                _yy.clearSession();
+                thisModule.hide();
+                thisModule.remove();
+                document.title = 'im-客服';
+                _module.loadModule('', 'service-login');
+            }
+        });
+        //
+        window.onbeforeunload = function(e) {
+            var isOnline = false;
+            for (var id in customerList.children) {
+                if (customerList.children[id].$this.hasClass('online')) {
+                    isOnline = true;
+                    break;
+                }
+            }
+            if (isOnline) {
+                var operateInfo = thisModule.findChildByKey('operate-info');
+                operateInfo.setLabel('正在与玩家通话中,不能退出.');
+                //阻止默认浏览器动作(W3C)
+                if (e && e.preventDefault)
+                    e.preventDefault();
+//IE中阻止函数器默认动作的方式
+                else
+                    window.event.returnValue = '正在与玩家通话中,不能退出.';
+                return '正在与玩家通话中,不能退出.';
+            } else {
+                var msg = {
+                    act: 'SERVICE_LOGOUT'
+                };
+                _message.send(msg);
+                //
+                _yy.clearSession();
+                thisModule.hide();
+                thisModule.remove();
+                document.title = 'im-客服';
+                _module.loadModule('', 'service-login');
+            }
+        };
+//        $(window).unload(function() {
+//            var isOnline = false;
+//            for (var id in customerList.children) {
+//                if (customerList.children[id].$this.hasClass('online')) {
+//                    isOnline = true;
+//                    break;
+//                }
+//            }
+//            if (isOnline) {
+//                var operateInfo = thisModule.findChildByKey('operate-info');
+//                operateInfo.setLabel('正在与玩家通话中,不能退出.');
+//                return false;
+//            } else {
+//                var msg = {
+//                    act: 'SERVICE_LOGOUT'
+//                };
+//                _message.send(msg);
+//                //
+//                _yy.clearSession();
+//                thisModule.hide();
+//                thisModule.remove();
+//                document.title = 'im-客服';
+//                _module.loadModule('', 'service-login');
+//            }
+//        });
     };
     return self;
 });

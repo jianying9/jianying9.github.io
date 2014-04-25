@@ -26,7 +26,7 @@ define(function(require) {
                     }
                     tagChart.setOption({
                         title: {
-                            text: 'sina标签top100统计'
+                            text: 'sina标签top20统计'
                         },
                         toolbox: {
                             show: true,
@@ -76,14 +76,14 @@ define(function(require) {
             _message.send({
                 act: 'INQUIRE_TAG_CUBE',
                 pageIndex: 1,
-                pageSize: 100
+                pageSize: 20
             });
         });
         //页面初始化
         _message.send({
             act: 'INQUIRE_TAG_CUBE',
             pageIndex: 1,
-            pageSize: 100
+            pageSize: 20
         });
     };
     return self;

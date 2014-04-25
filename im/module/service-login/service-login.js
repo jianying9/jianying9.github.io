@@ -38,15 +38,16 @@ define(function(require) {
         _message.listen(loginButton, 'SERVICE_LOGIN', function(thisCom, msg) {
             if (msg.flag === 'SUCCESS') {
                 //登录成功
+                _yy.setSession(msg.data);
                 thisModule.hide();
                 thisModule.remove();
                 _module.loadModule('', 'service-home');
             } else {
                 //登录失败
                 var infoLogin = thisModule.findChildByKey('info-login');
-                var info ="登录失败";
+                var info ='登录失败';
                 if(msg.flag === 'FAILURE_USER_ID_NOT_EXIST') {
-                    info = "用户不存在";
+                    info = '用户不存在';
                 }
                 infoLogin.setLabel(info);
             }
