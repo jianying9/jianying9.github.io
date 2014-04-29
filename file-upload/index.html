@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>jQuery File Upload Example</title>
+        <script src="../libs/require/require.js"></script>
+    </head>
+    <body>
+        <div id="progress">
+            <div class="bar" style="width: 0%;height: 18px;background: green;"></div>
+        </div>
+        <input id="fileupload" type="file" name="files[]">
+        <!--<script src="../libs/jquery/jquery-1.9.1.js"></script>-->
+        <!--<script src="../libs/jquery/fileupload/jquery.ui.widget.js"></script>-->
+        <!--<script src="../libs/jquery/fileupload/jquery.iframe-transport.js"></script>-->
+        <!--<script src="../libs/jquery/fileupload/jquery.fileupload.js"></script>-->
+        <!--<script src="../libs/jquery/fileupload/jquery.xdr-transport.js"></script>-->
+        <!--<script src="../libs/jquery/fileupload/jquery.postmessage-transport.js"></script>-->
+        <script>
+            var v = 1;
+            require.config({
+                packages: [
+                    {
+                        name: 'jquery',
+                        location: '../libs/jquery',
+                        main: 'jquery-1.9.1'
+                    },
+                    {
+                        name: 'jquery.ui.widget',
+                        location: '../libs/jquery/fileupload',
+                        main: 'jquery.ui.widget'
+                    },
+                    {
+                        name: 'jquery.fileupload',
+                        location: '../libs/jquery/fileupload',
+                        main: 'jquery.fileupload'
+                    },
+                    {
+                        name: 'jquery.postmessage-transport',
+                        location: '../libs/jquery/fileupload',
+                        main: 'jquery.postmessage-transport'
+                    },
+                    {
+                        name: 'jquery.xdr-transport',
+                        location: '../libs/jquery/fileupload',
+                        main: 'jquery.xdr-transport'
+                    },
+                    {
+                        name: 'jquery.iframe-transport',
+                        location: '../libs/jquery/fileupload',
+                        main: 'jquery.iframe-transport'
+                    }
+                ],
+                urlArgs: 'v=' + v
+            });
+            require(['jquery.fileupload', 'jquery.iframe-transport'], function() {
+                $('#fileupload').fileupload({
+                    url: 'http://192.168.59.99:8090/file-upload/upload',
+//                    postMessage: 'http://192.168.235.234:8080/file-upload/postmessage.html',
+//                    forceIframeTransport: 'true',
+//                    redirect: 'http://192.168.235.234:8080/file-upload/result.html',
+                    dataType: 'json',
+                    done: function(e, data) {
+                        $.each(data.files, function(index, file) {
+                            $('<p/>').text(file.name).appendTo(document.body);
+                        });
+                    },
+                    progressall: function(e, data) {
+                        var progress = parseInt(data.loaded / data.total * 100, 10);
+                        $('#progress .bar').css(
+                                'width',
+                                progress + '%'
+                                );
+                    }
+                });
+            });
+        </script>
+    </body> 
+</html>
