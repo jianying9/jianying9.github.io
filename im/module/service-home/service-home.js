@@ -218,44 +218,20 @@ define(function(require) {
                 else
                     window.event.returnValue = '正在与玩家通话中,不能退出.';
                 return '正在与玩家通话中,不能退出.';
-            } else {
-                var msg = {
-                    act: 'SERVICE_LOGOUT'
-                };
-                _message.send(msg);
-                //
-                _yy.clearSession();
-                thisModule.hide();
-                thisModule.remove();
-                document.title = 'im-客服';
-                _module.loadModule('', 'service-login');
             }
         };
-//        $(window).unload(function() {
-//            var isOnline = false;
-//            for (var id in customerList.children) {
-//                if (customerList.children[id].$this.hasClass('online')) {
-//                    isOnline = true;
-//                    break;
-//                }
-//            }
-//            if (isOnline) {
-//                var operateInfo = thisModule.findChildByKey('operate-info');
-//                operateInfo.setLabel('正在与玩家通话中,不能退出.');
-//                return false;
-//            } else {
-//                var msg = {
-//                    act: 'SERVICE_LOGOUT'
-//                };
-//                _message.send(msg);
-//                //
-//                _yy.clearSession();
-//                thisModule.hide();
-//                thisModule.remove();
-//                document.title = 'im-客服';
-//                _module.loadModule('', 'service-login');
-//            }
-//        });
+        $(window).unload(function() {
+            var msg = {
+                act: 'SERVICE_LOGOUT'
+            };
+            _message.send(msg);
+            //
+            _yy.clearSession();
+            thisModule.hide();
+            thisModule.remove();
+            document.title = 'im-客服';
+            _module.loadModule('', 'service-login');
+        });
     };
     return self;
 });
