@@ -74,11 +74,7 @@ html {
 body {
     padding: 0;
     margin: 0;
-    font: 14px/20px "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
-}
-
-.red {
-    color: red;
+    font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", STHeiti !important;
 }
 
 .align_left {
@@ -179,7 +175,7 @@ body {
     text-shadow: 0px -1px 1px #000;
     font-size: 15px;
     padding: 10px 10px;
-    margin: 2px 0 0 20px;
+    margin: 4px 0 0 20px;
 }
 
 .top_button:hover {
@@ -203,19 +199,6 @@ body {
 .content {
     width: 970px;
     margin: 0 auto 0 auto;
-    position: relative;
-}
-
-.middle_content {
-    width: 640px;
-    margin: 0 auto 0 auto;
-    position: relative;
-}
-
-.customer_content {
-    width: 520px;
-    margin: 0 auto 0 auto;
-    position: relative;
 }
 
 .h10 {
@@ -224,10 +207,6 @@ body {
 
 .h20 {
     height: 20px;
-}
-
-.h480 {
-    height: 480px;
 }
 
 .w100 {
@@ -242,11 +221,6 @@ body {
 
 .w170 {
     width: 170px;
-    display: inline-block;
-}
-
-.w200 {
-    width: 200px;
     display: inline-block;
 }
 
@@ -269,16 +243,10 @@ body {
     font-size: 11px;
 }
 
-.middle_text {
-    font-size: 13px;
-}
-
-.big_text {
-    font-size: 18px;
-}
-
 .link {
+    margin: 3px 5px;
     cursor: pointer;
+    font-size: 14px;
     font-weight: bold;
     color: #24A828;
 }
@@ -305,12 +273,6 @@ body {
     font-size: 14px;
     border-bottom: 1px solid #e2e2e2;
     overflow: hidden;
-}
-
-.box_header > .link {
-    min-width: 60px;
-    padding: 3px;
-    text-align: center;
 }
 
 .box_content {
@@ -344,203 +306,62 @@ body {
     overflow: hidden;
 }
 
-.form {
+.login_background {
+    background-color: #d0d0d0;
+    background-image: url("images/bg_grid.png");
+    background-repeat: repeat;
+}
+
+.login_content_panel {
+    height: 500px;
+}
+
+.login_right_panel {
+    width: 270px;
+    float: right;
+}
+
+.login_main_panel {
+    width: auto;
+    margin: 0px 290px 0px 0px;
+}
+
+.insert-item-form {
     border-bottom: 1px solid #e2e2e2;
     padding: 10px;
-    margin: 0 auto 0 auto;
 }
 
-.common_list {
-    max-height: 800px;
+.item_list {
+    max-height: 600px;
     overflow: hidden;
 }
 
-.list_header {
-    padding: 3px 5px 0px 5px;
-    border-bottom: 1px solid #e2e2e2;
-    color: #000000;
-    font-weight: bold;
-    background-color: #f8f8f9;
-}
-
-.list_item:hover {
-    background: #F1EDED;
-}
-
-.common_list > .list_item {
-    padding: 3px 5px;
-    border-bottom: 1px solid #e2e2e2;
-}
-
-.scroll_list > .list_header {
+.item_list_item {
+    padding: 3px 5px 3px 5px;
     margin-right: 10px;
-    padding: 3px 5px 0px 5px;
     border-bottom: 1px solid #e2e2e2;
-    color: #000000;
+}
+
+.item_info {
+    padding: 5px 1px 1px 10px;
+    min-width: 600px;
+}
+
+.item_info_title {
+    font-size: 20px;
     font-weight: bold;
-    background-color: #f8f8f9;
 }
 
-.scroll_list > .list_item {
-    margin-right: 10px;
-    padding: 3px 5px;
-    border-bottom: 1px solid #e2e2e2;
+.item_info_point {
+    font-size: 20px;
+    font-weight: bold;
+    color: red;
 }
 
-.mid_chart {
-    height: 300px;
-}
-
-.big_chart {
-    height: 600px;
-}
-
-.super_chart {
-    height: 2000px;
-}
-
-.customer_list {
-    width: 120px;
-    height: 440px;
-    border-right: 1px solid #e2e2e2;
-}
-
-.customer_list > .list_item.selected {
-    background: #EDEEF5;
-}
-
-.customer_list > .list_item:hover {
-    cursor: pointer;
-}
-
-.customer_state {
-    position: absolute;
-    right: 3px;
-    top: 0;
-    margin: 7px;
-    border: 6px solid;
-    border-radius: 3px;
-}
-
-.online > .customer_state {
-    border-color: green;
-}
-
-.message_panel {
-    width: 519px;
-    float: right;
-}
-
-.message_list {
-    height: 290px;
-}
-
-.message_list > .list_item.selected {
-    display: block;
-}
-
-.message_list > .list_item:hover {
-    background: transparent;
-}
-
-.chat_title {
-    border-bottom: 1px solid #e2e2e2;
-    overflow: hidden;
-    padding: 3px 5px 0px 5px;
-}
-
-.chat_message_list {
-    padding: 0 15px;
-    height: 265px;
-}
-
-.chat_message_list > .list_item {
-    cursor: default;
-    padding: 0 10px 0 10px;
-    height: auto;
-    overflow: hidden;
-    zoom: 1;
-    border: none;
-}
-
-.chat_message_list > .list_item:hover {
-    background: transparent;
-}
-
-.chat_message_me, .chat_message_friend {
-    padding: 2px 0;
-    position: relative;
-    color: #212324
-}
-
-.chat_message_me {
-    min-width: 10%;
-    max-width: 80%;
-    float: right;
-    position: relative;
-    clear: both;
-}
-
-.chat_message_friend {
-    min-width: 5%;
-    max-width: 80%;
-    float: left;
-    position: relative;
-    clear: both;
-}
-
-.chat_message_me > .chat_message_time, .chat_message_friend > .chat_message_time {
-    height: 12px;
-    font-size: 10px;
-    padding: 0 0 5px 0;
-}
-
-.chat_message_me > .chat_message, .chat_message_friend > .chat_message {
-    padding: 2px;
-    border: 1px solid #b4cc85;
-    background: #b4cc85;
-    border-radius: 3px;
-    word-wrap: break-word;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-.chat_message_me > .chat_message_time {
-    text-align: right;
-}
-
-.chat_message_friend > .chat_message_time {
-    text-align: left;
-}
-
-.chat_message_me > .chat_message_arrows, .chat_message_friend > .chat_message_arrows {
-    border-width: 6px 6px 6px 6px;
-    position: absolute;
-}
-
-.chat_message_friend > .chat_message_arrows {
-    border-color: transparent #b4cc85 transparent transparent;
-    border-style: dashed solid dashed dashed;
-    top: 24px;
-    left: -12px;
-}
-
-.chat_message_me > .chat_message_arrows {
-    border-color: transparent transparent transparent #b4cc85;
-    border-style: dashed dashed dashed solid;
-    top: 24px;
-    right: -11px;
-}
-
-.chat_message_form {
-    margin: 0 5px;
-    padding: 2px;
-    border: none;
-}
-
-.chat_message_form > textarea {
-    overflow: hidden;
-    height: 70px;
-    padding: 8px;
-    width: 486px;
+.item_info_desc {
     font-size: 12px;
+}
+
+.item_operate {
+    padding: 5px 1px 1px 5px;
 }
