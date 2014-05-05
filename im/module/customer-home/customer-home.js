@@ -45,34 +45,67 @@ define(function(require) {
         welcomeInfo.setLabel(nickName);
         //
         var waitInfo = thisModule.findChildByKey('wait-info');
-        _message.listen(waitInfo, 'CONNECT_SERVICE', function(thisCom, msg) {
+        _message.listen(waitInfo, 'CUSTOMER_WAIT', function(thisCom, msg) {
+            var info;
             if (msg.flag === 'SUCCESS') {
                 var data = msg.data;
-                waitPanel.hide();
-                chatPanel.show();
-                var customerInfo = thisModule.findChildByKey('customer-info');
-                customerInfo.setLabel(data.nickName);
-                var charForm = thisModule.findChildByKey('chat-form');
-                charForm.setData('receiveId', data.serviceId);
-                //添加欢迎消息
-                var message = {
-                    messageId: 1,
-                    message: '工号:' + data.serviceId + ' ' + data.serviceName + '为您服务！有什么可以帮助您?',
-                    sendId: data.serviceId,
-                    receiveId: data.userId,
-                    createTime: _utils.getDateTime()
-                };
-                chatMessageList.addItemData(message);
-                chatMessageList.scrollBottom();
+                info = '前面有' + data.waitNum + '玩家等候中...';
+                thisModule.setContext({
+                    waitNum: data.waitNum,
+                    waitOrder: data.waitOrder
+                });
             } else {
                 //登录失败
-                var info = '系统异常，非常遗憾！';
+                info = '系统异常，非常遗憾！';
                 if (msg.flag === 'FAILURE_WAIT') {
                     info = '服务器爆满，请耐心等待……';
                 }
-                thisCom.setLabel(info);
+            }
+            thisCom.setLabel(info);
+        });
+        _message.listen(waitInfo, 'CUSTOMER_LOGOUT', function(thisCom, msg) {
+            if (msg.flag === 'SUCCESS') {
+                var data = msg.data;
+                var waitOrder = thisModule.getContext('waitOrder');
+                if (waitOrder && data.waitOrder > -1 && waitOrder > data.waitOrder) {
+                    var waitNum = thisModule.getContext('waitNum');
+                    waitNum--;
+                    thisModule.setContext({
+                        waitNum: waitNum
+                    });
+                    info = '前面有' + waitNum + '玩家等候中...';
+                    thisCom.setLabel(info);
+                }
             }
         });
+//        _message.listen(waitInfo, 'CUSTOMER_WAIT', function(thisCom, msg) {
+//            if (msg.flag === 'SUCCESS') {
+//                var data = msg.data;
+//                waitPanel.hide();
+//                chatPanel.show();
+//                var customerInfo = thisModule.findChildByKey('customer-info');
+//                customerInfo.setLabel(data.nickName);
+//                var charForm = thisModule.findChildByKey('chat-form');
+//                charForm.setData('receiveId', data.serviceId);
+//                //添加欢迎消息
+//                var message = {
+//                    messageId: 1,
+//                    message: '工号:' + data.serviceId + ' ' + data.serviceName + '为您服务！有什么可以帮助您?',
+//                    sendId: data.serviceId,
+//                    receiveId: data.userId,
+//                    createTime: _utils.getDateTime()
+//                };
+//                chatMessageList.addItemData(message);
+//                chatMessageList.scrollBottom();
+//            } else {
+//                //登录失败
+//                var info = '系统异常，非常遗憾！';
+//                if (msg.flag === 'FAILURE_WAIT') {
+//                    info = '服务器爆满，请耐心等待……';
+//                }
+//                thisCom.setLabel(info);
+//            }
+//        });
         //
         var sendButton = thisModule.findChildByKey('send-button');
         _event.bind(sendButton, 'click', function(thisCom) {
@@ -88,7 +121,10 @@ define(function(require) {
             var charForm = thisModule.findChildByKey('chat-form');
             var msg = charForm.getData();
             msg.act = 'CUSTOMER_LOGOUT';
-            msg.serviceId = msg.receiveId;
+            var waitOrder = thisModule.getContext('waitOrder');
+            if (waitOrder) {
+                msg.waitOrder = waitOrder;
+            }
             _message.send(msg);
             //
             _yy.clearSession();
@@ -101,12 +137,15 @@ define(function(require) {
         $(window).unload(function() {
             var charForm = thisModule.findChildByKey('chat-form');
             var msg = charForm.getData();
+            var waitOrder = thisModule.getContext('waitOrder');
+            if (waitOrder) {
+                msg.waitOrder = waitOrder;
+            }
             msg.act = 'CUSTOMER_LOGOUT';
-            msg.serviceId = msg.receiveId;
             _message.send(msg);
         });
         //连接
-        _message.send({act: 'CONNECT_SERVICE'});
+        _message.send({act: 'CUSTOMER_WAIT'});
     };
     return self;
 });

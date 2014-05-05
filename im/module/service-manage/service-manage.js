@@ -11,8 +11,8 @@ define(function(require) {
     var _utils = _yy.getUtils();
     self.init = function(thisModule) {
         //初始化列表
-        var userList = thisModule.findChildByKey('user-list');
-        userList.init({
+        var serviceList = thisModule.findChildByKey('service-list');
+        serviceList.init({
             key: 'userId',
             itemClazz: '',
             itemDataToHtml: function(itemData) {
@@ -31,7 +31,7 @@ define(function(require) {
                     var deleteButton = itemCom.findChildByKey(deleteButtonId);
                     _event.bind(deleteButton, 'click', function(thisCom) {
                         var msg = {
-                            act: 'DELETE_SERVICE_USER',
+                            act: 'DELETE_SERVICE',
                             userName: itemCom.key
                         };
                         _message.send(msg);
@@ -40,19 +40,19 @@ define(function(require) {
             }
         });
         //帐号列表消息事件
-        _message.listen(userList, 'INSERT_SERVICE_USER', function(thisCom, msg) {
+        _message.listen(serviceList, 'INSERT_SERVICE', function(thisCom, msg) {
             if (msg.flag === 'SUCCESS') {
                 var data = msg.data;
                 thisCom.addItemDataFirst(data);
             }
         });
-        _message.listen(userList, 'DELETE_SERVICE_USER', function(thisCom, msg) {
+        _message.listen(serviceList, 'DELETE_SERVICE', function(thisCom, msg) {
             if (msg.flag === 'SUCCESS') {
                 var itemId = msg.data.itemId;
                 thisCom.removeItem(itemId);
             }
         });
-        _message.listen(userList, 'INQUIRE_SERVICE_USER', function(thisCom, msg) {
+        _message.listen(serviceList, 'INQUIRE_SERVICE', function(thisCom, msg) {
             if (msg.flag === 'SUCCESS') {
                 var data = msg.data;
                 if (data.length > 0) {
@@ -74,13 +74,13 @@ define(function(require) {
             }
         });
         //添加帐号表单按钮
-        var toUserFormButton = thisModule.findChildByKey('to-user-form-button');
-        _event.bind(toUserFormButton, 'click', function(thisCom) {
-            var userForm = thisModule.findChildByKey('user-form');
-            if (userForm.isVisible()) {
-                userForm.hide();
+        var toServiceFormButton = thisModule.findChildByKey('to-service-form-button');
+        _event.bind(toServiceFormButton, 'click', function(thisCom) {
+            var serviceForm = thisModule.findChildByKey('service-form');
+            if (serviceForm.isVisible()) {
+                serviceForm.hide();
             } else {
-                userForm.show();
+                serviceForm.show();
             }
         });
         //新增帐号按钮
@@ -116,20 +116,20 @@ define(function(require) {
                 }
             }
         };
-        var insertUserButton = thisModule.findChildByKey('insert-user-button');
-        _event.bind(insertUserButton, 'click', function(thisCom) {
-            var userForm = thisModule.findChildByKey('user-form');
-            var msg = userForm.getData();
+        var insertServiceButton = thisModule.findChildByKey('insert-service-button');
+        _event.bind(insertServiceButton, 'click', function(thisCom) {
+            var serviceForm = thisModule.findChildByKey('service-form');
+            var msg = serviceForm.getData();
             //必填检测
             var validate = _utils.validate(msg, userValidate);
             if (validate) {
-                msg.act = 'INSERT_SERVICE_USER';
+                msg.act = 'INSERT_SERVICE';
                 _message.send(msg);
             }
         });
         //页面初始化
         _message.send({
-            act: 'INQUIRE_SERVICE_USER',
+            act: 'INQUIRE_SERVICE',
             pageIndex: 1,
             pageSize: 10
         });
