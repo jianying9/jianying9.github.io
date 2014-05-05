@@ -10,12 +10,12 @@ define(function(require) {
         //默认加载pointPanel
         var pointPanel = thisModule.findChildByKey('point-panel');
         var toPointButton = thisModule.findChildByKey('to-point-button');
-        module.loadModule(pointPanel.id, 'point', function() {
-        });
-        thisModule.setContext({
-            visiblePanel: pointPanel,
-            visibleButton: toPointButton
-        });
+//        module.loadModule(pointPanel.id, 'point', function() {
+//        });
+//        thisModule.setContext({
+//            visiblePanel: pointPanel,
+//            visibleButton: toPointButton
+//        });
         //绑定导航按钮事件
         //积分按钮
         _event.bind(toPointButton, 'click', function(thisCom) {
