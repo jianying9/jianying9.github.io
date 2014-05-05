@@ -10,20 +10,19 @@ define(function(require) {
     var _message = _yy.getMessage();
     var _utils = _yy.getUtils();
     self.init = function(thisModule) {
-        thisModule.setContext({userId: '271411'});
-        var userId = _yy.getSession('userId');
-        var userName = _yy.getSession('userName');
-        document.title = userName;
+        var serviceId = _yy.getSession('serviceId');
+        var serviceName = _yy.getSession('serviceName');
+        document.title = serviceName;
         var serviceInfo = thisModule.findChildByKey('service-info');
-        serviceInfo.setLabel('工号:' + userId + ' 昵称:' + userName);
+        serviceInfo.setLabel('工号:' + serviceId + ' 昵称:' + serviceName);
         //初始化聊天列表
         var messageList = thisModule.findChildByKey('message-list');
         messageList.init({
-            key: 'userId',
+            key: 'customerId',
             itemClazz: 'hide',
             itemDataToHtml: function(itemData) {
-                var result = '<div class="chat_title">' + itemData.nickName + '</div>'
-                        + '<div id="' + itemData.userId + '-chat-message-list" class="list chat_message_list scroll_list" scroll="true"></div>';
+                var result = '<div class="chat_title">' + itemData.customerName + '</div>'
+                        + '<div id="' + itemData.customerId + '-chat-message-list" class="list chat_message_list scroll_list" scroll="true"></div>';
                 return result;
             },
             itemCompleted: function(itemCom) {
@@ -33,9 +32,8 @@ define(function(require) {
                     key: 'messageId',
                     itemClazz: '',
                     itemDataToHtml: function(itemData) {
-                        var serviceId = _yy.getSession('userId');
                         var result;
-                        if (itemData.receiveId === serviceId) {
+                        if (itemData.from === 'c') {
                             result = '<div class="chat_message_friend">';
                         } else {
                             result = '<div class="chat_message_me">';
@@ -53,33 +51,33 @@ define(function(require) {
         //初始化玩家列表
         var customerList = thisModule.findChildByKey('customer-list');
         customerList.init({
-            key: 'userId',
+            key: 'customerId',
             itemClazz: 'online',
             itemDataToHtml: function(itemData) {
-                var result = '<div class="inline_block w100">' + itemData.nickName + '</div>'
+                var result = '<div class="inline_block w100">' + itemData.customerName + '</div>'
                         + '<div class="customer_state"></div>';
 
                 return result;
             },
             itemCompleted: function(itemCom) {
                 _event.bind(itemCom, 'click', function(thisCom) {
-                    var userId = thisCom.key;
+                    var customerId = thisCom.key;
                     thisCom.selected();
                     //切换聊天窗口
-                    var messageItem = messageList.getItemByKey(userId);
+                    var messageItem = messageList.getItemByKey(customerId);
                     messageItem.selected();
                     //
-                    var chatListId = userId + '-chat-message-list';
+                    var chatListId = customerId + '-chat-message-list';
                     var chatList = messageItem.findChildByKey(chatListId);
                     chatList.initScroll();
                     //
-                    var charForm = thisModule.findChildByKey('chat-form');
-                    charForm.setData('receiveId', userId);
+                    var chatForm = thisModule.findChildByKey('chat-form');
+                    chatForm.setData('customerId', customerId);
                 });
             }
         });
         //
-        _message.listen(customerList, 'CONNECT_SERVICE', function(thisCom, msg) {
+        _message.listen(customerList, 'NEXT_CUSTOMER', function(thisCom, msg) {
             if (msg.flag === 'SUCCESS') {
                 var data = msg.data;
                 thisCom.addItemData(data);
@@ -87,13 +85,15 @@ define(function(require) {
                 var message = {
                     messageId: 1,
                     message: '工号:' + data.serviceId + ' ' + data.serviceName + '为您服务！有什么可以帮助您?',
-                    sendId: data.serviceId,
-                    receiveId: data.userId,
+                    customerId: data.customerId,
+                    serviceId: data.serviceId,
+                    from: 's',
+                    type: 'text',
                     createTime: _utils.getDateTime()
                 };
-                var messageItem = messageList.getItemByKey(data.userId);
+                var messageItem = messageList.getItemByKey(data.customerId);
                 if (messageItem) {
-                    var chatListId = data.userId + '-chat-message-list';
+                    var chatListId = data.customerId + '-chat-message-list';
                     var chatList = messageItem.findChildByKey(chatListId);
                     if (chatList) {
                         chatList.addItemData(message);
@@ -103,23 +103,28 @@ define(function(require) {
                 if (thisCom.size() === 1) {
                     thisCom.firstChild.$this.click();
                 }
+                if (thisCom.size() < 4) {
+                    _message.send({act: 'NEXT_CUSTOMER'});
+                }
             }
         });
         _message.listen(customerList, 'CUSTOMER_LOGOUT', function(thisCom, msg) {
             if (msg.flag === 'SUCCESS') {
                 var data = msg.data;
-                var customerItem = thisCom.getItemByKey(data.userId);
+                var customerItem = thisCom.getItemByKey(data.customerId);
                 customerItem.$this.removeClass('online');
                 var message = {
-                    messageId: 0,
+                    messageId: -1,
                     message: '玩家已离开',
-                    sendId: data.userId,
-                    receiveId: data.serviceId,
+                    customerId: data.customerId,
+                    serviceId: data.serviceId,
+                    from: 'c',
+                    type: 'text',
                     createTime: _utils.getDateTime()
                 };
-                var messageItem = messageList.getItemByKey(data.userId);
+                var messageItem = messageList.getItemByKey(data.customerId);
                 if (messageItem) {
-                    var chatListId = data.userId + '-chat-message-list';
+                    var chatListId = data.customerId + '-chat-message-list';
                     var chatList = messageItem.findChildByKey(chatListId);
                     if (chatList) {
                         chatList.addItemData(message);
@@ -128,16 +133,27 @@ define(function(require) {
                 }
             }
         });
-        _message.listen(messageList, 'SEND_MESSAGE', function(thisCom, msg) {
+        //
+        _message.listen(messageList, 'SEND_MESSAGE_FROM_SERVICE', function(thisCom, msg) {
             if (msg.flag === 'SUCCESS') {
                 var data = msg.data;
-                var customerId;
-                var serviceId = _yy.getSession('userId');
-                if (data.sendId === serviceId) {
-                    customerId = data.receiveId;
-                } else {
-                    customerId = data.sendId;
+                var customerId = data.customerId;
+                var messageItem = thisCom.getItemByKey(customerId);
+                if (messageItem) {
+                    var chatListId = customerId + '-chat-message-list';
+                    var chatList = messageItem.findChildByKey(chatListId);
+                    if (chatList) {
+                        chatList.addItemData(data);
+                        chatList.scrollBottom();
+                    }
                 }
+            }
+        });
+        //
+        _message.listen(messageList, 'SEND_MESSAGE_FROM_CUSTOMER', function(thisCom, msg) {
+            if (msg.flag === 'SUCCESS') {
+                var data = msg.data;
+                var customerId = data.customerId;
                 var messageItem = thisCom.getItemByKey(customerId);
                 if (messageItem) {
                     var chatListId = customerId + '-chat-message-list';
@@ -154,7 +170,7 @@ define(function(require) {
         _event.bind(sendButton, 'click', function(thisCom) {
             var chatForm = thisModule.findChildByKey('chat-form');
             var msg = chatForm.getData();
-            msg.act = 'SEND_MESSAGE';
+            msg.act = 'SEND_MESSAGE_FROM_SERVICE';
             _message.send(msg);
             chatForm.setData('message', '');
         });
@@ -232,6 +248,8 @@ define(function(require) {
             document.title = 'im-客服';
             _module.loadModule('', 'service-login');
         });
+        //主动获取玩家
+        _message.send({act: 'NEXT_CUSTOMER'});
     };
     return self;
 });

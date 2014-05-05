@@ -12,14 +12,14 @@ define(function(require) {
     self.init = function(thisModule) {
         //新增帐号按钮
         var loginValidate = {
-            userId: {
+            serviceId: {
                 success: function() {
-                    var infoUserId = thisModule.findChildByKey('info-user-id');
-                    infoUserId.setLabel('');
+                    var infoId = thisModule.findChildByKey('info-id');
+                    infoId.setLabel('');
                 },
                 faliure: function() {
-                    var infoUserId = thisModule.findChildByKey('info-user-id');
-                    infoUserId.setLabel('帐号不能为空');
+                    var infoId = thisModule.findChildByKey('info-id');
+                    infoId.setLabel('帐号不能为空');
                 }
             }
         };
@@ -46,7 +46,7 @@ define(function(require) {
                 //登录失败
                 var infoLogin = thisModule.findChildByKey('info-login');
                 var info ='登录失败';
-                if(msg.flag === 'FAILURE_USER_ID_NOT_EXIST') {
+                if(msg.flag === 'FAILURE_ID_NOT_EXIST') {
                     info = '用户不存在';
                 }
                 infoLogin.setLabel(info);

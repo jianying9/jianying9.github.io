@@ -12,14 +12,14 @@ define(function(require) {
     self.init = function(thisModule) {
         //新增帐号按钮
         var loginValidate = {
-            userId: {
+            serviceId: {
                 success: function() {
-                    var infoUserId = thisModule.findChildByKey('info-user-id');
-                    infoUserId.setLabel('');
+                    var infoId = thisModule.findChildByKey('info-id');
+                    infoId.setLabel('');
                 },
                 faliure: function() {
-                    var infoUserId = thisModule.findChildByKey('info-user-id');
-                    infoUserId.setLabel('帐号不能为空');
+                    var infoId = thisModule.findChildByKey('info-id');
+                    infoId.setLabel('帐号不能为空');
                 }
             },
             password: {

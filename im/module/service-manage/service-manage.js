@@ -13,14 +13,14 @@ define(function(require) {
         //初始化列表
         var serviceList = thisModule.findChildByKey('service-list');
         serviceList.init({
-            key: 'userId',
+            key: 'serviceId',
             itemClazz: '',
             itemDataToHtml: function(itemData) {
-                var result = '<div class="inline_block w200">' + itemData.userId + '</div>'
-                        + '<div class="inline_block w200">' + itemData.userName + '</div>'
+                var result = '<div class="inline_block w200">' + itemData.serviceId + '</div>'
+                        + '<div class="inline_block w200">' + itemData.serviceName + '</div>'
                         + '<div class="inline_block w200">' + itemData.type + '</div>';
                 if (itemData.type !== 'ADMIN') {
-                    result += '<div id="' + itemData.userId + '-delete-button" class="button link float_right">删除</div>';
+                    result += '<div id="' + itemData.serviceId + '-delete-button" class="button link float_right">删除</div>';
                 }
                 return result;
             },
@@ -32,7 +32,7 @@ define(function(require) {
                     _event.bind(deleteButton, 'click', function(thisCom) {
                         var msg = {
                             act: 'DELETE_SERVICE',
-                            userName: itemCom.key
+                            serviceId: itemCom.key
                         };
                         _message.send(msg);
                     });
@@ -48,8 +48,8 @@ define(function(require) {
         });
         _message.listen(serviceList, 'DELETE_SERVICE', function(thisCom, msg) {
             if (msg.flag === 'SUCCESS') {
-                var itemId = msg.data.itemId;
-                thisCom.removeItem(itemId);
+                var serviceId = msg.data.serviceId;
+                thisCom.removeItem(serviceId);
             }
         });
         _message.listen(serviceList, 'INQUIRE_SERVICE', function(thisCom, msg) {
@@ -85,24 +85,24 @@ define(function(require) {
         });
         //新增帐号按钮
         var userValidate = {
-            userId: {
+            serviceId: {
                 success: function() {
-                    var infoUserId = thisModule.findChildByKey('info-user-id');
-                    infoUserId.setLabel('');
+                    var infoId = thisModule.findChildByKey('info-id');
+                    infoId.setLabel('');
                 },
                 faliure: function() {
-                    var infoUserId = thisModule.findChildByKey('info-user-id');
-                    infoUserId.setLabel('帐号不能为空');
+                    var infoId = thisModule.findChildByKey('info-id');
+                    infoId.setLabel('帐号不能为空');
                 }
             },
-            userName: {
+            serviceName: {
                 success: function() {
-                    var infoUserName = thisModule.findChildByKey('info-user-name');
-                    infoUserName.setLabel('');
+                    var infoName = thisModule.findChildByKey('info-name');
+                    infoName.setLabel('');
                 },
                 faliure: function() {
-                    var infoUserName = thisModule.findChildByKey('info-user-name');
-                    infoUserName.setLabel('姓名不能为空');
+                    var infoName = thisModule.findChildByKey('info-name');
+                    infoName.setLabel('姓名不能为空');
                 }
             },
             type: {
