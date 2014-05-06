@@ -77,7 +77,7 @@ define(function(require) {
             }
         });
         //
-        _message.listen(customerList, 'NEXT_CUSTOMER', function(thisCom, msg) {
+        _message.listen(customerList, 'ALLOT_WAIT_CUSTOMER', function(thisCom, msg) {
             if (msg.flag === 'SUCCESS') {
                 var data = msg.data;
                 thisCom.addItemData(data);
@@ -102,9 +102,6 @@ define(function(require) {
                 }
                 if (thisCom.size() === 1) {
                     thisCom.firstChild.$this.click();
-                }
-                if (thisCom.size() < 4) {
-                    _message.send({act: 'NEXT_CUSTOMER'});
                 }
             }
         });
@@ -248,8 +245,6 @@ define(function(require) {
             document.title = 'im-客服';
             _module.loadModule('', 'service-login');
         });
-        //主动获取玩家
-        _message.send({act: 'NEXT_CUSTOMER'});
     };
     return self;
 });

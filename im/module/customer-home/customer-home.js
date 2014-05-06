@@ -78,7 +78,7 @@ define(function(require) {
             }
         });
         //
-        _message.listen(waitInfo, 'NEXT_CUSTOMER', function(thisCom, msg) {
+        _message.listen(waitInfo, 'ALLOT_WAIT_CUSTOMER', function(thisCom, msg) {
             if (msg.flag === 'SUCCESS') {
                 var data = msg.data;
                 waitPanel.hide();
