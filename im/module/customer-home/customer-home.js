@@ -72,7 +72,7 @@ define(function(require) {
                     thisModule.setContext({
                         waitNum: waitNum
                     });
-                    info = '前面有' + waitNum + '玩家等候中...';
+                    var info = '前面有' + waitNum + '玩家等候中...';
                     thisCom.setLabel(info);
                 }
             }
@@ -81,24 +81,38 @@ define(function(require) {
         _message.listen(waitInfo, 'ALLOT_WAIT_CUSTOMER', function(thisCom, msg) {
             if (msg.flag === 'SUCCESS') {
                 var data = msg.data;
-                waitPanel.hide();
-                chatPanel.show();
-                var customerInfo = thisModule.findChildByKey('customer-info');
-                customerInfo.setLabel(data.customerName);
-                var charForm = thisModule.findChildByKey('chat-form');
-                charForm.setData('serviceId', data.serviceId);
-                //添加欢迎消息
-                var message = {
-                    messageId: 1,
-                    message: '工号:' + data.serviceId + ' ' + data.serviceName + '为您服务！有什么可以帮助您?',
-                    serviceId: data.serviceId,
-                    customerId: data.customerId,
-                    type: 'text',
-                    from: 's',
-                    createTime: _utils.getDateTime()
-                };
-                chatMessageList.addItemData(message);
-                chatMessageList.scrollBottom();
+                var customerId = _yy.getSession('customerId');
+                if (customerId === data.customerId) {
+                    waitPanel.hide();
+                    chatPanel.show();
+                    var customerInfo = thisModule.findChildByKey('customer-info');
+                    customerInfo.setLabel(data.customerName);
+                    var charForm = thisModule.findChildByKey('chat-form');
+                    charForm.setData('serviceId', data.serviceId);
+                    //添加欢迎消息
+                    var message = {
+                        messageId: 1,
+                        message: '工号:' + data.serviceId + ' ' + data.serviceName + '为您服务！有什么可以帮助您?',
+                        serviceId: data.serviceId,
+                        customerId: data.customerId,
+                        type: 'text',
+                        from: 's',
+                        createTime: _utils.getDateTime()
+                    };
+                    chatMessageList.addItemData(message);
+                    chatMessageList.scrollBottom();
+                } else {
+                    var waitOrder = thisModule.getContext('waitOrder');
+                    if (waitOrder && data.waitOrder > -1 && waitOrder > data.waitOrder) {
+                        var waitNum = thisModule.getContext('waitNum');
+                        waitNum--;
+                        thisModule.setContext({
+                            waitNum: waitNum
+                        });
+                        var info = '前面有' + waitNum + '玩家等候中...';
+                        thisCom.setLabel(info);
+                    }
+                }
             }
         });
         //
