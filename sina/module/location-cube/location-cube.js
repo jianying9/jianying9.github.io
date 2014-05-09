@@ -15,13 +15,26 @@ define(function(require) {
             if (msg.flag === 'SUCCESS') {
                 var data = msg.data;
                 if (data.length > 0) {
-                    var locationArray = new Array(data.length);
+                    var locationArray = new Array(data.length + 1);
+                    var location;
+                    var num;
+                    var otherName = '南海诸岛';
+                    var otherValue = 0;
                     for (var index = 0; index < data.length; index++) {
+                        location = data[index].location;
+                        num = data[index].num;
+                        if (location === '其他' || location === '海外') {
+                            otherValue += num;
+                        }
                         locationArray[index] = {
-                            name: data[index].location,
-                            value: data[index].num
+                            name: location,
+                            value: num
                         };
                     }
+                    locationArray[locationArray.length - 1] = {
+                        name: otherName,
+                        value: otherValue
+                    };
                     locationChart.setOption({
                         title: {
                             text: 'sina地区分布统计'
@@ -40,7 +53,7 @@ define(function(require) {
                         },
                         dataRange: {
                             min: 0,
-                            max: 30000,
+                            max: 60000,
                             text: ['高', '低'], // 文本，默认为数值文本
                             calculable: true
                         },
