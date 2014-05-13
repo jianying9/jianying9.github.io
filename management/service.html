@@ -4,13 +4,13 @@
         <meta charset="utf-8">
         <meta name="renderer" content="webkit|ie-comp|ie-stand">
         <meta http-equiv="content-type" content="text/html;charset=utf-8">
-        <title>im-客服</title>
+        <title>在线接口文档</title>
         <script src="../libs/require/require.js"></script>
     </head>
     <body class="global_background">
         <script>
 //            var v = new Date().getTime();
-            var v = 2;
+            var v = 9;
             require.config({
                 packages: [
                     {
@@ -29,30 +29,21 @@
                         main: 'yy'
                     },
                     {
-                        name: 'service-login',
-                        location: './module/service-login',
-                        main: 'service-login'
+                        name: 'home',
+                        location: './module/home',
+                        main: 'home'
                     },
                     {
-                        name: 'service-home',
-                        location: './module/service-home',
-                        main: 'service-home'
+                        name: 'info',
+                        location: './module/info',
+                        main: 'info'
                     }
                 ],
                 paths: {
-                    'crypto.core': '../libs/crypto/components/core',
-                    'crypto.md5': '../libs/crypto/components/md5',
                     'jquery.mousewheel': '../libs/jquery/mousewheel/jquery.mousewheel-3.0.6',
                     'jquery.datepicker': '../libs/jquery/datepicker/jquery-ui-1.10.3.datepicker'
                 },
                 shim: {
-                    'crypto.core': {
-                        exports: 'CryptoJS'
-                    },
-                    'crypto.md5': {
-                        deps: ['crypto.core'],
-                        exports: 'CryptoJS.MD5'
-                    },
                     'jquery.mousewheel': {
                         deps: ['jquery'],
                         exports: 'jQuery.fn.mousewheel'
@@ -77,7 +68,7 @@
                 var sinaLink = document.createElement("link");
                 sinaLink.type = "text/css";
                 sinaLink.rel = "stylesheet";
-                sinaLink.href = 'stylesheets/im.css' + '?v=' + v;
+                sinaLink.href = 'stylesheets/management.css' + '?v=' + v;
                 document.getElementsByTagName("head")[0].appendChild(sinaLink);
 
                 var yyLink = document.createElement("link");
@@ -85,9 +76,18 @@
                 yyLink.rel = "stylesheet";
                 yyLink.href = '../libs/yy/stylesheets/yy.css' + '?v=' + v;
                 document.getElementsByTagName("head")[0].appendChild(yyLink);
-                //加载模块
-                module.loadModule('', 'service-login', function() {
-                });
+                //解析参数
+                var paras = yy.getUrlPara();
+                var actionName = paras.actionName;
+                if (!actionName) {
+                    $('body').append("no actionName...");
+                } else {
+                    document.title = actionName;
+                    yy.setSession(paras);
+                    //加载模块
+                    module.loadModule('', 'info', function() {
+                    });
+                }
                 yy.setConfig({
                     httpServer: 'http://192.168.59.99:8090/im-server/service.io',
                     webSocketServer: 'ws://192.168.59.99:8090/im-server/service.io'
