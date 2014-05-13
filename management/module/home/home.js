@@ -51,7 +51,7 @@ define(function(require) {
             itemClazz: '',
             itemDataToHtml: function(itemData) {
                 var result = '<div class="actionName">' + itemData.actionName + '</div>'
-                        + '<div class="description">' + itemData.description + '</div>';
+                        + '<div class="description">' + itemData.desc + '</div>';
                 return result;
             },
             itemCompleted: function(itemCom) {

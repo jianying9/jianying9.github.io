@@ -19,7 +19,7 @@ define(function(require) {
                 var result = '<div>' + itemData.must + '</div>'
                         + '<div>' + itemData.name + '</div>'
                         + '<div>' + itemData.type + '</div>'
-                        + '<div>' + itemData.description + '</div>';
+                        + '<div>' + itemData.desc + '</div>';
                 return result;
             }
         });
@@ -31,7 +31,7 @@ define(function(require) {
             itemDataToHtml: function(itemData) {
                 var result = '<div>' + itemData.name + '</div>'
                         + '<div>' + itemData.type + '</div>'
-                        + '<div>' + itemData.description + '</div>';
+                        + '<div>' + itemData.desc + '</div>';
                 return result;
             }
         });
@@ -42,32 +42,17 @@ define(function(require) {
                 var actionNameLabel = thisModule.findChildByKey('action-name-label');
                 actionNameLabel.setLabel(data.actionName);
                 var descriptionLabel = thisModule.findChildByKey('description-label');
-                descriptionLabel.setLabel(data.description);
+                descriptionLabel.setLabel(data.desc);
                 //
-                var importantParameter = data.importantParameter;
-                for (var index = 0; index < importantParameter.length; index++) {
-                    importantParameter[index].must = '是';
-                }
-                requestList.loadData(importantParameter);
+                requestList.loadData(data.requestConfigs);
                 //
-                var minorParameter = data.minorParameter;
-                for (var index = 0; index < minorParameter.length; index++) {
-                    minorParameter[index].must = '否';
-                }
-                requestList.loadData(minorParameter);
-                //
-                var returnParameter = data.returnParameter;
-                responseList.loadData(returnParameter);
+                responseList.loadData(data.responseConfigs);
                 //动态渲染测试表单
                 var testRequestForm = thisModule.findChildByKey('test-request-form');
                 var inputHtml = '';
-                for (var index = 0; index < importantParameter.length; index++) {
-                    inputHtml += '<div class="form_label">' + importantParameter[index].name + ':</div>'
-                            + '<input name="' + importantParameter[index].name + '" value="" />';
-                }
-                for (var index = 0; index < minorParameter.length; index++) {
-                    inputHtml += '<div class="form_label">' + minorParameter[index].name + ':</div>'
-                            + '<input name="' + minorParameter[index].name + '" value="" />';
+                for (var index = 0; index < data.requestConfigs.length; index++) {
+                    inputHtml += '<div class="form_label">' + data.requestConfigs[index].name + ':</div>'
+                            + '<input name="' + data.requestConfigs[index].name + '" value="" />';
                 }
                 testRequestForm.$this.append(inputHtml);
                 testRequestForm.init();
