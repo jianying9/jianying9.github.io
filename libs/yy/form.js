@@ -10,20 +10,22 @@ define(function(require) {
         _extend.$fields = {};
         _extend.$files = {};
         _extend.lastData = {};
-        //查找输入项
-        var $fields = component.$this.children('input,textarea');
-        $fields.each(function() {
-            var $this = $(this);
-            var name = $this.attr('name');
-            if (name) {
-                var type = $this.attr('type');
-                if (type === 'file') {
-                    _extend.$files[name] = $this;
-                } else {
-                    _extend.$fields[name] = $this;
+        component.init = function() {
+            var that = this;
+            var $fields = that.$this.children('input,textarea');
+            $fields.each(function() {
+                var $this = $(this);
+                var name = $this.attr('name');
+                if (name) {
+                    var type = $this.attr('type');
+                    if (type === 'file') {
+                        that._extend.$files[name] = $this;
+                    } else {
+                        that._extend.$fields[name] = $this;
+                    }
                 }
-            }
-        });
+            });
+        };
         component.getFile = function(name) {
             var file;
             var $file = this._extend.$files[name];
@@ -78,6 +80,8 @@ define(function(require) {
                 $files[name].val('');
             }
         };
+        //初始化
+        component.init();
         return component;
     };
     return self;
