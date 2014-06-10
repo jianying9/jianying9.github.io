@@ -9,9 +9,9 @@ define(function(require) {
     var _event = _yy.getEvent();
     var _message = _yy.getMessage();
     self.init = function(thisModule) {
-        var numCubePanel = thisModule.findChildByKey('num-cube-panel');
+        var numCubePanel = thisModule.findByKey('num-cube-panel');
         var numChart = _echarts.init(numCubePanel.$this[0]);
-        var incrementCubePanel = thisModule.findChildByKey('increment-cube-panel');
+        var incrementCubePanel = thisModule.findByKey('increment-cube-panel');
         var incrementChart = _echarts.init(incrementCubePanel.$this[0]);
         //
         _message.listen(numCubePanel, 'INQUIRE_SINA_USER_CUBE', function(thisCom, msg) {
@@ -120,7 +120,7 @@ define(function(require) {
             }
         });
         //添加刷新按钮
-        var refreshButton = thisModule.findChildByKey('refresh-button');
+        var refreshButton = thisModule.findByKey('refresh-button');
         _event.bind(refreshButton, 'click', function(thisCom) {
             _message.send({
                 act: 'INQUIRE_SINA_USER_CUBE',

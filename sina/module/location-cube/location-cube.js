@@ -8,7 +8,7 @@ define(function(require) {
     var _event = _yy.getEvent();
     var _message = _yy.getMessage();
     self.init = function(thisModule) {
-        var locationCubePanel = thisModule.findChildByKey('location-cube-panel');
+        var locationCubePanel = thisModule.findByKey('location-cube-panel');
         var locationChart = _echarts.init(locationCubePanel.$this[0]);
         //
         _message.listen(locationCubePanel, 'INQUIRE_LOCATION_CUBE', function(thisCom, msg) {
@@ -73,7 +73,7 @@ define(function(require) {
             }
         });
         //添加刷新按钮
-        var refreshButton = thisModule.findChildByKey('refresh-button');
+        var refreshButton = thisModule.findByKey('refresh-button');
         _event.bind(refreshButton, 'click', function(thisCom) {
             _message.send({
                 act: 'INQUIRE_LOCATION_CUBE',

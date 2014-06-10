@@ -48,9 +48,7 @@ define(function(require) {
                 var $this = this.$this;
                 var scrollHeight = $this[0].scrollHeight;
                 var clientHeight = $this[0].clientHeight;
-                if (clientHeight < scrollHeight) {
-                    this._utils.initScroll(clientHeight, scrollHeight, this);
-                }
+                this._utils.initScroll(clientHeight, scrollHeight, this);
             }
         };
         component.scrollBottom = function() {

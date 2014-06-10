@@ -8,23 +8,23 @@ define(function(require) {
     var _message = yy.getMessage();
     self.init = function(thisModule) {
         //默认加载sinaUserPanel
-        var sinaUserPanel = thisModule.findChildByKey('sina-user-panel');
-        var toSinaUserButton = thisModule.findChildByKey('to-sina-user-button');
+        var sinaUserPanel = thisModule.findByKey('sina-user-panel');
+        var toSinaUserButton = thisModule.findByKey('to-sina-user-button');
         //spiderUserPanel
-        var spiderUserPanel = thisModule.findChildByKey('spider-user-panel');
-        var toSpiderUserButton = thisModule.findChildByKey('to-spider-user-button');
+        var spiderUserPanel = thisModule.findByKey('spider-user-panel');
+        var toSpiderUserButton = thisModule.findByKey('to-spider-user-button');
         //genderCubePanel
-        var genderCubePanel = thisModule.findChildByKey('gender-cube-panel');
-        var toGenderCubeButton = thisModule.findChildByKey('to-gender-cube-button');
+        var genderCubePanel = thisModule.findByKey('gender-cube-panel');
+        var toGenderCubeButton = thisModule.findByKey('to-gender-cube-button');
         //locationCubePanel
-        var locationCubePanel = thisModule.findChildByKey('location-cube-panel');
-        var toLocationCubeButton = thisModule.findChildByKey('to-location-cube-button');
+        var locationCubePanel = thisModule.findByKey('location-cube-panel');
+        var toLocationCubeButton = thisModule.findByKey('to-location-cube-button');
         //tagCubePanel
-        var tagCubePanel = thisModule.findChildByKey('tag-cube-panel');
-        var toTagCubeButton = thisModule.findChildByKey('to-tag-cube-button');
+        var tagCubePanel = thisModule.findByKey('tag-cube-panel');
+        var toTagCubeButton = thisModule.findByKey('to-tag-cube-button');
         //sinaUserCubePanel
-        var sinaUserCubePanel = thisModule.findChildByKey('sina-user-cube-panel');
-        var toSinaUserCubeButton = thisModule.findChildByKey('to-sina-user-cube-button');
+        var sinaUserCubePanel = thisModule.findByKey('sina-user-cube-panel');
+        var toSinaUserCubeButton = thisModule.findByKey('to-sina-user-cube-button');
         //导航集合
         var navs = [
             {
@@ -59,14 +59,13 @@ define(function(require) {
             }
         ];
         //默认页面
-        module.loadModule(locationCubePanel.id, 'location-cube', function() {
-        });
+        module.loadModule('location-cube', function() {
+        }, locationCubePanel);
         thisModule.setContext({
             visiblePanel: locationCubePanel,
             visibleButton: toLocationCubeButton
         });
         //绑定导航按钮事件
-        var panel;
         var btn;
         for (var index = 0; index < navs.length; index++) {
             btn = navs[index].btn;
@@ -90,8 +89,8 @@ define(function(require) {
                                 visiblePanel: thisPanel,
                                 visibleButton: thisBtn
                             });
-                            module.loadModule(thisPanel.id, moduleName, function() {
-                            });
+                            module.loadModule(moduleName, function() {
+                            }, thisPanel);
                             break;
                         }
                     }

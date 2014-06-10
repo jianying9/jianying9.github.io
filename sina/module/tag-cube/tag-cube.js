@@ -9,7 +9,7 @@ define(function(require) {
     var _event = _yy.getEvent();
     var _message = _yy.getMessage();
     self.init = function(thisModule) {
-        var tagCubePanel = thisModule.findChildByKey('tag-cube-panel');
+        var tagCubePanel = thisModule.findByKey('tag-cube-panel');
         var tagChart = _echarts.init(tagCubePanel.$this[0]);
         //
         _message.listen(tagCubePanel, 'INQUIRE_TAG_CUBE', function(thisCom, msg) {
@@ -71,7 +71,7 @@ define(function(require) {
             }
         });
         //添加刷新按钮
-        var refreshButton = thisModule.findChildByKey('refresh-button');
+        var refreshButton = thisModule.findByKey('refresh-button');
         _event.bind(refreshButton, 'click', function(thisCom) {
             _message.send({
                 act: 'INQUIRE_TAG_CUBE',

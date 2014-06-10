@@ -12,7 +12,7 @@ define(function(require) {
         _extend.lastData = {};
         component.init = function() {
             var that = this;
-            var $fields = that.$this.children('input,textarea');
+            var $fields = that.$this.find('input,textarea');
             $fields.each(function() {
                 var $this = $(this);
                 var name = $this.attr('name');
@@ -20,6 +20,11 @@ define(function(require) {
                     var type = $this.attr('type');
                     if (type === 'file') {
                         that._extend.$files[name] = $this;
+                    } else if (type === 'radio') {
+                        var checked = $this.prop('checked');
+                        if(checked) {
+                            that._extend.$fields[name] = $this;
+                        }
                     } else {
                         that._extend.$fields[name] = $this;
                     }

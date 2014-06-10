@@ -9,7 +9,7 @@ define(function(require) {
     var _event = _yy.getEvent();
     var _message = _yy.getMessage();
     self.init = function(thisModule) {
-        var genderCubePanel = thisModule.findChildByKey('gender-cube-panel');
+        var genderCubePanel = thisModule.findByKey('gender-cube-panel');
         var genderChart = _echarts.init(genderCubePanel.$this[0]);
         genderChart.setOption({
             title: {
@@ -68,7 +68,7 @@ define(function(require) {
             }
         });
         //添加刷新按钮
-        var refreshButton = thisModule.findChildByKey('refresh-button');
+        var refreshButton = thisModule.findByKey('refresh-button');
         _event.bind(refreshButton, 'click', function(thisCom) {
             _message.send({
                 act: 'INQUIRE_GENDER_CUBE'

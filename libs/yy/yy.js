@@ -37,7 +37,7 @@ define(function(require) {
         webSocketServer: 'ws://127.0.0.1/service.io',
         logLevel: 4,
         bodyWidth: el.clientWidth,
-        bodyHeight: el.clientHeight,
+        bodyHeight: el.clientHeight - 1,
         version: 1
     };
     var $body = $('body');
@@ -162,6 +162,7 @@ define(function(require) {
     var _root = {
         type: 'root',
         id: rootId,
+        key: 'root',
         $this: $body,
         children: {},
         extend: {}
@@ -181,11 +182,11 @@ define(function(require) {
         getDate: function() {
             var date = new Date();
             var month = date.getMonth() + 1;
-            if(month < 10) {
+            if (month < 10) {
                 month = '0' + month;
             }
             var day = date.getDate();
-            if(day < 10) {
+            if (day < 10) {
                 day = '0' + day;
             }
             var result = date.getFullYear() + '-' + month + '-' + day;
@@ -194,23 +195,23 @@ define(function(require) {
         getDateTime: function() {
             var date = new Date();
             var month = date.getMonth() + 1;
-            if(month < 10) {
+            if (month < 10) {
                 month = '0' + month;
             }
             var day = date.getDate();
-            if(day < 10) {
+            if (day < 10) {
                 day = '0' + day;
             }
             var hour = date.getHours();
-            if(hour < 10) {
+            if (hour < 10) {
                 hour = '0' + hour;
             }
             var minute = date.getMinutes();
-            if(minute < 10) {
+            if (minute < 10) {
                 minute = '0' + minute;
             }
             var second = date.getSeconds();
-            if(second < 10) {
+            if (second < 10) {
                 second = '0' + second;
             }
             var result = date.getFullYear() + '-' + month + '-'
@@ -243,10 +244,13 @@ define(function(require) {
         },
         initScroll: function(clientHeight, scrollHeight, component) {
             var _extend = component._extend;
-            _extend.scrollHeight = scrollHeight;
-            var sHeight = parseInt(Math.pow(clientHeight, 2) / scrollHeight);
-            _extend.seed = (scrollHeight - clientHeight) / (scrollHeight - sHeight);
-            _extend.sHeight = sHeight;
+            var sHeight = 0;
+            if (clientHeight < scrollHeight) {
+                _extend.scrollHeight = scrollHeight;
+                var sHeight = parseInt(Math.pow(clientHeight, 2) / scrollHeight);
+                _extend.seed = (scrollHeight - clientHeight) / (scrollHeight - sHeight);
+                _extend.sHeight = sHeight;
+            }
             _extend.$scroll.css({height: sHeight});
         },
         scrollTop: function(top, component) {
@@ -265,7 +269,7 @@ define(function(require) {
             var value;
             for (var name in config) {
                 value = data[name];
-                if (value === '') {
+                if (!value || value === '') {
                     result = false;
                     config[name].faliure();
                     break;
@@ -428,80 +432,46 @@ define(function(require) {
         getRoot: function() {
             return this._root;
         },
-        findChildById: function(id, parent) {
+        findChildByKey: function(parent, key) {
             var result;
             var child;
-            var children = this._root.children;
-            if (parent) {
-                children = parent.children;
-            }
-            for (var indexId in children) {
-                child = children[indexId];
-                if (indexId === id) {
-                    result = child;
-                    break;
-                } else {
-                    result = this.findChildById(id, child);
-                    if (result) {
-                        break;
-                    }
-                }
-            }
-            return result;
-        },
-        findChildByKey: function(key, parent) {
-            var result;
-            var child;
-            var children = this._root.children;
-            if (parent) {
-                children = parent.children;
-            }
+            var children = parent.children;
             for (var indexId in children) {
                 child = children[indexId];
                 if (child.key == key) {
                     result = child;
                     break;
-                } else {
-                    result = this.findChildByKey(key, child);
-                    if (result) {
+                }
+            }
+            return result;
+        },
+        findById: function(id, loader) {
+            var result;
+            if (!loader) {
+                loader = this._root;
+            }
+            if (id === loader.id) {
+                result = loader;
+            } else {
+                var child;
+                var children = loader.children;
+                //先扫描当前子节点
+                for (var indexId in children) {
+                    child = children[indexId];
+                    if (child.id == id) {
+                        result = child;
                         break;
                     }
                 }
-            }
-            return result;
-        },
-        findByKey: function(loaderId, key) {
-            var result;
-            //查找loader
-            var loader;
-            if (loaderId === this._root.id) {
-                loader = this._root;
-            } else {
-                loader = this.findChildById(loaderId, _root);
-            }
-//查找目标
-            if (loader) {
-                if (loader.key == key) {
-                    result = loader;
-                } else {
-                    result = this.findChildByKey(key, loader);
-                }
+                //如果当前子节点没有，则开始递归扫描
                 if (!result) {
-                    this._logger.warn('can not find component by key:' + key + ' in loaderId:' + loaderId);
-                }
-            } else {
-                this._logger.warn('can not find component by id:' + loaderId);
-            }
-            return result;
-        },
-        findById: function(id) {
-            var result;
-            if (id === this._root.id) {
-                result = this._root;
-            } else {
-                result = this.findChildById(id, this._root);
-                if (!result) {
-                    this._logger.warn('can not find component by id:' + id);
+                    for (var indexId in children) {
+                        child = children[indexId];
+                        result = this.findById(id, child);
+                        if (result) {
+                            break;
+                        }
+                    }
                 }
             }
             return result;
@@ -509,7 +479,6 @@ define(function(require) {
         create: function(ctx) {
             var config = require('./config');
             var _components = this;
-            var loaderId = ctx.loaderId;
             var parent = ctx.parent;
             if (ctx.type === 'skip') {
 //遍历所有子控件
@@ -519,7 +488,6 @@ define(function(require) {
                     var $child = ctx.$this.children('.' + type);
                     $child.each(function() {
                         _components.create({
-                            loaderId: loaderId,
                             type: type,
                             $this: $(this),
                             parent: parent
@@ -530,7 +498,6 @@ define(function(require) {
                 var key = ctx.$this.attr('id');
                 var id = _components._index.nextIndex();
                 var component = {
-                    loaderId: loaderId,
                     id: id,
                     type: ctx.type,
                     $this: ctx.$this,
@@ -563,7 +530,7 @@ define(function(require) {
                     return this.$this.is(':visible');
                 };
                 component.findChildByKey = function(key) {
-                    return this._components.findChildByKey(key, this);
+                    return this._components.findChildByKey(this, key);
                 };
                 component.removeChildren = function() {
                     var child;
@@ -580,6 +547,14 @@ define(function(require) {
                     _components._message.remove(this);
                     delete this.parent.children[this.id];
                     this.$this.remove();
+                    //重新判断父节点的firstChild
+                    if(this.parent.firstChild === this) {
+                        this.parent.firstChild = null;
+                        for (var id in this.parent.children) {
+                            this.parent.firstChild = this.parent.children[id];
+                            break;
+                        }
+                    }
                 };
                 //修改parent的firstChild
                 if (!parent.firstChild) {
@@ -592,7 +567,6 @@ define(function(require) {
                     var $child = ctx.$this.children('.' + type);
                     $child.each(function() {
                         _components.create({
-                            loaderId: loaderId,
                             type: type,
                             $this: $(this),
                             parent: component
@@ -611,7 +585,7 @@ define(function(require) {
     _root.$this.click(function(event) {
         var target = event.target;
         while (target.id === '') {
-            target = target.parentElement;
+            target = target.parentNode;
         }
         var targetId = target.id;
         var component = _components.findById(targetId);
@@ -625,7 +599,7 @@ define(function(require) {
     _root.$this.dblclick(function(event) {
         var target = event.target;
         while (target.id === '') {
-            target = target.parentElement;
+            target = target.parentNode;
         }
         var targetId = target.id;
         var component = _components.findById(targetId);
@@ -639,7 +613,7 @@ define(function(require) {
     _root.$this.mousedown(function(event) {
         var target = event.target;
         while (target.id === '') {
-            target = target.parentElement;
+            target = target.parentNode;
         }
         var targetId = target.id;
         var component = _components.findById(targetId);
@@ -653,7 +627,7 @@ define(function(require) {
     _root.$this.mouseup(function(event) {
         var target = event.target;
         while (target.id === '') {
-            target = target.parentElement;
+            target = target.parentNode;
         }
         var targetId = target.id;
         var component = _components.findById(targetId);
@@ -667,7 +641,7 @@ define(function(require) {
     _root.$this.mousewheel(function(event, delta, deltaX, deltaY) {
         var target = event.target;
         while (target.id === '') {
-            target = target.parentElement;
+            target = target.parentNode;
         }
         var targetId = target.id;
         var component = _components.findById(targetId);
@@ -688,7 +662,7 @@ define(function(require) {
                 var target = event.target;
                 if (target.id) {
                     while (target.id === '') {
-                        target = target.parentElement;
+                        target = target.parentNode;
                     }
                     var targetId = target.id;
                     var component = _components.findById(targetId);

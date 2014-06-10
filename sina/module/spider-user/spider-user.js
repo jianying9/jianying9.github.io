@@ -11,7 +11,7 @@ define(function(require) {
     var _utils = _yy.getUtils();
     self.init = function(thisModule) {
         //初始化列表
-        var spiderList = thisModule.findChildByKey('spider-list');
+        var spiderList = thisModule.findByKey('spider-list');
         spiderList.init({
             key: 'userName',
             itemClazz: '',
@@ -65,9 +65,9 @@ define(function(require) {
             }
         });
         //添加帐号表单按钮
-        var toSpiderFormButton = thisModule.findChildByKey('to-spider-form-button');
+        var toSpiderFormButton = thisModule.findByKey('to-spider-form-button');
         _event.bind(toSpiderFormButton, 'click', function(thisCom) {
-            var spiderForm = thisModule.findChildByKey('spider-form');
+            var spiderForm = thisModule.findByKey('spider-form');
             if (spiderForm.isVisible()) {
                 spiderForm.hide();
             } else {
@@ -75,7 +75,7 @@ define(function(require) {
             }
         });
         //刷新cookie按钮
-        var refreshCookieButton = thisModule.findChildByKey('refresh-cookie-button');
+        var refreshCookieButton = thisModule.findByKey('refresh-cookie-button');
         _event.bind(refreshCookieButton, 'click', function(thisCom) {
             _message.send({
                 act: 'UPDATE_OLDEST_SINA_USER',
@@ -86,28 +86,28 @@ define(function(require) {
         var spiderValidate = {
             userName: {
                 success: function() {
-                    var infoUserName = thisModule.findChildByKey('info-user-name');
+                    var infoUserName = thisModule.findByKey('info-user-name');
                     infoUserName.setLabel('');
                 },
                 faliure: function() {
-                    var infoUserName = thisModule.findChildByKey('info-user-name');
+                    var infoUserName = thisModule.findByKey('info-user-name');
                     infoUserName.setLabel('帐号不能为空');
                 }
             },
             password: {
                 success: function() {
-                    var infoPassword = thisModule.findChildByKey('info-password');
+                    var infoPassword = thisModule.findByKey('info-password');
                     infoPassword.setLabel('');
                 },
                 faliure: function() {
-                    var infoPassword = thisModule.findChildByKey('info-password');
+                    var infoPassword = thisModule.findByKey('info-password');
                     infoPassword.setLabel('密码不能为空');
                 }
             }
         };
-        var insertSpiderButton = thisModule.findChildByKey('insert-spider-button');
+        var insertSpiderButton = thisModule.findByKey('insert-spider-button');
         _event.bind(insertSpiderButton, 'click', function(thisCom) {
-            var spiderForm = thisModule.findChildByKey('spider-form');
+            var spiderForm = thisModule.findByKey('spider-form');
             var msg = spiderForm.getData();
             //必填检测
             var validate = _utils.validate(msg, spiderValidate);

@@ -54,9 +54,7 @@ define(function(require) {
                 var $this = this.$this;
                 var scrollHeight = $this[0].scrollHeight;
                 var clientHeight = $this[0].clientHeight;
-                if (clientHeight < scrollHeight) {
-                    this._utils.initScroll(clientHeight, scrollHeight, this);
-                }
+                this._utils.initScroll(clientHeight, scrollHeight, this);
             }
         };
         component.scrollBottom = function() {
@@ -181,7 +179,6 @@ define(function(require) {
                 var id = $this.attr('id');
                 if (!that.children[id]) {
                     item = that._components.create({
-                        loaderId: that.loaderId,
                         type: 'list_item',
                         $this: $this,
                         parent: that
@@ -223,7 +220,6 @@ define(function(require) {
             that.$this.append(html);
             //
             item = that._components.create({
-                loaderId: that.loaderId,
                 type: 'list_item',
                 $this: $('#' + keyValue),
                 parent: that
@@ -262,14 +258,13 @@ define(function(require) {
             html += '">';
             html += that._extend.itemDataToHtml(itemData);
             html += '</div>';
-            if(that.firstChild) {
+            if (that.firstChild) {
                 that.firstChild.$this.before(html);
             } else {
                 that.$this.append(html);
             }
             //
             item = that._components.create({
-                loaderId: that.loaderId,
                 type: 'list_item',
                 $this: $('#' + keyValue),
                 parent: that

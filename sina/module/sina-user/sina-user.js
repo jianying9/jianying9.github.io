@@ -8,7 +8,7 @@ define(function(require) {
     var _message = _yy.getMessage();
     var _utils = _yy.getUtils();
     self.init = function(thisModule) {
-        var sinaList = thisModule.findChildByKey('sina-list');
+        var sinaList = thisModule.findByKey('sina-list');
         sinaList.init({
             key: 'userId',
             itemClazz: '',
@@ -35,7 +35,7 @@ define(function(require) {
             }
         });
         //添加刷新按钮
-        var refreshButton = thisModule.findChildByKey('refresh-button');
+        var refreshButton = thisModule.findByKey('refresh-button');
         _event.bind(refreshButton, 'click', function(thisCom) {
             _message.send({
                 act: 'INQUIRE_SINA_USER',
@@ -44,7 +44,7 @@ define(function(require) {
             });
         });
         //停止按钮
-        var stopButton = thisModule.findChildByKey('stop-button');
+        var stopButton = thisModule.findByKey('stop-button');
         _event.bind(stopButton, 'click', function(thisCom) {
             _message.send({
                 act: 'UPDATE_OLDEST_SINA_USER',

@@ -7,6 +7,13 @@ define(function(require) {
             var data = this.parent._extend.data;
             return data[this.key];
         };
+        component.setData = function(name, value) {
+            var data = this.parent._extend.data;
+            var itemData = data[this.key];
+            if(itemData) {
+                itemData[name] = value;
+            }
+        };
         component.selected = function() {
             var $this = this.$this;
             var $that;

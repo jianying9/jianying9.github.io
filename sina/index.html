@@ -10,7 +10,7 @@
     </head>
     <body class="global_background">
         <script>
-            var v = 44;
+            var v = 45;
             require.config({
                 packages: [
                     {
@@ -112,8 +112,7 @@
                 yyLink.href = '../libs/yy/stylesheets/yy.css' + '?v=' + v;
                 document.getElementsByTagName("head")[0].appendChild(yyLink);
                 //加载模块
-                module.loadModule('', 'home', function() {
-                });
+                module.loadModule('home');
                 yy.setConfig({
                     httpServer: 'http://192.168.235.234:8080/sina-analyze/service.io',
                     webSocketServer: 'ws://192.168.235.234:8080/sina-analyze/service.io'
