@@ -85,12 +85,11 @@
                     document.title = actionName;
                     yy.setSession(paras);
                     //加载模块
-                    module.loadModule('', 'info', function() {
-                    });
+                    module.loadModule('info');
                 }
                 yy.setConfig({
-                    httpServer: 'http://192.168.19.137:7070/momi/service.io',
-                    webSocketServer: 'ws://192.168.19.137:7070/momi/service.io'
+                    httpServer: 'http://192.168.235.114:8080/momi/service.io',
+                    webSocketServer: 'ws://192.168.235.114:8080/momi/service.io'
                 });
             });
         </script>

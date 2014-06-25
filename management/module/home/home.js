@@ -10,16 +10,16 @@ define(function(require) {
     var _message = _yy.getMessage();
     var _utils = _yy.getUtils();
     self.init = function(thisModule) {
-        var md5Button = thisModule.findChildByKey('md5-button');
+        var md5Button = thisModule.findByKey('md5-button');
         _event.bind(md5Button, 'click', function(thisCom) {
-            var md5InputForm = thisModule.findChildByKey('md5-input-form');
-            var md5OutputForm = thisModule.findChildByKey('md5-output-form');
+            var md5InputForm = thisModule.findByKey('md5-input-form');
+            var md5OutputForm = thisModule.findByKey('md5-output-form');
             var inputData = md5InputForm.getData();
             var md5Text = CryptoJS.MD5(inputData.inputText).toString();
             md5OutputForm.setData('outputText', md5Text);
         });
         //
-        var groupList = thisModule.findChildByKey('group-list');
+        var groupList = thisModule.findByKey('group-list');
         groupList.init({
             key: 'groupName',
             itemClazz: '',
@@ -45,7 +45,7 @@ define(function(require) {
             }
         });
         //
-        var serviceList = thisModule.findChildByKey('service-list');
+        var serviceList = thisModule.findByKey('service-list');
         serviceList.init({
             key: 'actionName',
             itemClazz: '',

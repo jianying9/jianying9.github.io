@@ -11,7 +11,7 @@ define(function(require) {
     self.init = function(thisModule) {
         var actionName = _yy.getSession('actionName');
         //
-        var requestList = thisModule.findChildByKey('request-list');
+        var requestList = thisModule.findByKey('request-list');
         requestList.init({
             key: 'name',
             itemClazz: '',
@@ -24,7 +24,7 @@ define(function(require) {
             }
         });
         //
-        var responseList = thisModule.findChildByKey('response-list');
+        var responseList = thisModule.findByKey('response-list');
         responseList.init({
             key: 'name',
             itemClazz: '',
@@ -39,16 +39,16 @@ define(function(require) {
         _message.listen(thisModule, 'WOLF_INQUIRE_SERVICE_INFO', function(thisCom, msg) {
             if (msg.flag === 'SUCCESS') {
                 var data = msg.data;
-                var actionNameLabel = thisModule.findChildByKey('action-name-label');
+                var actionNameLabel = thisModule.findByKey('action-name-label');
                 actionNameLabel.setLabel(data.actionName);
-                var descriptionLabel = thisModule.findChildByKey('description-label');
+                var descriptionLabel = thisModule.findByKey('description-label');
                 descriptionLabel.setLabel(data.desc);
                 //
                 requestList.loadData(data.requestConfigs);
                 //
                 responseList.loadData(data.responseConfigs);
                 //动态渲染测试表单
-                var testRequestForm = thisModule.findChildByKey('test-request-form');
+                var testRequestForm = thisModule.findByKey('test-request-form');
                 var inputHtml = '';
                 for (var index = 0; index < data.requestConfigs.length; index++) {
                     inputHtml += '<div class="form_label">' + data.requestConfigs[index].name + ':</div>'
@@ -58,7 +58,7 @@ define(function(require) {
                 testRequestForm.init();
                 //
                 var actionName = _yy.getSession('actionName');
-                var testResponseForm = thisModule.findChildByKey('test-response-form');
+                var testResponseForm = thisModule.findByKey('test-response-form');
                 var _parse = function(json, indent) {
                     var result = '';
                     var type = typeof json;
@@ -113,7 +113,7 @@ define(function(require) {
                     thisCom.setData('responseData', responseData);
                 });
                 //
-                var testButton = thisModule.findChildByKey('test-button');
+                var testButton = thisModule.findByKey('test-button');
                 _event.bind(testButton, 'click', function(thisCom) {
                     var msg = testRequestForm.getData();
                     var actionName = _yy.getSession('actionName');

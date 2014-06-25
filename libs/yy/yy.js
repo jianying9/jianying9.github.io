@@ -291,7 +291,8 @@ define(function(require) {
         mouseup: {},
         mousemove: {},
         mousewheel: {},
-        enter: {},
+        keydown: {},
+//        keyup: {},
         bind: function(component, type, func) {
             if (this[type]) {
                 this[type][component.id] = func;
@@ -311,7 +312,8 @@ define(function(require) {
                 delete this.mouseup[id];
                 delete this.mousemove[id];
                 delete this.mousewheel[id];
-                delete this.enter[id];
+                delete this.keydown[id];
+//                delete this.keyup[id];
             }
         },
         getFunc: function(component, type) {
@@ -548,7 +550,7 @@ define(function(require) {
                     delete this.parent.children[this.id];
                     this.$this.remove();
                     //重新判断父节点的firstChild
-                    if(this.parent.firstChild === this) {
+                    if (this.parent.firstChild === this) {
                         this.parent.firstChild = null;
                         for (var id in this.parent.children) {
                             this.parent.firstChild = this.parent.children[id];
@@ -655,27 +657,34 @@ define(function(require) {
             }
         }
     });
-    _root.$this.keyup(function(event) {
-        if (!event.ctrlKey) {
-            var keyCode = event.keyCode;
-            if (keyCode === 13) {
-                var target = event.target;
-                if (target.id) {
-                    while (target.id === '') {
-                        target = target.parentNode;
-                    }
-                    var targetId = target.id;
-                    var component = _components.findById(targetId);
-                    if (component) {
-                        var func = _event.enter[component.id];
-                        if (func) {
-                            func(component, event);
-                        }
-                    }
-                }
+    _root.$this.keydown(function(event) {
+        var target = event.target;
+        while (target.id === '') {
+            target = target.parentNode;
+        }
+        var targetId = target.id;
+        var component = _components.findById(targetId);
+        if (component) {
+            var func = _event.keydown[component.id];
+            if (func) {
+                func(component, event);
             }
         }
     });
+//    _root.$this.keyup(function(event) {
+//        var target = event.target;
+//        while (target.id === '') {
+//            target = target.parentNode;
+//        }
+//        var targetId = target.id;
+//        var component = _components.findById(targetId);
+//        if (component) {
+//            var func = _event.keyup[component.id];
+//            if (func) {
+//                func(component, event);
+//            }
+//        }
+//    });
 //返回
     return self;
 });

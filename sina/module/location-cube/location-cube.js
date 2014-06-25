@@ -53,7 +53,7 @@ define(function(require) {
                         },
                         dataRange: {
                             min: 0,
-                            max: 60000,
+                            max: 150000,
                             text: ['高', '低'], // 文本，默认为数值文本
                             calculable: true
                         },
