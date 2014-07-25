@@ -1,5 +1,5 @@
 define(function(require) {
-    var _yy = require('yy');
+    var _yy = require('yy/yy');
     require('yy/panel');
     require('yy/button');
     var _echarts = require('echarts');
@@ -12,8 +12,8 @@ define(function(require) {
         var locationChart = _echarts.init(locationCubePanel.$this[0]);
         //
         _message.listen(locationCubePanel, 'INQUIRE_LOCATION_CUBE', function(thisCom, msg) {
-            if (msg.flag === 'SUCCESS') {
-                var data = msg.data;
+            if (msg.state === 'SUCCESS') {
+                var data = msg.data.list;
                 if (data.length > 0) {
                     var locationArray = new Array(data.length + 1);
                     var location;

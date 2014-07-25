@@ -6,28 +6,15 @@
         <meta name="renderer" content="webkit|ie-comp|ie-stand">
         <meta http-equiv="content-type" content="text/html;charset=utf-8">
         <title>jianying9</title>
-        <script src="../libs/require/require.js"></script>
+        <script src="http://192.168.235.114:8080/yy/min/libs/require/require.js"></script>
     </head>
     <body class="global_background">
         <script>
-            var v = 46;
+            var staticRootPath = "http://192.168.235.114:8080/yy/libs/";
+            var v = new Date().getTime();
+//            var v = 47;
             require.config({
                 packages: [
-                    {
-                        name: 'jquery',
-                        location: '../libs/jquery',
-                        main: 'jquery-1.9.1'
-                    },
-                    {
-                        name: 'text',
-                        location: '../libs/require',
-                        main: 'text'
-                    },
-                    {
-                        name: 'yy',
-                        location: '../libs/yy',
-                        main: 'yy'
-                    },
                     {
                         name: 'echarts',
                         location: '../libs/echarts/src',
@@ -75,47 +62,47 @@
                     }
                 ],
                 paths: {
-                    'jquery.mousewheel': '../libs/jquery/mousewheel/jquery.mousewheel-3.0.6',
-                    'jquery.datepicker': '../libs/jquery/datepicker/jquery-ui-1.10.3.datepicker'
+                    'jquery': staticRootPath + 'jquery',
+                    'text': staticRootPath + 'require/text',
+                    'crypto': staticRootPath + 'crypto',
+                    'yy/yy': staticRootPath + 'yy',
+                    'yy/config': staticRootPath + 'yy',
+                    'yy/module': staticRootPath + 'yy',
+                    'yy/button': staticRootPath + 'yy',
+                    'yy/form': staticRootPath + 'yy',
+                    'yy/label': staticRootPath + 'yy',
+                    'yy/list': staticRootPath + 'yy',
+                    'yy/list_item': staticRootPath + 'yy',
+                    'yy/panel': staticRootPath + 'yy'
                 },
                 shim: {
-                    'jquery.mousewheel': {
-                        deps: ['jquery'],
-                        exports: 'jQuery.fn.mousewheel'
-                    },
-                    'jquery.datepicker': {
-                        deps: ['jquery'],
-                        exports: 'jQuery.fn.datepicker',
-                        init: function() {
-                            //加载css
-                            var link = document.createElement("link");
-                            link.type = "text/css";
-                            link.rel = "stylesheet";
-                            link.href = '../libs/jquery/datepicker/stylesheets/jquery-ui-1.10.3.datepicker.css';
-                            document.getElementsByTagName("head")[0].appendChild(link);
-                        }
+                    'crypto': {
+                        exports: 'CryptoJS'
                     }
                 },
                 urlArgs: 'v=' + v
             });
-            require(['yy', 'yy/module'], function(yy, module) {
-                //加载css
-                var sinaLink = document.createElement("link");
-                sinaLink.type = "text/css";
-                sinaLink.rel = "stylesheet";
-                sinaLink.href = 'stylesheets/sina.css' + '?v=' + v;
-                document.getElementsByTagName("head")[0].appendChild(sinaLink);
-
-                var yyLink = document.createElement("link");
-                yyLink.type = "text/css";
-                yyLink.rel = "stylesheet";
-                yyLink.href = '../libs/yy/stylesheets/yy.css' + '?v=' + v;
-                document.getElementsByTagName("head")[0].appendChild(yyLink);
-                //加载模块
-                module.loadModule('home');
-                yy.setConfig({
-                    httpServer: 'http://jianying9:7070/sina-analyze/service.io',
-                    webSocketServer: 'ws://jianying9:7070/sina-analyze/service.io'
+            require(['yy/yy', 'yy/module'], function(yy, module) {
+                yy.init({
+                    httpServer: 'http://jianying9:8080/sina-analyze/service.io',
+                    webSocketServer: 'ws://jianying9:8080/sina-analyze/service.io',
+                    key: '34313032676e6162',
+                    websocket: 'on'
+                }, function() {
+                    //加载css
+                    var sinaLink = document.createElement("link");
+                    sinaLink.type = "text/css";
+                    sinaLink.rel = "stylesheet";
+                    sinaLink.href = 'stylesheets/sina.css' + '?v=' + v;
+                    document.getElementsByTagName("head")[0].appendChild(sinaLink);
+                    //
+                    var yyLink = document.createElement("link");
+                    yyLink.type = "text/css";
+                    yyLink.rel = "stylesheet";
+                    yyLink.href = staticRootPath + 'yy/stylesheets/yy.css' + '?v=' + v;
+                    document.getElementsByTagName("head")[0].appendChild(yyLink);
+                    //加载模块
+                    module.loadModule('home');
                 });
             });
         </script>

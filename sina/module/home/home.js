@@ -1,5 +1,5 @@
 define(function(require) {
-    var yy = require('yy');
+    var yy = require('yy/yy');
     require('yy/panel');
     require('yy/button');
     var module = require('yy/module');

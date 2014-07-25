@@ -1,5 +1,5 @@
 define(function(require) {
-    var _yy = require('yy');
+    var _yy = require('yy/yy');
     require('yy/panel');
     require('yy/list');
     require('yy/button');
@@ -25,8 +25,8 @@ define(function(require) {
         });
         //sina用户列表消息
         _message.listen(sinaList, 'INQUIRE_SINA_USER', function(thisCom, msg) {
-            if (msg.flag === 'SUCCESS') {
-                var data = msg.data;
+            if (msg.state === 'SUCCESS') {
+                var data = msg.data.list;
                 if (data.length > 0) {
                     //有记录
                     thisCom.clear();

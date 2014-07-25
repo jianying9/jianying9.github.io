@@ -1,5 +1,5 @@
 define(function(require) {
-    var _yy = require('yy');
+    var _yy = require('yy/yy');
     require('yy/form');
     require('yy/label');
     require('yy/panel');
@@ -41,20 +41,20 @@ define(function(require) {
         });
         //帐号列表消息事件
         _message.listen(spiderList, 'INSERT_SPIDER_USER', function(thisCom, msg) {
-            if (msg.flag === 'SUCCESS') {
+            if (msg.state === 'SUCCESS') {
                 var data = msg.data;
                 thisCom.addItemDataFirst(data);
             }
         });
         _message.listen(spiderList, 'DELETE_SPIDER_USER', function(thisCom, msg) {
-            if (msg.flag === 'SUCCESS') {
+            if (msg.state === 'SUCCESS') {
                 var itemId = msg.data.itemId;
                 thisCom.removeItem(itemId);
             }
         });
         _message.listen(spiderList, 'INQUIRE_SPIDER_USER', function(thisCom, msg) {
-            if (msg.flag === 'SUCCESS') {
-                var data = msg.data;
+            if (msg.state === 'SUCCESS') {
+                var data = msg.data.list;
                 if (data.length > 0) {
                     //有记录
                     thisCom.loadData(data);
@@ -89,7 +89,7 @@ define(function(require) {
                     var infoUserName = thisModule.findByKey('info-user-name');
                     infoUserName.setLabel('');
                 },
-                faliure: function() {
+                failure: function() {
                     var infoUserName = thisModule.findByKey('info-user-name');
                     infoUserName.setLabel('帐号不能为空');
                 }
@@ -99,7 +99,7 @@ define(function(require) {
                     var infoPassword = thisModule.findByKey('info-password');
                     infoPassword.setLabel('');
                 },
-                faliure: function() {
+                failure: function() {
                     var infoPassword = thisModule.findByKey('info-password');
                     infoPassword.setLabel('密码不能为空');
                 }

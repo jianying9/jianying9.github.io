@@ -1,5 +1,5 @@
 define(function(require) {
-    var _yy = require('yy');
+    var _yy = require('yy/yy');
     require('yy/panel');
     require('yy/button');
     var _echarts = require('echarts');
@@ -15,8 +15,8 @@ define(function(require) {
         var incrementChart = _echarts.init(incrementCubePanel.$this[0]);
         //
         _message.listen(numCubePanel, 'INQUIRE_SINA_USER_CUBE', function(thisCom, msg) {
-            if (msg.flag === 'SUCCESS') {
-                var data = msg.data;
+            if (msg.state === 'SUCCESS') {
+                var data = msg.data.list;
                 if (data.length > 0) {
                     var categoryArray = new Array(data.length);
                     var numArray = new Array(data.length);

@@ -1,5 +1,5 @@
 define(function(require) {
-    var _yy = require('yy');
+    var _yy = require('yy/yy');
     require('yy/panel');
     require('yy/button');
     var _echarts = require('echarts');
@@ -37,8 +37,8 @@ define(function(require) {
         });
 
         _message.listen(genderCubePanel, 'INQUIRE_GENDER_CUBE', function(thisCom, msg) {
-            if (msg.flag === 'SUCCESS') {
-                var data = msg.data;
+            if (msg.state === 'SUCCESS') {
+                var data = msg.data.list;
                 if (data.length > 0) {
                     var pieChartArray = new Array(data.length);
                     for (var index = 0; index < data.length; index++) {
