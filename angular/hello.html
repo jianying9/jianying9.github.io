@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html ng-app>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+        <div ng-controller="HelloController">
+            <input ng-model="greeting.text" />
+            <p>{{greeting.text}}, World</p>
+            <p ng-bind="greeting.text"></p>
+        </div>
+        <script src="angular-1.0.8.js"></script>
+        <script>
+            function HelloController($scope) {
+                $scope.greeting = {text: 'Hello'};
+            }
+        </script>
+    </body>
+</html>
