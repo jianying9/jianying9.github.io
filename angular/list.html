@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html ng-app>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <style type="text/css">
+            .selected {
+                background-color: lightgreen;
+            }
+        </style>
+    </head>
+    <body data-ng-controller="StudentListController">
+        <ul>
+            <li data-ng-repeat="student in students" ng-click="selectStudent($index)" ng-class="{selected: $index == selectedRow}">
+                <a>{{student.name}}</a>
+            </li>
+        </ul>
+        <button ng-click="insertTom()">Insert</button>
+        <script src="angular-1.0.8.js"></script>
+        <script>
+                    function StudentListController($scope) {
+                        $scope.students = [{name: 'Mary', id: 1},
+                            {name: 'Jack', id: 2},
+                            {name: 'Jill', id: 3}
+                        ];
+                        $scope.insertTom = function () {
+                            $scope.students.splice(0, 0, {name: 'Tom', id: 4});
+                        };
+                        $scope.selectStudent = function (row) {
+                            $scope.selectedRow = row;
+                        };
+                    };
+        </script>
+    </body>
+</html>

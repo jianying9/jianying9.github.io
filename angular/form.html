@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html ng-app>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+        <form ng-controller="FormController">
+            <input type="checkbox" ng-model="youCheckedIt" />
+            <p ng-bind="youCheckedIt"></p>
+            <input type="text" ng-model="funding.startingEstimate" ng-change="computeNeeded()"/>
+            <p ng-bind="funding.needed"></p>
+            <div ng-controller="ViewController">
+                <p ng-bind="funding.otherNeeded"></p>
+            </div>
+        </form>
+        <script src="angular-1.0.8.js"></script>
+        <script>
+            function FormController($scope) {
+                $scope.funding = {startingEstimate: 0};
+                $scope.computeNeeded = function() {
+                    $scope.funding.needed = $scope.funding.startingEstimate * 10;
+                };
+            }
+            
+            function ViewController($scope) {
+                $scope.$watch('funding.startingEstimate', function() {
+                    $scope.funding.otherNeeded = $scope.funding.startingEstimate * 10 + 1;
+                });
+            }
+        </script>
+    </body>
+</html>

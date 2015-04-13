@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>wifi认证</title>
+        <!-- Bootstrap -->
+        <link href="styles/bootstrap.min.css" rel="stylesheet">
+        <!-- 可选的Bootstrap主题文件（一般不用引入） -->
+        <link rel="stylesheet" href="styles/bootstrap-theme.min.css">
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+          <script src="scripts/html5shiv.min.js"></script>
+          <script src="scripts/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3 col-md-1">
+                        <button id="portal-button" type="button" class="btn btn-primary">认证</button>
+                    </div>
+                    <div class="col-xs-9 col-md-11">
+                        <h5>点击认证后就可以免费上网</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-0 col-md-4">
+                    </div>
+                    <div class="col-xs-12 col-md-4">
+                        <img src="img/TB1KtFZHXXXXXaUXFXXXXXXXXXX.jpg_790x10000.jpg" class="img-thumbnail" alt="loading..."/>
+                    </div>
+                    <div class="col-xs-0 col-md-4">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-0 col-md-4">
+                    </div>
+                    <div class="col-xs-12 col-md-4">
+                        <img src="img/TB19m8SHXXXXXayaXXXXXXXXXXX.jpg_790x10000.jpg" class="img-thumbnail" alt="loading..."/>
+                    </div>
+                    <div class="col-xs-0 col-md-4">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="scripts/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="scripts/bootstrap.min.js"></script>
+        <script>
+            //服务器地址
+            var _httpServer = 'service.io';
+            //页面对象
+            var _thisPage = {};
+            //获取url参数
+            _thisPage.getUrlPara = function () {
+                var result = {};
+                var text = window.location.search;
+                if (text.length > 0) {
+                    text = text.substr(1);
+                    var paraArr = text.split('&');
+                    var para;
+                    for (var index = 0; index < paraArr.length; index++) {
+                        para = paraArr[index].split('=');
+                        if (para.length === 2) {
+                            result[para[0]] = para[1];
+                        }
+                    }
+                }
+                return result;
+            };
+            //点击事件
+            $('#portal-button').on('click', function () {
+                var paras = _thisPage.getUrlPara();
+                var msg = {
+                    act: 'P_LOGIN',
+                    gwAddress: paras.gw_address,
+                    gwPort: paras.gw_port,
+                    gwId: paras.gw_id,
+                    url: paras.url
+                };
+                //认证
+                $.getJSON(_httpServer + '?callback=?', msg, function (res) {
+                    if (res.state === 'SUCCESS') {
+                        //认证成功，跳转回路由
+                        var redirectUrl = 'http://' + paras.gw_address + ':'
+                                + paras.gw_port + '/wifidog/auth?token=' + res.data.token;
+                        window.location.href = redirectUrl;
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

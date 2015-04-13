@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html ng-app="expanderModule">
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <style type="text/css">
+            .selected {
+                background-color: lightgreen;
+            }
+        </style>
+    </head>
+    <body ng-controller="SomeController">
+    <div data-expander class="expander" data-expander-title="{{title}}">
+        {{text}}
+    </div>
+    <script src="angular-1.0.8.js"></script>
+    <script>
+                    function SomeController($scope) {
+                        $scope.title = 'Click me to expand';
+                        $scope.text = 'Hi there folks, I am the content that was hidden but is now shown.';
+                    };
+                    var e = angular.module('expanderModule', []);
+                    e.directive('expander', function () {
+                        return {
+                            restrict: 'EA',
+                            replace: false,
+                            transclude: true,
+                            scope: {title1: '@expanderTitle'},
+                            template: '<div>'
+                                    + '<div class="title" ng-click="toggle()">{{title1}}</div>'
+                                    + '<div class="body" ng-show="showMe" ng-transclude></div>'
+                                    + '</div>',
+                            link: function (scope, element, attrs) {
+                                scope.showMe = false;
+                                scope.toggle = function () {
+                                    scope.showMe = !scope.showMe;
+                                };
+                            }
+                        };
+                    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html ng-app>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <style type="text/css">
+            .menu-disabled-true {
+                color: gray;
+            }
+        </style>
+    </head>
+    <body ng-controller="MenuController">
+        <button ng-click="toggleMenu()">Toggle Menu</button>
+        <ul ng-show="menuState.show">
+            <li ng-click="stun()" class="menu-disabled-{{isDisabled}}">Stun</li>
+            <li>Disintegrate</li>
+            <li>Erase from history</li>
+        </ul>
+        <script src="angular-1.0.8.js"></script>
+        <script>
+            function MenuController($scope) {
+                $scope.menuState = {show: true};
+                $scope.toggleMenu = function() {
+                    $scope.menuState.show = !$scope.menuState.show;
+                };
+                $scope.isDisabled = false;
+                $scope.stun = function() {
+                    $scope.isDisabled = !$scope.isDisabled;
+                };
+            }
+        </script>
+    </body>
+</html>

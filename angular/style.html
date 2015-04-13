@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html ng-app>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <style type="text/css">
+            .error {
+                background-color: red;
+            }
+            
+            .warning {
+                background-color: yellow;
+            }
+        </style>
+    </head>
+    <body ng-controller="StyleController">
+        <button ng-click="showError()">error</button>
+        <button ng-click="showWarning()">warning</button>
+        <div ng-bind="messageText" ng-class="{error: isError, warning: isWarning}"></div>
+        <script src="angular-1.0.8.js"></script>
+        <script>
+            function StyleController($scope) {
+                $scope.isError = false;
+                $scope.isWarning = false;
+                $scope.showError = function() {
+                    $scope.messageText = 'This is an error!';
+                    $scope.isError = true;
+                    $scope.isWarning = false;
+                };
+                
+                $scope.showWarning = function() {
+                    $scope.messageText = 'Just a warning.';
+                    $scope.isError = false;
+                    $scope.isWarning = true;
+                };
+            }
+        </script>
+    </body>
+</html>
