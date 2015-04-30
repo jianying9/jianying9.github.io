@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+        <script src="../libs/jquery/jquery-1.9.1.js"></script>
+        <script>
+            var url = 'http://esp-editor.debug.web.nd/v0.2/assessment_items/feb9c0b9-7e8f-40f7-9405-2e8f3dd94db9/pages/0625437f-98b7-455f-acaf-daf6063d8ed4';
+            if (window.XDomainRequest) {
+                var xdr = new XDomainRequest();
+                xdr.open("get", url);
+                xdr.onprogress = function () {
+                };
+                xdr.ontimeout = function () {
+                };
+                xdr.onerror = function () {
+                };
+                xdr.onload = function () {
+                    $(xdr.responseText).find('modalFeedback').each(function () {
+                        alert($(this).attr('identifier'));
+                    });
+                }
+                setTimeout(function () {
+                    xdr.send();
+                }, 0);
+            } else {
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    dataType: "xml",
+                    async: true,
+                    success: function (response) {
+                        $(response).find('modalFeedback').each(function () {
+                            alert($(this).attr('identifier'));
+                        });
+                    }
+                });
+            }
+        </script>
+    </body>
+</html>
